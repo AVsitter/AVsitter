@@ -8,11 +8,10 @@ list findPrimsWithSubstring(string name)
 {
     list found;
 
-    integer index;
-//  index already defaults to 0 here, no need for (re-)setting the start value to 0
-    for (; index <= llGetNumberOfPrims(); index++)
+    integer index = llGetLinkNumber() != 0;
+    integer number = llGetNumberOfPrims() + index;
+    for (; index <= number; index++)
     {
-//      if link with name found (substring-index != -1)
         if (~llSubStringIndex(llToLower(llGetLinkName(index)), name))
         {
             found += [llGetLinkName(index), llGetLinkKey(index)];
