@@ -1,9 +1,9 @@
-# AVsitter
+# [AVsitter™](https://avsitter.com)
 
-Respository for some opensource components of AVsitter - furniture pose system for Second Life™
+Respository for some of the open-source components of [AVsitter™](https://avsitter.com) - a furniture pose system for [Second Life™](https://www.secondlife.com)
 
-* More information at http://avsitter.com
-* Uses the LSL scripting language.
-* Very few things published here now - it's a test to see if GitHub can be helpful. 
+* [AVsitter™](https://avsitter.com) uses the [Linden Scripting Language (LSL)](https://wiki.secondlife.com/wiki/LSL_Portal).
 
+---
 
+[Second Life™](https://www.secondlife.com) is a trademark of Linden Research, Inc. [AVsitter™](https://avsitter.com) is not affiliated with or sponsored by Linden Research.
