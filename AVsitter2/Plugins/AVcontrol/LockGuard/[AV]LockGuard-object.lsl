@@ -20,7 +20,7 @@ default
 
         integer index;
 //      index already defaults to 0 here, no need for (re-)setting the start value to 0
-        for(; index <= llGetNumberOfPrims(); index++)
+        for (; index <= llGetNumberOfPrims(); index++)
         {
 //          if link with name "ring" found / substring-index != -1
             if (~llSubStringIndex(llToLower(llGetLinkName(index)), "ring"))
