@@ -1,11 +1,20 @@
-//  LSL-AVSITTER-LockGuard-PLUGIN
-//  Copyright (c) 2016
-//  Permission given to modify and adapt this script
-//
+ /*
+ * This Source Code Form is subject to the terms of the Mozilla Public 
+ * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * AVsitter™ is a trademark. For trademark use policy see:
+ * https://avsitter.github.io/TRADEMARK.mediawiki
+ *
+ * Please consider supporting continued development of AVsitter and
+ * receive automatic updates and other benefits! All details and user 
+ * instructions can be found at http://avsitter.github.io
+ */
+ 
 //  For use attaching particle chains to LockGuard V2 compatible cuffs such as Open Collar
 //  This script should be placed inside the prim that contains your poses and props.
 //  Inspiration and function (not code) from the Bright CISS system by Shan Bright & Innula Zenovka.
-
 
 //  SITTER:
 //      The AVsitter SITTER # the cuff settings are for.

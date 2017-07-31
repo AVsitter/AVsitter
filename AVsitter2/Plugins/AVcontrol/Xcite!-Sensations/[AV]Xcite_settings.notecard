@@ -1,0 +1,72 @@
+#############################################################
+Example Xcite! notecard for use with AVsitter™ Xcite! plugin.
+#############################################################
+//
+// Your object MUST contain your Xcite! partner script (provided by Xcite!) and/or your Sensations partner script (provided by Sensations).
+//
+// Please refer to your Xcite! and/or Sensations partner information for details.
+// 
+// This notecard must be called "[AV]Xcite_settings"
+// 
+// Format of each line is as follows:
+//
+// XCITE pose_name|sitter_number|arousal|arousal_max|text|kink|tilt
+// 
+// For pose_name you can use * to apply to all poses, otherwise use the menu name of one pose.
+//
+// For sitter_number you can use * to apply to all sitters otherwise it should be 0,1, etc
+// 
+// arousal and arousal_max are described in your Xcite! and Sensations partner information.
+//
+// For text you may include any text messages that you want to be said out when this arousal occurs.
+// If you want the message to take the form of an emote simply start the text message with '/me'. 
+// You may also use any of the following special codes for appropriate pronouns in the text:
+//
+//         %o - Replaced by the owner's first name
+//         %f - Replaced by the owner's full name
+//         %p - Replaced by the possessive pronoun according to sex (his, her)
+//         %r - Replaced by the objective pronoun (him, her)
+//         %s - Replaced by the subjective pronoun (he, she)
+//         %w - Replaced by the possessive form appropriate to the target rather than the owner
+//
+// Refer to your Xcite! partner information for full details on text.
+//
+//         You can also refer to the sitters by first name with /0 /1 etc.
+//
+// Adding text is optional and isn't required for the arousal to occur.
+//
+// Note each notecard line can only be 255 characters maximum.
+//
+// You may also include a custom timer as follows:
+// TIMER 30
+//
+// Arousal will be re-applied at this interval (default is 30 seconds)
+//
+// If you wish to debug Xcite commands sent, include:
+// DEBUG 1
+//
+// Switching off Xcite! or Sensations features should be done via your Xcite or Sensations product's menu.
+//
+#############################################################
+Example data follows....
+#############################################################
+
+DEBUG 0
+TIMER 30
+
+// Typical settings for poses
+XCITE Couples1|0|15|95|/0 takes /1 by the hand...|kink|0
+XCITE Couples1|1|5|95|example text for male...|kink|50
+XCITE Couples_Climax|*|10|100||kink|50
+
+// Pose with slowly diminishing arousal
+XCITE Waiting|*|-15|95
+
+// Pose that sets arousal to 0
+XCITE Rest|*|0|0
+
+// Default arousal for all poses
+XCITE *|*|5|90
+
+// Default arousal for sitter1's poses
+XCITE *|1|5|90

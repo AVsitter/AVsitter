@@ -1,0 +1,174 @@
+=AVsitter Trademark Guidelines 0.1=
+
+__TOC__
+
+==Introduction==
+
+This document, the "Policy," outlines the AVsitter project's (the "Project") policy for trademark use.  While our software is available under a free and open source software license, the copyright license does not include an implied right or license to use our trademarks. 
+
+The role of trademarks is to provide assurance about the quality of the products or services with which the trademark is associated. But because an open source license allows your unrestricted modification of the software, we cannot be sure that your modifications to the software are ones that will not be misleading if distributed under the same name. This Policy describes the circumstances under which you may use our trademarks. 
+
+In this Policy we are not trying to limit the lawful use of our trademarks, but rather describe for you what we consider the parameters of lawful use to be. Trademark law can be ambiguous, so we hope to provide enough clarity for you to understand whether we will consider your use licensed or non-infringing. 
+
+The sections that follow describe what trademarks are covered by this Policy, as well as uses of the trademarks that are allowed without additional permission from us. If you want to use our trademarks in ways that are not described in this Policy, please see [[#Where to get further information|"Where to get further information"]] below. Any use that does not comply with this Policy or for which we have not separately provided written permission is not a use that we have approved.
+
+==Our commitment to open source principles==
+
+We want to encourage the use of our software by the community, but do so in a way that still ensures that our trademarks are meaningful as a source and quality indicator for our software and the associated goods and services and continue to embody the high reputation of the software and the community associated with it. This Policy therefore tries to strike the proper balance between: 1) our need to ensure that our trademarks remain reliable indicators of the qualities that they are meant to preserve and 2) our community members' desire to be full participants in the Project.
+
+==Trademarks subject to the guidelines==
+
+===Our trademarks===
+
+This Policy covers:
+
+1. Our word trademarks and service marks (the "Word Marks"):
+
+{| class="wikitable"
+! align="left"| Mark
+! Common descriptive name for the goods or services
+|-
+|AV and [AV]
+|prefixes used broadly throughout the AVsitter range of virtual world products.
+|-
+|AVsitter&trade;
+|furniture pose system for virtual worlds.
+|-
+|AVsit&trade;
+|short form of AVsitter, and main script name.
+|-
+|AVmenu&trade;
+|menu creation system.
+|-
+|AVprop&trade;
+|script plugin to enable rezzing/derezzing of props.
+|-
+|AVfaces&trade;
+|script plugin to enable sequencing of avatar expressions.
+|-
+|AVcontrol&trade;
+|script plugin to enable menu control by other avatars.
+|-
+|AVsequence&trade;
+|script plugin to enable creation of pose sequences.
+|}
+
+2. Our logos (the "Logos"):
+
+[[Image: ./images/AVsitter-logo.jpg]]
+
+[[Image: ./images/AVsitter-logo2.jpg]]
+
+==Universal considerations for all uses==
+
+Whenever you use one of the Marks, you must always do so in a way that does not mislead anyone, either directly or by omission, about exactly what they are getting and from whom. The law reflects this requirement in two major ways described in more detail [[#General considerations about trademarks and their use|below]]: it prohibits creating a [[#What is "likelihood of confusion"?|"likelihood of confusion"]] but allows for [[#What is "nominative" use?|"nominative use."]] For example, you cannot say you are distributing the AVsitter software when you're distributing a modified version of it, because people would be confused when they are not getting the same features and functionality and support they would get if they obtain the software directly from us. You also cannot use our logo on your website in a way that suggests that your website is an official website or that we endorse your website. You can, though, say you like the AVsitter software, that you participate in the AVsitter community, that you are providing an unmodified version of the AVsitter software, or that you wrote a book describing how to use the AVsitter software.
+
+This fundamental requirement, that it is always clear to people what they are getting and from whom, is reflected throughout this Policy. It should also serve as your guide if you are not sure about how you are using the Marks.
+
+In addition:
+
+You may not use the Marks in association with the use or distribution of software if you are also not in compliance with the copyright license for the software.
+
+You may not use or register, in whole or in part, the Marks as part of your own trademark, service mark, domain name, company name, trade name, product name or service name.
+
+Trademark law does not allow your use of names or trademarks that are too similar to ours. You therefore may not use an obvious variation of any of our Marks or any phonetic equivalent, foreign language equivalent, takeoff, or abbreviation for a similar or compatible product or service.
+
+Regarding the "AV" prefix:
+
+The use of the prefix "AV" and "[AV]" in your product names or trademarks must be avoided if it may create [[#What is "likelihood of confusion"?|"a likelihood of confusion"]]. The Project uses this prefix throughout its product range, and therefore you should not use this prefix when distributing derivatives, forks, plugins, or competing products of the Project as it may give the impression that your project is affiliated with or endorsed by the Project.
+
+==Use for software==
+
+See [[#Universal considerations for all uses|Universal considerations for all uses]], above, which also apply.
+
+===Distribution of unmodified source code or unmodified executable code we have compiled===
+
+When you redistribute an unmodified copy of our software, you are not changing the quality or nature of it.  Therefore, you may retain the Word Marks as we have placed them in the software (for example, the Word Mark AVsitter as it appears in the software menu). This kind of use only applies if you are redistributing an official distribution or scripts from the Project that have not been changed in any way (for example, you have placed unmodified scripts inside products you distribute).
+
+In addition, you may retain the Word Marks as we have placed them in the software in versions of the software you have modified provided that modifications are limited to switching on or off features already included in the software, translations into other languages, or incorporating a small number of minor changes or bug-fix patches without making significant change to existing functionality.
+
+===Distribution of executable code that you have compiled, or modified source code===
+
+You may use the Word Marks, but not the Logos, to truthfully describe the origin of the software that you are providing, that is, that the code you are distributing is a modification of our software. You may say, for example, that "this software is derived from the source code for AVsitter software."
+
+Of course, you can place your own trademarks or logos on versions of the software to which you have made substantive modifications, because by modifying the software you have become the origin of that exact version.  In that case, you should not use our Word Marks, or Logos.
+
+===Statements about compatibility, interoperability or derivation===
+
+You may use the Word Marks, but not the Logos, to truthfully describe the relationship between your software and the Project. Our Mark should be used after a verb or preposition that describes the relationship between your software and ours. So you may say, for example, "Bob's software for the AVsitter platform" but may not say "Bob's AVsitter software." Some other examples that may work for you are:
+
+* [Your software] works with AVsitter software
+* [Your software] uses AVsitter software
+* [Your software] is compatible with AVsitter software
+* [Your software] is powered by AVsitter software
+* [Your software] is derived from AVsitter software
+* [Your software] for use with AVsitter software
+* [Your software] for AVsitter software
+
+==Use for non-software goods and services==
+
+See [[#Universal considerations for all uses|Universal considerations for all uses]], above, which also apply.
+
+====Websites====
+
+You may use the Word Marks and Logos, on your webpage to show your support for the Project as long as:
+
+* The website has branding that is easily distinguished from the Project;
+* Your own branding and naming is more prominent than any Project Marks;
+* The Logos hyperlink to the Project website;
+* The site does not mislead customers into thinking that either your website, service, or product is our website, service, or product; and
+* The site clearly states that you are not affiliated with or endorsed by the Project.
+
+====Publications and presentations====
+
+You can use the Word Marks in book and article titles, and the Logo in illustrations within the document, as long as the use does not suggest that we have published, endorse, or agree with your work. 
+
+====User groups and educational groups====
+
+You can use the Word Marks as part of your user group or educational group name provided that:
+* The main focus of the group is the software and not to make a profit;
+* Any software the group provides is without cost;
+* The group does not lead members into thinking that it is an official group affiliated with or endorsed by the Project. 
+
+==Word Marks usage==
+
+Always use Word Marks in their exact form with the correct spelling, neither abbreviated, hyphenated, or combined with any other word or words.
+* Correct: AVsitter, avsitter, AVSITTER
+* Incorrect: AV-sitter, AV Sitter
+
+==Logo usage==
+
+You may not change any Logo except to scale it. This means you may not add decorative elements, change the colors, change the proportions, distort it, add elements, or combine it with other logos.
+
+However, when the context requires the use of black-and-white graphics and the logo is color, you may reproduce the logo in a manner that produces a black-and-white image.
+
+==Where to get further information==
+
+If you have any questions about this Policy, would like to ask about the use of our Marks in ways not described in the Policy, or bring attention to any abuse of our Marks, please open an issue in the [https://github.com/AVsitter/AVsitter/issues|AVsitter GitHub repository].
+
+==General considerations about trademarks and their use==
+
+===What is a trademark?===
+
+A trademark is a word, phrase, symbol or design, or a combination of words, phrases, symbols or designs, that identifies and distinguishes the source of the goods of one party from those of others. A service mark is the same as a trademark, except that it identifies and distinguishes the source of a service rather than a product. Throughout this Policy, the terms "trademark" and "mark" refer to both trademarks and service marks.
+
+===What is "likelihood of confusion"?===
+
+There is trademark infringement if your use of a trademark has created a "likelihood of confusion."  This means using a trademark in a way that will likely confuse or deceive the relevant consuming public about the source of a product or service using the mark in question. For example, if the "Foo" software extension removes all double spaces after periods, but someone else later creates "Foo" software that adds a third space after periods, consumers would be confused between the two and the newcomer will likely be a trademark infringer. As another example, if a company makes "Foobar" software and a third party offers training called "Foobar Certification," a person is likely to believe, wrongly, that the certification is being offered by the makers of Foobar software. The third party has likely misled consumers about the source of its training and is a trademark infringer.
+
+===What is "nominative" use?===
+
+So-called "nominative use" (or "nominative fair use"), which is the name of the doctrine under U.S. trademark law, allows the use of another's trademark where it is necessary for understanding. Other countries' trademark laws also have similar provisions. For example, a car repair shop that specializes in a particular brand of automobile, VW for example, must be allowed to say that they repair VW cars. Here is what you should consider when deciding whether your use of a trademark is a nominative fair use:
+
+* Whether you can identify the product or service in question without using the trademark; 
+* Whether you are avoiding a likelihood of confusion in the way that you have used the trademark; and
+* Whether you have used only as much as is necessary to identify the product or service.
+
+With our "Foobar Certification" example above, the person offering the certification would be allowed to say, under the nominative fair use doctrine, that she is offering "Maude's Certification for Foobar software."
+
+It is almost never the case that using a Logo will be a nominative fair use since it will be a rare case where the logo is needed for strictly informational purposes.
+
+==Trademark Guidelines Attribution==
+
+These guidelines are based on the [http://www.modeltrademarkguidelines.org|Model Trademark Guidelines], used under a [https://creativecommons.org/licenses/by/3.0/deed.en_US|Creative Commons Attribution 3.0 Unported license].
+
