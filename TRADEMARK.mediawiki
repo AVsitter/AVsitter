@@ -10,7 +10,7 @@ The role of trademarks is to provide assurance about the quality of the products
 
 In this Policy we are not trying to limit the lawful use of our trademarks, but rather describe for you what we consider the parameters of lawful use to be. Trademark law can be ambiguous, so we hope to provide enough clarity for you to understand whether we will consider your use licensed or non-infringing. 
 
-The sections that follow describe what trademarks are covered by this Policy, as well as uses of the trademarks that are allowed without additional permission from us. If you want to use our trademarks in ways that are not described in this Policy, please see [[#Where to get further information|"Where to get further information"]] below. Any use that does not comply with this Policy or for which we have not separately provided written permission is not a use that we have approved.
+The sections that follow describe what trademarks are covered by this Policy, as well as uses of the trademarks that are allowed without additional permission from us. If you want to use our trademarks in ways that are not described in this Policy, please see [[#where-to-get-further-information|"Where to get further information"]] below. Any use that does not comply with this Policy or for which we have not separately provided written permission is not a use that we have approved.
 
 ==Our commitment to open source principles==
 
@@ -61,7 +61,7 @@ This Policy covers:
 
 ==Universal considerations for all uses==
 
-Whenever you use one of the Marks, you must always do so in a way that does not mislead anyone, either directly or by omission, about exactly what they are getting and from whom. The law reflects this requirement in two major ways described in more detail [[#General considerations about trademarks and their use|below]]: it prohibits creating a [[#what-is-likelihood-of-confusion|"likelihood of confusion"]] but allows for [[#What is "nominative" use?|"nominative use."]] For example, you cannot say you are distributing the AVsitter software when you're distributing a modified version of it, because people would be confused when they are not getting the same features and functionality and support they would get if they obtain the software directly from us. You also cannot use our logo on your website in a way that suggests that your website is an official website or that we endorse your website. You can, though, say you like the AVsitter software, that you participate in the AVsitter community, that you are providing an unmodified version of the AVsitter software, or that you wrote a book describing how to use the AVsitter software.
+Whenever you use one of the Marks, you must always do so in a way that does not mislead anyone, either directly or by omission, about exactly what they are getting and from whom. The law reflects this requirement in two major ways described in more detail [[#general-considerations-about-trademarks-and-their-use|below]]: it prohibits creating a [[#what-is-likelihood-of-confusion|"likelihood of confusion"]] but allows for [[#what-is-nominative-use|"nominative use."]] For example, you cannot say you are distributing the AVsitter software when you're distributing a modified version of it, because people would be confused when they are not getting the same features and functionality and support they would get if they obtain the software directly from us. You also cannot use our logo on your website in a way that suggests that your website is an official website or that we endorse your website. You can, though, say you like the AVsitter software, that you participate in the AVsitter community, that you are providing an unmodified version of the AVsitter software, or that you wrote a book describing how to use the AVsitter software.
 
 This fundamental requirement, that it is always clear to people what they are getting and from whom, is reflected throughout this Policy. It should also serve as your guide if you are not sure about how you are using the Marks.
 
@@ -75,11 +75,11 @@ Trademark law does not allow your use of names or trademarks that are too simila
 
 Regarding the "AV" prefix:
 
-The use of the prefix "AV" and "[AV]" in your product names or trademarks must be avoided if it may create [[#What is "likelihood of confusion"?|"a likelihood of confusion"]]. The Project uses this prefix throughout its product range, and therefore you should not use this prefix when distributing derivatives, forks, plugins, or competing products of the Project as it may give the impression that your project is affiliated with or endorsed by the Project.
+The use of the prefix "AV" and "[AV]" in your product names or trademarks must be avoided if it may create [[#what-is-likelihood-of-confusion|"a likelihood of confusion"]]. The Project uses this prefix throughout its product range, and therefore you should not use this prefix when distributing derivatives, forks, plugins, or competing products of the Project as it may give the impression that your project is affiliated with or endorsed by the Project.
 
 ==Use for software==
 
-See [[#Universal considerations for all uses|Universal considerations for all uses]], above, which also apply.
+See [[#universal-considerations-for-all-uses|Universal considerations for all uses]], above, which also apply.
 
 ===Distribution of unmodified source code or unmodified executable code we have compiled===
 
@@ -107,7 +107,7 @@ You may use the Word Marks, but not the Logos, to truthfully describe the relati
 
 ==Use for non-software goods and services==
 
-See [[#Universal considerations for all uses|Universal considerations for all uses]], above, which also apply.
+See [[#universal-considerations-for-all-uses|Universal considerations for all uses]], above, which also apply.
 
 ====Websites====
 
@@ -144,7 +144,7 @@ However, when the context requires the use of black-and-white graphics and the l
 
 ==Where to get further information==
 
-If you have any questions about this Policy, would like to ask about the use of our Marks in ways not described in the Policy, or bring attention to any abuse of our Marks, please open an issue in the [https://github.com/AVsitter/AVsitter/issues|AVsitter GitHub repository].
+If you have any questions about this Policy, would like to ask about the use of our Marks in ways not described in the Policy, or bring attention to any abuse of our Marks, please open an issue in the [https://github.com/AVsitter/AVsitter/issues AVsitter GitHub repository].
 
 ==General considerations about trademarks and their use==
 
@@ -170,5 +170,5 @@ It is almost never the case that using a Logo will be a nominative fair use sinc
 
 ==Trademark Guidelines Attribution==
 
-These guidelines are based on the [http://www.modeltrademarkguidelines.org|Model Trademark Guidelines], used under a [https://creativecommons.org/licenses/by/3.0/deed.en_US|Creative Commons Attribution 3.0 Unported license].
+These guidelines are based on the [http://www.modeltrademarkguidelines.org Model Trademark Guidelines], used under a [https://creativecommons.org/licenses/by/3.0/deed.en_US Creative Commons Attribution 3.0 Unported license].
 
