@@ -55,9 +55,9 @@ This Policy covers:
 
 2. Our logos (the "Logos"):
 
-[[Image: ./images/AVsitter-logo.jpg]]
+[[Image: /images/AVsitter-logo.jpg]]
 
-[[Image: ./images/AVsitter-logo2.jpg]]
+[[Image: /images/AVsitter-logo2.jpg]]
 
 ==Universal considerations for all uses==
 
