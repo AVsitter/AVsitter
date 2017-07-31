@@ -28,4 +28,4 @@ If you distrubute the scripts in this repository or a derivation, you may only u
 
 Second Life&reg; is a trademark of Linden Research, Inc. AVsitter&trade; is not affiliated with or sponsored by Linden Research.
 
-Scripts were formatted by [LSL-PyOptimizer](http://lsl.project.zone/lsl-pyoptimizer/) and created using [SL forge](https://github.com/raysilent/lslforge). A sincere thanks goes to the creators of those projects! Many thanks go also to Philip Rosedale and all Lindens (past and present).
+Scripts were formatted by [LSL-PyOptimizer](http://lsl.project.zone/lsl-pyoptimizer/) and created using [LSLForge](https://github.com/raysilent/lslforge). A sincere thanks goes to the creators of those projects! Many thanks go also to Philip Rosedale and all Lindens (past and present).
