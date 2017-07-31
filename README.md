@@ -8,8 +8,6 @@ Repository for [AVsitter](https://avsitter.github.io)&trade; - a furniture pose 
 * User instructions are found at [https://avsitter.github.io](https://avsitter.github.io).
 * Contributor guidelines are found [https://avsitter.github.io/contribute.html](https://avsitter.github.io/contribute.html).
 
-Please support the official development by....
-
 The AVsitter scripts can be freely obtained from this GitHub repository, however if you would like a packaged version of the latest release, and to receive packaged [in-world updates](https://avsitter.github.io/updates.html) of future releases, visit the [SL Marketplace](https://marketplace.secondlife.com/stores/79645) or [Kitely Market](https://www.kitely.com/market).
 
 Proceeds are shared with open-source contributors and will help support continued development of AVsitter. Those who purchased AVsitter in the past will continue to receive [in-world updates](https://avsitter.github.io/updates.html) without needing to purchase it again.
