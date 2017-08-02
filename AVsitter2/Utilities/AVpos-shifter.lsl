@@ -14,6 +14,7 @@
  
 float version = 1.2;
 string notecard_name = "AVpos";
+string url = "https://avsitter.com/settings.php"; // the settings dump service remains up for AVsitter customers. settings clear periodically.
 key notecard_query;
 integer notecard_line;
 vector target_prim_pos;
@@ -23,6 +24,14 @@ vector pos_offset;
 string cache;
 string webkey;
 integer webcount;
+web(string say, integer force){
+    cache+=say;
+    if(llStringLength(llEscapeURL(cache))>1024 || force){
+        webcount++;
+        llHTTPRequest(url, [HTTP_METHOD,"POST",HTTP_MIMETYPE,"application/x-www-form-urlencoded",HTTP_VERIFY_CERT,FALSE], "w="+webkey+"&c="+(string)webcount+"&t="+llEscapeURL(cache));
+        cache="";
+    }
+}
 integer IsVector(string s)
 {
     list split = llParseString2List(s, [" "], ["<", ">", ","]);
@@ -76,6 +85,7 @@ Readout_Say(string say)
     llSetObjectName("");
     llRegionSayTo(llGetOwner(), 0, "◆" + say);
     llSetObjectName(objectname);
+    web(say+"\n",FALSE);
 }
 integer check_in_root()
 {
@@ -152,7 +162,9 @@ default
             if (data == EOF)
             {
                 cut_below_text();
+                web("\n\nend",TRUE);
                 llOwnerSay("Conversion complete, removing script.");
+                llRegionSayTo(llGetOwner(),0,"Settings copy: "+url+"?q="+webkey);
                 llRemoveInventory(llGetScriptName());
             }
             else
