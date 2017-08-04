@@ -39,6 +39,7 @@ integer listen_handle;
 integer number_per_page = 9;
 integer menu_pages;
 string last_text;
+
 integer pass_security(key id)
 {
     integer access_allowed = FALSE;
@@ -57,6 +58,7 @@ integer pass_security(key id)
     }
     return access_allowed;
 }
+
 check_avsit()
 {
     if (llGetInventoryType(main_script) == INVENTORY_SCRIPT)
@@ -64,10 +66,12 @@ check_avsit()
         remove_script("This script can not be used with the sit script in the same prim. Removing script!");
     }
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -75,6 +79,7 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 Readout_Say(string say)
 {
     llSleep(0.2);
@@ -83,12 +88,14 @@ Readout_Say(string say)
     llRegionSayTo(llGetOwner(), 0, "◆" + say);
     llSetObjectName(objectname);
 }
+
 dialog(key av, string menu_text, list menu_items)
 {
     llDialog(av, product + " " + version + "\n\n" + menu_text, order_buttons(menu_items), menu_channel);
     last_menu_unixtime = llGetUnixTime();
     llSetTimerEvent(120);
 }
+
 integer avprop_is_copy_transfer(integer owner_mask)
 {
     integer perms = llGetInventoryPermMask(prop_script, owner_mask);
@@ -98,6 +105,7 @@ integer avprop_is_copy_transfer(integer owner_mask)
     }
     return 0;
 }
+
 integer prim_is_mod()
 {
     integer perms = llGetObjectPermMask(MASK_OWNER);
@@ -107,6 +115,7 @@ integer prim_is_mod()
     }
     return 0;
 }
+
 menu_check(string name, key id)
 {
     if (pass_security(id) == TRUE)
@@ -129,6 +138,7 @@ menu_check(string name, key id)
         llDialog(id, product + " " + version + "\n\n" + "Sorry, the owner has set this menu to: " + llList2String(MENUCONTROL_TYPES, MENUCONTROL_INDEX), [], -585868);
     }
 }
+
 options_menu()
 {
     string text;
@@ -147,6 +157,7 @@ options_menu()
     text += "\n[RESET] = Reload notecard.";
     dialog(llGetOwner(), text, menu_items);
 }
+
 choice_menu(list options, string menu_text)
 {
     last_text = menu_text;
@@ -186,6 +197,7 @@ choice_menu(list options, string menu_text)
     }
     dialog(llGetOwner(), menu_text, menu_items);
 }
+
 list get_choices(integer page)
 {
     menu_page = page;
@@ -204,6 +216,7 @@ list get_choices(integer page)
     menu_pages = llCeil((float)i / number_per_page);
     return options;
 }
+
 remove_script(string reason)
 {
     string message = "\n" + llGetScriptName() + " ==Script Removed==\n\n" + reason;
@@ -211,6 +224,7 @@ remove_script(string reason)
     llInstantMessage(llGetOwner(), message);
     llRemoveInventory(llGetScriptName());
 }
+
 integer prop_menu(integer return_pages, key av)
 {
     choosing = FALSE;
@@ -277,14 +291,17 @@ integer prop_menu(integer return_pages, key av)
     dialog(av, custom_text, menu_items1 + menu_items2);
     return 0;
 }
+
 string strReplace(string str, string search, string replace)
 {
     return llDumpList2String(llParseStringKeepNulls((str = "") + str, [search], []), replace);
 }
+
 naming()
 {
     llTextBox(llGetOwner(), "\nPlease type a button name for your prop\nProp: " + choice, menu_channel);
 }
+
 default
 {
     state_entry()
@@ -298,10 +315,12 @@ default
         Out(0, "Loading...");
         notecard_query = llGetNotecardLine(notecard_name, notecard_line);
     }
+
     timer()
     {
         llListenRemove(listen_handle);
     }
+
     listen(integer listen_channel, string name, key id, string msg)
     {
         if (choice)
@@ -319,9 +338,9 @@ default
                 }
                 else
                 {
-                    llMessageLinked(LINK_THIS, 90173, msg, choice);
+                    llMessageLinked(LINK_THIS, 90173, msg, choice); // add PROP line to [AV]prop
                     MENU_LIST = ["B:" + msg] + MENU_LIST;
-                    DATA_LIST = [90200] + DATA_LIST;
+                    DATA_LIST = [90200] + DATA_LIST; // Rez prop (with menu)
                 }
                 choice = "";
                 options_menu();
@@ -419,7 +438,7 @@ default
         }
         else if (msg == "[NEW]")
         {
-            llMessageLinked(LINK_THIS, 90200, "", "");
+            llMessageLinked(LINK_THIS, 90200, "", ""); // Clear props
             choice_menu(get_choices(0), "Please choose your prop:\n\n(Props must include the [AV]object script!)");
             return;
         }
@@ -458,23 +477,23 @@ default
                     }
                 }
             }
-            llMessageLinked(LINK_THIS, 90020, "0", prop_script);
+            llMessageLinked(LINK_THIS, 90020, "0", prop_script); // Dump prop settings
             return;
         }
         else if (msg == "[SAVE]" && id == llGetOwner())
         {
-            llMessageLinked(LINK_SET, 90101, "0|" + msg, "");
+            llMessageLinked(LINK_SET, 90101, "0|" + msg, ""); // Menu choice notification
             options_menu();
             return;
         }
         else if (msg == "[CLEAR]")
         {
             Out(0, "Props have been cleared!");
-            llMessageLinked(LINK_THIS, 90200, "", "");
+            llMessageLinked(LINK_THIS, 90200, "", ""); // Clear props
         }
         else if (msg == "[RESET]")
         {
-            llMessageLinked(LINK_THIS, 90200, "", "");
+            llMessageLinked(LINK_THIS, 90200, "", ""); // Clear props
             llSleep(1);
             llResetOtherScript(prop_script);
             llResetScript();
@@ -510,6 +529,7 @@ default
         }
         prop_menu(FALSE, id);
     }
+
     touch_start(integer touched)
     {
         if (MTYPE < 3)
@@ -517,6 +537,7 @@ default
             menu_check(llDetectedName(0), llDetectedKey(0));
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_INVENTORY)
@@ -528,19 +549,20 @@ default
             check_avsit();
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (sender == llGetLinkNumber())
         {
-            if (num == 90005)
+            if (num == 90005) // send menu to id
             {
                 menu_check(llKey2Name(id), id);
             }
-            else if (num == 90022)
+            else if (num == 90022) // send dump to [AV]adjuster
             {
                 Readout_Say(msg);
             }
-            else if (num == 90021)
+            else if (num == 90021) // end of dump
             {
                 Readout_Say("");
                 Readout_Say("--✄--COPY ABOVE INTO \"AVpos\" NOTECARD--✄--");
@@ -548,6 +570,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
