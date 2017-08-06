@@ -1,0 +1,55 @@
+AVsitter2 Marketplace listing text
+==================================
+
+AVSITTER2™ ★ REVOLUTIONARY ★ Multi-Pose-System!
+-----------------------------------------------
+
+
+----------------------------------
+VERY IMPORTANT NOTICE
+
+AVsitter and plugins were made open-source and released to the community on 31 July 2017.
+The AVsitter scripts can be freely obtained from the GitHub repository (https://avsitter.github.io).
+
+The official packaged AVsitter will continue to be available here on the marketplace.
+Benefits to purchasing the official packaged AVsitter include:
+
+* the latest release in-world, packaged and “ready to go”
+* automatic in-world updates of new packaged releases
+* over 40 example items showing AVsitter's many features at work - a valuable learning tool
+* optimized LSL scripts for increased script memory 
+
+Proceeds from sales of the official packaged AVsitter are shared with the project's open-source contributors and will help support continued development.
+
+Note: Those who purchased AVsitter in the past will continue to receive in-world updates without needing to purchase it again.
+
+----------------------------------
+
+AVsitter™ is designed as the ultimate in pose systems for Second Life furniture, with powerful and easy to use scripts that allow you to create and sell furniture with perfectly positioned poses. Easily create everything from simple single animation chairs to feature rich couples furniture - without poseballs! AVsitter is ideal for mesh and sculpties as well as "traditional" prim furniture.
+
+Features
+--------
+
+✓ Unique furniture pose system goes beyond what any other can do in Second Life!
+✓ Suitable for all types of furniture and vehicles too!
+✓ Visually set up your poses with the SL building tools.
+✓ Set up sits for many avatars, each with their own animation menu!
+✓ Supports 300 poses per avatar, controlled via menu.
+✓ Easily set up couples and group poses with position "swap" ability.
+✓ Allows submenus of any depth, and addition of custom buttons.
+✓ Comprehensive instructions, videos and examples included!
+✓ Optional security to restrict menu access to ALL/GROUP/OWNER
+✓ API allows for animation sequences, custom scripting, and much more!
+✓ Pose memory stores personal adjustments saved by avatars.
+✓ Instant ready - no need for customers to wait for the script to load when rezzed.
+
+PLEASE: READ THE INSTRUCTIONS AT https://avsitter.github.io BEFORE PURCHASE, TO MAKE SURE IT IS RIGHT FOR YOU :)
+
+Permissions
+-----------
+Scipts are fullperm. Example items are no-transfer.
+
+
+Purchase enquiries
+------------------
+If you have a Marketplace or purchase related enquiry please contact *AVsitter Resident* with a full description. Messages will be checked every 3-4 days, so please be patient awaiting a response.
