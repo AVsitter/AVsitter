@@ -11,15 +11,6 @@
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
- /*
- * The release version of the [AV]object Script has the original AVsitter experience
- * enabled. Scripts with this experience may not be shared in full perms form.
- * Please support further development of AVsitter by not sharing it!
- * If you acquired this script from someone else, please support the
- * developers by purchasing AVsitter (see https://avsitter.github.io)
- * and also obtain the benefit of automatic updates.
- */
 
 string version = "2.020";
 integer comm_channel;
