@@ -519,7 +519,7 @@ default
                 init_sitters();
             }
         }
-        else if (change & CHANGED_LINK)
+        if (change & CHANGED_LINK)
         {
             if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) == ZERO_VECTOR)
             {

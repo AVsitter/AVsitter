@@ -524,8 +524,7 @@ default
                 CONTROLLER = MY_SITTER = id;
                 menu_page = 0;
                 current_menu = -1;
-                // FIXME: 2147483646 rounds up to 2147483648.0
-                menu_channel = ((integer)llFrand(2147483646) + 1) * -1;
+                menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
                 llListenRemove(menu_handle);
             }
             else if (num == 90065 && sender == llGetLinkNumber())

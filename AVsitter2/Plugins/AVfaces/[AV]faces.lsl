@@ -40,8 +40,7 @@ integer IsInteger(string data)
     return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
 }
 
-// FIXME: make this 2.2
-string version = "2.1";
+string version = "2.2";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
 key key_request;
@@ -113,10 +112,9 @@ start_sequence(integer sequence_index, key av)
     {
         if (llList2Key(running_uuid, wasRunning) == av)
         {
-            // FIXME: use llDeleteSubList
-            running_uuid = llListReplaceList(running_uuid, [], wasRunning, wasRunning);
-            running_sequence_indexes = llListReplaceList(running_sequence_indexes, [], wasRunning, wasRunning);
-            running_pointers = llListReplaceList(running_pointers, [], wasRunning, wasRunning);
+            running_uuid = llDeleteSubList(running_uuid, wasRunning, wasRunning);
+            running_sequence_indexes = llDeleteSubList(running_sequence_indexes, wasRunning, wasRunning);
+            running_pointers = llDeleteSubList(running_pointers, wasRunning, wasRunning);
         }
     }
     running_uuid += av;
@@ -367,15 +365,17 @@ default
         {
             if (llGetInventoryKey(notecard_name) != notecard_key)
             {
-                llResetScript();
+                llResetScript(); // llResetScript() never returns
             }
-            else if (get_number_of_scripts() != llGetListLength(SITTERS))
+            if (get_number_of_scripts() != llGetListLength(SITTERS))
             {
                 init_sitters();
             }
         }
         /*
-        else if (change & CHANGED_LINK) // FIXME: remove 'else'
+        // If you uncomment this, don't make this an 'else if', as
+        // changed events may come several at a time.
+        if (change & CHANGED_LINK)
         {
             if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) == ZERO_VECTOR)
             {

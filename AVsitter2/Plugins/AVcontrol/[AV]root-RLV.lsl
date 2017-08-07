@@ -358,8 +358,7 @@ new_controller(key id)
     CONTROLLER = id;
     controllerName = llKey2Name(CONTROLLER);
     llListenRemove(menu_handle);
-    // FIXME: 2147483646 rounds up to 2147483648.0
-    menu_handle = llListen(menu_channel = ((integer)llFrand(2147483646) + 1) * -1, "", CONTROLLER, "");
+    menu_handle = llListen(menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1, "", CONTROLLER, ""); // 7FFFFF80 = max float < 2^31
 }
 
 no_sensor_results()
@@ -375,12 +374,10 @@ no_sensor_results()
 
 get_unique_channels()
 {
-    // FIXME: 999999999 rounds up to 1000000000.0
-    RELAY_SEARCH_CHANNEL = (integer)llFrand(999999999) + 1;
+    RELAY_SEARCH_CHANNEL = (integer)llFrand(999999936) + 1; // 999999936 = max float < 1e9
     RELAY_GETCAPTURESTATUSchannel = RELAY_SEARCH_CHANNEL + 2;
     RELAY_CHECK_CHANNEL = RELAY_SEARCH_CHANNEL + 4;
-    // FIXME: 2146483646 rounds up to 2147483648.0
-    ASKROLE_CHANEL = ((integer)llFrand(2147483646) + 1) * -1;
+    ASKROLE_CHANEL = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
     llListenRemove(relay_handle);
     relay_handle = llListen(RELAY_CHANNEL, "", "", ping = "ping," + (string)llGetKey() + ",ping,ping");
 }
