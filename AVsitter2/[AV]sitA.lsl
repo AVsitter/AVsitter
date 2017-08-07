@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™";
 string version = "2.2";
 string notecard_name = "AVpos";
@@ -82,6 +82,7 @@ string BRAND;
 string onSit;
 integer speed_index;
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -89,10 +90,12 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 integer get_number_of_scripts()
 {
     integer i;
@@ -100,12 +103,15 @@ integer get_number_of_scripts()
         ;
     return i;
 }
+
 dialog(string text, list menu_items)
 {
     llListenRemove(menu_handle);
+    // FIXME: 2147483646 rounds up to 2147483648.0
     menu_handle = llListen(menu_channel = ((integer)llFrand(2147483646) + 1) * -1, "", CONTROLLER, "");
     llDialog(CONTROLLER, product + " " + version + "\n\n" + text, order_buttons(menu_items), menu_channel);
 }
+
 options_menu()
 {
     list menu_items;
@@ -139,6 +145,7 @@ options_menu()
     menu_items += "[POSE]";
     dialog("Adjust:", ["[BACK]"] + menu_items);
 }
+
 adjust_pose_menu()
 {
     string posrot_button = "Position";
@@ -150,10 +157,12 @@ adjust_pose_menu()
     }
     dialog("Personal adjustment:", ["[BACK]", posrot_button, value_button, "[DEFAULT]", "[SAVE]", "[SAVE ALL]", "X+", "Y+", "Z+", "X-", "Y-", "Z-"]);
 }
+
 integer IsInteger(string data)
 {
     return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
 }
+
 wipe_sit_targets()
 {
     integer i;
@@ -166,10 +175,12 @@ wipe_sit_targets()
         }
     }
 }
+
 primcount_error()
 {
     llDialog(llGetOwner(), "\nThere aren't enough prims for required SitTargets.\nYou must have one prim for each avatar to sit!", [], 23658);
 }
+
 sittargets()
 {
     wrong_primcount = FALSE;
@@ -235,14 +246,16 @@ sittargets()
     prep();
     set_sittarget();
 }
+
 prep()
 {
-    has_security = (has_texture = FALSE);
+    has_security = has_texture = FALSE;
     if (!SCRIPT_CHANNEL)
     {
         llMessageLinked(LINK_SET, 90201, "", "");
     }
 }
+
 release_sitter(integer i)
 {
     SITTERS = llListReplaceList(SITTERS, [""], i, i);
@@ -263,6 +276,7 @@ release_sitter(integer i)
         }
     }
 }
+
 set_sittarget()
 {
     vector target_pos = DEFAULT_POSITION;
@@ -295,6 +309,7 @@ set_sittarget()
         llLinkSitTarget(target, target_pos - <0.,0.,0.4> + llRot2Up(target_rot) * 0.05, target_rot);
     }
 }
+
 update_current_anim_name()
 {
     list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
@@ -306,6 +321,7 @@ update_current_anim_name()
     }
     llSetTimerEvent((float)llList2String(SEQUENCE, SEQUENCE_POINTER + 1));
 }
+
 apply_current_anim(integer broadcast)
 {
     SEQUENCE_POINTER = 0;
@@ -369,6 +385,7 @@ apply_current_anim(integer broadcast)
         }
     }
 }
+
 sit_using_prim_params()
 {
     integer sitter_prim = llGetNumberOfPrims();
@@ -389,22 +406,23 @@ sit_using_prim_params()
         localrot = llGetLocalRot();
         localpos = llGetLocalPos();
     }
-    if (HASKEYFRAME == 2 && (!llGetStatus(STATUS_PHYSICS)))
+    if (HASKEYFRAME == 2 && !llGetStatus(STATUS_PHYSICS))
     {
         llSleep(0.4);
     }
-    if (HASKEYFRAME && (!llGetStatus(STATUS_PHYSICS)))
+    if (HASKEYFRAME && !llGetStatus(STATUS_PHYSICS))
     {
         llSetKeyframedMotion([], [KFM_COMMAND, KFM_CMD_PAUSE]);
         llSleep(0.15);
     }
     llSetLinkPrimitiveParamsFast(sitter_prim, [PRIM_ROT_LOCAL, llEuler2Rot((CURRENT_ROTATION + <0,0,0.002>) * DEG_TO_RAD) * localrot, PRIM_POS_LOCAL, CURRENT_POSITION * localrot + localpos]);
-    if (HASKEYFRAME && (!llGetStatus(STATUS_PHYSICS)))
+    if (HASKEYFRAME && !llGetStatus(STATUS_PHYSICS))
     {
         llSleep(0.15);
         llSetKeyframedMotion([], [KFM_COMMAND, KFM_CMD_PLAY]);
     }
 }
+
 end_sitter()
 {
     llSetTimerEvent(0);
@@ -420,6 +438,7 @@ end_sitter()
         }
     }
 }
+
 default
 {
     state_entry()
@@ -454,11 +473,12 @@ default
             notecard_query = llGetNotecardLine(notecard_name, reused_variable);
         }
     }
+
     timer()
     {
         SEQUENCE_POINTER += 2;
         list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
-        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || (~llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER))))
+        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || ~llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER)))
         {
             SEQUENCE_POINTER = 0;
         }
@@ -480,13 +500,15 @@ default
             }
         }
     }
+
     touch_end(integer touched)
     {
-        if ((!SCRIPT_CHANNEL) && (!has_security) && MTYPE < 3)
+        if (!SCRIPT_CHANNEL && !has_security && MTYPE < 3)
         {
             llMessageLinked(LINK_SET, 90005, "", llDetectedKey(0));
         }
     }
+
     listen(integer listen_channel, string name, key id, string msg)
     {
         integer index = llListFindList(ADJUST_MENU, [msg]);
@@ -554,7 +576,7 @@ default
             {
                 if (index < 2)
                 {
-                    pos_rot_adjust_toggle = (!pos_rot_adjust_toggle);
+                    pos_rot_adjust_toggle = !pos_rot_adjust_toggle;
                 }
                 else if (index < 8)
                 {
@@ -600,7 +622,7 @@ default
                 }
                 adjust_pose_menu();
             }
-            else if (msg == "[HELPER]" && id != llGetOwner() && (!~llSubStringIndex(llGetLinkName(!!llGetLinkNumber()), "HELPER")))
+            else if (msg == "[HELPER]" && id != llGetOwner() && llSubStringIndex(llGetLinkName(!!llGetLinkNumber()), "HELPER") == -1)
             {
                 dialog("Only the owner can rez the helpers. If the owner is nearby they can type '/5 helper' in chat.", ["[BACK]"]);
             }
@@ -610,6 +632,7 @@ default
             }
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         integer one = (integer)msg;
@@ -744,8 +767,8 @@ default
                 CURRENT_POSE_NAME = llList2String(data, 0);
                 OLD_ANIMATION_FILENAME = CURRENT_ANIMATION_FILENAME;
                 CURRENT_ANIMATION_SEQUENCE = llList2String(data, 1);
-                DEFAULT_POSITION = (CURRENT_POSITION = (vector)llList2String(data, 2));
-                DEFAULT_ROTATION = (CURRENT_ROTATION = (vector)llList2String(data, 3));
+                DEFAULT_POSITION = CURRENT_POSITION = (vector)llList2String(data, 2);
+                DEFAULT_ROTATION = CURRENT_ROTATION = (vector)llList2String(data, 3);
                 if (FIRST_POSENAME == "" || CURRENT_POSE_NAME == FIRST_POSENAME)
                 {
                     FIRST_POSENAME = CURRENT_POSE_NAME;
@@ -766,6 +789,7 @@ default
             }
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_LINK)
@@ -922,9 +946,9 @@ default
                     }
                 }
             }
-            if (stood && (!llStringLength(llDumpList2String(SITTERS, ""))))
+            if (stood && (string)SITTERS == "")
             {
-                if (DFLT || (!~llSubStringIndex(CURRENT_POSE_NAME, "P:")))
+                if (DFLT || llSubStringIndex(CURRENT_POSE_NAME, "P:") == -1)
                 {
                     DEFAULT_POSITION = FIRST_POSITION;
                     DEFAULT_ROTATION = FIRST_ROTATION;
@@ -955,6 +979,7 @@ default
             }
         }
     }
+
     run_time_permissions(integer perm)
     {
         if (perm & PERMISSION_TRIGGER_ANIMATION)
@@ -970,7 +995,7 @@ default
                 animation_menu_function = -1;
             }
             reused_key = "";
-            SITTERS = llListReplaceList(SITTERS, [CONTROLLER = (MY_SITTER = llGetPermissionsKey())], SCRIPT_CHANNEL, SCRIPT_CHANNEL);
+            SITTERS = llListReplaceList(SITTERS, [CONTROLLER = MY_SITTER = llGetPermissionsKey()], SCRIPT_CHANNEL, SCRIPT_CHANNEL);
             string channel_or_swap = (string)SCRIPT_CHANNEL;
             integer lnk = 90000;
             if (SWAPPED)
@@ -1006,6 +1031,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
@@ -1143,8 +1169,8 @@ default
                         string rot = "<" + llList2String(parts, 2);
                         if (command == FIRST_POSENAME || "P:" + command == FIRST_POSENAME)
                         {
-                            FIRST_POSITION = (DEFAULT_POSITION = (CURRENT_POSITION = (vector)pos));
-                            FIRST_ROTATION = (DEFAULT_ROTATION = (CURRENT_ROTATION = (vector)rot));
+                            FIRST_POSITION = DEFAULT_POSITION = CURRENT_POSITION = (vector)pos;
+                            FIRST_ROTATION = DEFAULT_ROTATION = CURRENT_ROTATION = (vector)rot;
                         }
                         llMessageLinked(LINK_THIS, 90301, (string)SCRIPT_CHANNEL, command + "|" + pos + "|" + rot);
                     }
@@ -1170,8 +1196,8 @@ default
                             {
                                 if (FIRST_POSENAME == "")
                                 {
-                                    FIRST_POSENAME = (CURRENT_POSE_NAME = part0);
-                                    FIRST_ANIMATION_SEQUENCE = (CURRENT_ANIMATION_SEQUENCE = part1);
+                                    FIRST_POSENAME = CURRENT_POSE_NAME = part0;
+                                    FIRST_ANIMATION_SEQUENCE = CURRENT_ANIMATION_SEQUENCE = part1;
                                 }
                                 if (llList2String(parts, -1) == "M")
                                 {

@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVmenu™";
 string version = "2.2";
 integer verbose = 0;
@@ -285,6 +285,7 @@ integer prop_menu(integer return_pages, key av)
         menu_items1 = ["[BACK]"] + menu_items1;
         menu_items2 = llDeleteSubList(menu_items2, 0, 0);
     }
+    // FIXME: 2147483646 rounds up to 2147483648.0
     menu_channel = ((integer)llFrand(2147483646) + 1) * -1;
     llListenRemove(listen_handle);
     listen_handle = llListen(menu_channel, "", av, "");
@@ -294,7 +295,7 @@ integer prop_menu(integer return_pages, key av)
 
 string strReplace(string str, string search, string replace)
 {
-    return llDumpList2String(llParseStringKeepNulls((str = "") + str, [search], []), replace);
+    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
 
 naming()

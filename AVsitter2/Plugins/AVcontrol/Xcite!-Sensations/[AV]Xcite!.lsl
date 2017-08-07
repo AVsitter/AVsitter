@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™ Xcite!";
 string version = "1.02";
 string notecard_name = "[AV]Xcite_settings";
@@ -27,6 +27,7 @@ string CURRENT_POSE;
 list TIMERS;
 list SITTERS;
 integer DEBUG;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -34,7 +35,9 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "]:" + out);
     }
 }
+
 key key_request;
+
 string parse_text(string say)
 {
     integer i;
@@ -49,10 +52,12 @@ string parse_text(string say)
     }
     return say;
 }
+
 string strReplace(string str, string search, string replace)
 {
     return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
+
 default
 {
     state_entry()
@@ -61,6 +66,7 @@ default
         Out(0, "Loading...");
         notecard_query = llGetNotecardLine(notecard_name, 0);
     }
+
     changed(integer change)
     {
         if (change & CHANGED_INVENTORY)
@@ -78,6 +84,7 @@ default
             }
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (sender == llGetLinkNumber())
@@ -102,13 +109,13 @@ default
                     CURRENT_POSE = llList2String(data, 1);
                     SITTERS = llParseStringKeepNulls(llList2String(data, 4), ["@"], []);
                     integer index = llListFindList(POSE_AND_SITTER, [CURRENT_POSE + "|" + (string)script_channel]);
-                    if (!~index)
+                    if (index == -1)
                     {
                         index = llListFindList(POSE_AND_SITTER, [CURRENT_POSE + "|*"]);
-                        if (!~index)
+                        if (index == -1)
                         {
                             index = llListFindList(POSE_AND_SITTER, ["*|*"]);
-                            if (!~index)
+                            if (index == -1)
                             {
                                 return;
                             }
@@ -142,6 +149,7 @@ default
             }
         }
     }
+
     timer()
     {
         integer i;
@@ -154,6 +162,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)

@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product;
 string version = "2.2";
 integer RELAY_CHANNEL = -1812221819;
@@ -40,6 +40,7 @@ string iconSubtract = "[➖]";
 string pagedMenuText;
 list pagedMenuButtons;
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -47,20 +48,24 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "]:" + out);
     }
 }
+
 string strReplace(string str, string search, string replace)
 {
     return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 relay(key av, string msg)
 {
     msg = "RLV," + (string)av + "," + msg;
     Out(1, "Sending RLV Command: " + msg);
     llSay(RELAY_CHANNEL, msg);
 }
+
 remove_menu(string worn, list slots)
 {
     list menu_items;
@@ -81,6 +86,7 @@ remove_menu(string worn, list slots)
     }
     new_paged_menu(menu + " menu for " + llKey2Name(SLAVE) + "\n\nThe captive" + text, menu_items);
 }
+
 new_paged_menu(string text, list menu_items)
 {
     pagedMenuText = text;
@@ -88,6 +94,7 @@ new_paged_menu(string text, list menu_items)
     menuPage = 0;
     paged_menu();
 }
+
 paged_menu()
 {
     list MypagedMenuButtons = pagedMenuButtons;
@@ -116,12 +123,14 @@ paged_menu()
     Out(1, "paged menu:" + llDumpList2String(MypagedMenuButtons, ","));
     dialog(pagedMenuText, ["[BACK]"] + MypagedMenuButtons);
 }
+
 dialog(string text, list buttons)
 {
     while (llGetListLength(buttons) % 3)
         buttons += " ";
     llDialog(CONTROLLER, "AVsitter™ RLV " + product + " " + version + "\n\n" + text, order_buttons(buttons), menu_channel);
 }
+
 remove_script(string reason)
 {
     string message = "\n" + llGetScriptName() + " ==Script Removed==\n\n" + reason;
@@ -129,11 +138,13 @@ remove_script(string reason)
     llInstantMessage(llGetOwner(), message);
     llRemoveInventory(llGetScriptName());
 }
+
 main_menu()
 {
     menu = "";
     dialog("Un/Dress menu for " + llKey2Name(SLAVE), ["[BACK]", "Browse #RLV", "Fast Strip", "Undress", "Detach"]);
 }
+
 default
 {
     state_entry()
@@ -148,11 +159,9 @@ default
         }
     }
 }
+
 state running
 {
-    state_entry()
-    {
-    }
     link_message(integer sender, integer num, string msg, key id)
     {
         if (num == 90208 || num == 90209)
@@ -163,7 +172,9 @@ state running
             product = llList2String(data, 2);
             llListenRemove(menu_handle);
             llListenRemove(GETSTATUShandle);
+            // FIXME: 2146483646 rounds up to 2147483648.0
             menu_handle = llListen(menu_channel = ((integer)llFrand(2147483646) + 1) * -1, "", CONTROLLER, "");
+            // FIXME: 999999999 rounds up to 1000000000.0
             GETSTATUShandle = llListen(RELAY_GETSTATUS_CHANNEL = (integer)llFrand(999999999), "", "", "");
             if (num == 90208)
             {
@@ -185,6 +196,7 @@ state running
             }
         }
     }
+
     listen(integer channel, string name, key id, string msg)
     {
         Out(1, "Listen Received: " + msg);
@@ -251,7 +263,7 @@ state running
             {
                 integer index = llListFindList(CLOTHING_LAYERS, [msg]);
                 command = "outfit";
-                if (!~index)
+                if (index == -1)
                 {
                     index = llListFindList(ATTACHMENT_POINTS, [msg]);
                     command = "attach";
@@ -353,7 +365,7 @@ state running
                             {
                                 icon = iconHalf;
                             }
-                            if (wornThis == 3 && wornSub == 0 || (wornThis == 0 && wornSub == 3) || (wornThis == 3 && wornSub == 3))
+                            if ((wornThis == 3 && wornSub == 0) || (wornThis == 0 && wornSub == 3) || (wornThis == 3 && wornSub == 3))
                             {
                                 icon = iconFull;
                             }
@@ -381,7 +393,7 @@ state running
                         msg = "Folder: /" + llDumpList2String(folderPath, "/") + "\n[" + icon + "]\n" + folderInfo;
                     }
                 }
-                if ((!llGetListLength(folderOptions)) && (!llGetListLength(BUTTONS)))
+                if (!llGetListLength(folderOptions) && !llGetListLength(BUTTONS))
                 {
                     msg = "#RLV folder empty";
                 }
@@ -407,7 +419,7 @@ state running
                     integer j;
                     while (j < llGetListLength(subRestrictions))
                     {
-                        if (!~llListFindList(currentRestrictions, [llList2String(subRestrictions, j)]))
+                        if (llListFindList(currentRestrictions, [llList2String(subRestrictions, j)]) == -1)
                         {
                             inActive = TRUE;
                         }

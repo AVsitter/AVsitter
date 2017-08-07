@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™ RLV";
 string version = "2.2";
 integer ignorenextswap;
@@ -72,6 +72,7 @@ integer subControl;
 string ping;
 integer captureOnAsk = TRUE;
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -79,19 +80,23 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "]:" + out);
     }
 }
+
 string strReplace(string str, string search, string replace)
 {
     return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 relay(key av, string msg)
 {
     msg = "RLV," + (string)av + "," + msg;
     llSay(RELAY_CHANNEL, msg);
 }
+
 string humantime()
 {
     integer hours = TimelockSecUntilRelease / 3600;
@@ -119,6 +124,7 @@ string humantime()
     }
     return hours_text + minutes_text + seconds_text;
 }
+
 Timelock_menu()
 {
     menu = "Timelock";
@@ -150,6 +156,7 @@ Timelock_menu()
     }
     dialog(text, ["[BACK]", pauseButton, hidButton] + menu_items);
 }
+
 relay_select_menu()
 {
     menu = "SELECT";
@@ -173,6 +180,7 @@ relay_select_menu()
     }
     dialog(text, menu_items);
 }
+
 playpose(string pose, string target_sitter)
 {
     if (pose)
@@ -181,13 +189,14 @@ playpose(string pose, string target_sitter)
         llMessageLinked(LINK_SET, 90000, pose, target_sitter);
     }
 }
+
 rlv_top_menu()
 {
     menu = "";
     list menu_items;
     string text = "RLV for " + slaveName;
     list extra;
-    if (llGetListLength(SITTING_AVATARS) > 1 || (~llListFindList(DESIGNATIONS_NOW, ["S"])))
+    if (llGetListLength(SITTING_AVATARS) > 1 || ~llListFindList(DESIGNATIONS_NOW, ["S"]))
     {
         extra += "[BACK]";
     }
@@ -198,7 +207,7 @@ rlv_top_menu()
         {
             if (slaveWearingRelay)
             {
-                if ((~designationIndex) && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
+                if (~designationIndex && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
                 {
                     text = slaveName + " has not chosen submissive role.";
                 }
@@ -240,6 +249,7 @@ rlv_top_menu()
     }
     dialog(text, extra + menu_items);
 }
+
 capture_attempt(key id, string target_sitter)
 {
     if (RLV_ON)
@@ -258,10 +268,12 @@ capture_attempt(key id, string target_sitter)
         playpose(SUBPOSE, id);
     }
 }
+
 dialog(string text, list buttons)
 {
     llDialog(CONTROLLER, product + " " + version + "\n\n" + text, order_buttons(buttons), menu_channel);
 }
+
 reset()
 {
     CAPTIVES = [];
@@ -273,6 +285,7 @@ reset()
     TimelockSecUntilRelease = defaultTimelock;
     hovertext();
 }
+
 unsit_all()
 {
     integer i = llGetNumberOfPrims();
@@ -282,6 +295,7 @@ unsit_all()
         i--;
     }
 }
+
 release_all()
 {
     while (llGetListLength(CAPTIVES))
@@ -289,12 +303,14 @@ release_all()
         release(llList2Key(CAPTIVES, 1), FALSE);
     }
 }
+
 stop()
 {
     release_all();
     unsit_all();
     reset();
 }
+
 release(key SLAVE, integer allowUnsit)
 {
     integer index = llListFindList(CAPTIVES, [SLAVE]);
@@ -304,7 +320,7 @@ release(key SLAVE, integer allowUnsit)
         llSay(0, llKey2Name(SLAVE) + " was released.");
         relay(SLAVE, baseReleaseRestrictions);
         relay(SLAVE, "!release");
-        if (allowUnsit && (~llSubStringIndex(baseReleaseRestrictions, "@unsit=force")))
+        if (allowUnsit && ~llSubStringIndex(baseReleaseRestrictions, "@unsit=force"))
         {
             llUnSit(SLAVE);
         }
@@ -314,6 +330,7 @@ release(key SLAVE, integer allowUnsit)
         reset();
     }
 }
+
 start_relay_search()
 {
     DETECTED_AVATAR_KEYS = [];
@@ -324,6 +341,7 @@ start_relay_search()
     SEARCHhandle = llListen(RELAY_SEARCH_CHANNEL, "", "", "");
     llSetTimerEvent(1.5);
 }
+
 remove_script(string reason)
 {
     string message = "\n" + llGetScriptName() + " ==Script Removed==\n\n" + reason;
@@ -334,13 +352,16 @@ remove_script(string reason)
         llRemoveInventory(llGetScriptName());
     }
 }
+
 new_controller(key id)
 {
     CONTROLLER = id;
     controllerName = llKey2Name(CONTROLLER);
     llListenRemove(menu_handle);
+    // FIXME: 2147483646 rounds up to 2147483648.0
     menu_handle = llListen(menu_channel = ((integer)llFrand(2147483646) + 1) * -1, "", CONTROLLER, "");
 }
+
 no_sensor_results()
 {
     expecting_relay_results = FALSE;
@@ -351,15 +372,19 @@ no_sensor_results()
     }
     dialog("No avatars found in range!", menu_items);
 }
+
 get_unique_channels()
 {
+    // FIXME: 999999999 rounds up to 1000000000.0
     RELAY_SEARCH_CHANNEL = (integer)llFrand(999999999) + 1;
     RELAY_GETCAPTURESTATUSchannel = RELAY_SEARCH_CHANNEL + 2;
     RELAY_CHECK_CHANNEL = RELAY_SEARCH_CHANNEL + 4;
+    // FIXME: 2146483646 rounds up to 2147483648.0
     ASKROLE_CHANEL = ((integer)llFrand(2147483646) + 1) * -1;
     llListenRemove(relay_handle);
     relay_handle = llListen(RELAY_CHANNEL, "", "", ping = "ping," + (string)llGetKey() + ",ping,ping");
 }
+
 check_submissive()
 {
     relay(SLAVE, "@versionnew=" + (string)RELAY_CHECK_CHANNEL);
@@ -367,6 +392,7 @@ check_submissive()
     llSensorRepeat("", llGetOwner(), PASSIVE, 0.1, PI, 2);
     slaveName = llKey2Name(SLAVE);
 }
+
 select_submissive_rlv()
 {
     menu = "SUB_SELECT";
@@ -390,7 +416,7 @@ select_submissive_rlv()
     {
         text = "There are no submissives sitting.";
     }
-    if ((~llListFindList(DESIGNATIONS_NOW, ["S"])) && llGetListLength(SITTING_AVATARS) < llGetListLength(DESIGNATIONS_NOW))
+    if (~llListFindList(DESIGNATIONS_NOW, ["S"]) && llGetListLength(SITTING_AVATARS) < llGetListLength(DESIGNATIONS_NOW))
     {
         text += "\n\nCapture = trap a new avatar.";
         menu_items += "Capture...";
@@ -403,6 +429,7 @@ select_submissive_rlv()
     }
     dialog(text, menu_items);
 }
+
 find_seat(key id, integer index, string msg, integer captureSub)
 {
     if (~index)
@@ -466,10 +493,12 @@ find_seat(key id, integer index, string msg, integer captureSub)
         }
     }
 }
+
 info_dialog(key id, string text)
 {
     llDialog(id, product + " " + version + "\n\nSorry, " + text + ".\n", [], -7947386);
 }
+
 hovertext()
 {
     string text;
@@ -532,10 +561,12 @@ hovertext()
     }
     llMessageLinked(LINK_SET, 90014, llDumpList2String([CONTROLLER, llDumpList2String(CAPTIVES, ",")], "|"), "");
 }
+
 ask_role(key id)
 {
     llDialog(id, product + " " + version + "\n\nPlease select your role:\n", ["Dominant", "Submissive"], ASKROLE_CHANEL);
 }
+
 back(key id)
 {
     if (~llListFindList(SITTING_AVATARS, [id]))
@@ -547,6 +578,7 @@ back(key id)
         llMessageLinked(LINK_THIS, 90007, "", id);
     }
 }
+
 integer isSub(key id)
 {
     integer index = llListFindList(DESIGNATIONS_NOW, [id]);
@@ -560,6 +592,7 @@ integer isSub(key id)
     }
     return FALSE;
 }
+
 default
 {
     state_entry()
@@ -574,6 +607,7 @@ default
         }
     }
 }
+
 state running
 {
     state_entry()
@@ -587,6 +621,7 @@ state running
             notecard_query = llGetNotecardLine(notecard_name, 0);
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (num == 90030)
@@ -713,7 +748,7 @@ state running
                 integer isSittingIndex = llListFindList(SITTING_AVATARS, [id]);
                 if (~isSittingIndex)
                 {
-                    if (RLV_ON && (~designationIndex) && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "S")
+                    if (RLV_ON && ~designationIndex && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "S")
                     {
                         if (subControl)
                         {
@@ -805,6 +840,7 @@ state running
             }
         }
     }
+
     listen(integer channel, string name, key id, string msg)
     {
         if (channel == ASKROLE_CHANEL)
@@ -826,7 +862,7 @@ state running
                     TimelockSecUntilRelease = defaultTimelock;
                 }
                 llSay(0, newSlaveName + " was captured!");
-                if (!~llListFindList(CAPTIVES, [newSlave]))
+                if (llListFindList(CAPTIVES, [newSlave]) == -1)
                 {
                     CAPTIVES += [newSlaveName, newSlave];
                     if (llGetListLength(CAPTIVES) / 2 > llGetListLength(DESIGNATIONS_NOW))
@@ -884,7 +920,7 @@ state running
         else if (channel == RELAY_SEARCH_CHANNEL && expecting_relay_results)
         {
             key relay_owner = llGetOwnerKey(id);
-            if (!~llListFindList(DETECTED_AVATAR_KEYS, [relay_owner]))
+            if (llListFindList(DETECTED_AVATAR_KEYS, [relay_owner]) == -1)
             {
                 DETECTED_AVATAR_KEYS += relay_owner;
                 DETECTED_AVATAR_SHORTNAMES += llGetSubString(strReplace(llKey2Name(relay_owner), " Resident", ""), 0, 11);
@@ -981,12 +1017,12 @@ state running
                 }
                 else if (msg == "Stop" || msg == "Start")
                 {
-                    TimelockPaused = (!TimelockPaused);
+                    TimelockPaused = !TimelockPaused;
                     llSetTimerEvent(1);
                 }
                 else if (msg == "Hide" || msg == "Show")
                 {
-                    TimelockHidden = (!TimelockHidden);
+                    TimelockHidden = !TimelockHidden;
                 }
                 else
                 {
@@ -1033,7 +1069,7 @@ state running
                 llSetTimerEvent(0);
                 PairWhoStartedCapture = (string)CONTROLLER + (string)SLAVE;
                 integer index = llListFindList(SITTERS, [(string)SLAVE]);
-                if (!~index)
+                if (index == -1)
                 {
                     index = 0;
                 }
@@ -1048,6 +1084,7 @@ state running
             hovertext();
         }
     }
+
     no_sensor()
     {
         if (slaveWearingRelay)
@@ -1064,6 +1101,7 @@ state running
             no_sensor_results();
         }
     }
+
     sensor(integer total_number)
     {
         expected_number = total_number;
@@ -1078,6 +1116,7 @@ state running
             no_sensor_results();
         }
     }
+
     timer()
     {
         llSetTimerEvent(1);
@@ -1127,6 +1166,7 @@ state running
             relay_select_menu();
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_LINK)
@@ -1157,6 +1197,7 @@ state running
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
@@ -1226,7 +1267,7 @@ state running
                 }
                 else if (command == "TIMELOCK")
                 {
-                    defaultTimelock = (TimelockSecUntilRelease = (integer)part0 * 60);
+                    defaultTimelock = TimelockSecUntilRelease = (integer)part0 * 60;
                 }
                 else if (command == "ONCAPTURE")
                 {
@@ -1240,6 +1281,7 @@ state running
             }
         }
     }
+
     on_rez(integer start)
     {
         get_unique_channels();

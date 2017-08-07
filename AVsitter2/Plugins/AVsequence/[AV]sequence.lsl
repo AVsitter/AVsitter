@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™ sequence";
 string version = "2.2";
 string main_script = "[AV]sitA";
@@ -37,6 +37,7 @@ integer menu_handle;
 integer playsounds = TRUE;
 integer no_waits_yet;
 integer verbose = 1;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -44,10 +45,12 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 string strReplace(string str, string search, string replace)
 {
     return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
+
 DEBUGSay(integer level, string out)
 {
     if (DEBUG >= level)
@@ -55,6 +58,7 @@ DEBUGSay(integer level, string out)
         llWhisper(0, out);
     }
 }
+
 run_sequence()
 {
     while (SEQUENCE_POINTER >= 0)
@@ -152,6 +156,7 @@ run_sequence()
         }
     }
 }
+
 integer get_number_of_scripts()
 {
     integer i;
@@ -159,6 +164,7 @@ integer get_number_of_scripts()
         ;
     return i;
 }
+
 string parse_text(string say)
 {
     integer i;
@@ -173,15 +179,17 @@ string parse_text(string say)
     }
     return say;
 }
+
 start_sequence(integer index)
 {
-    no_waits_yet = (sequence_running = TRUE);
+    no_waits_yet = sequence_running = TRUE;
     SEQUENCE_POINTER = 0;
     CURRENT_SEQUENCE_NAME = llList2String(SEQUENCE_DATA_NAMES, index);
     CURRENT_SEQUENCE_ACTIONS = llParseStringKeepNulls(llList2String(SEQUENCE_DATA_ACTIONS, index), ["◆"], []);
     CURRENT_SEQUENCE_DATAS = llParseStringKeepNulls(llList2String(SEQUENCE_DATA_DATAS, index), ["◆"], []);
     DEBUGSay(1, "Sequence '" + CURRENT_SEQUENCE_NAME + "' Started!");
 }
+
 stop_sequence(integer stopSound)
 {
     if (sequence_running)
@@ -191,14 +199,16 @@ stop_sequence(integer stopSound)
     sequence_running = FALSE;
     SEQUENCE_POINTER = -1;
     llSetTimerEvent(0);
-    if (stopSound && (~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["SOUND"])))
+    if (stopSound && ~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["SOUND"]))
     {
         llStopSound();
     }
 }
+
 sequence_control()
 {
     llListenRemove(menu_handle);
+    // FIXME: float rounds up to 2147483648.0
     menu_channel = ((integer)llFrand(2147483646) + 1) * -1;
     string pauseplay = "▶";
     if (sequence_running)
@@ -209,16 +219,19 @@ sequence_control()
     menu_handle = llListen(menu_channel, "", CONTROLLER, "");
     llDialog(CONTROLLER, product + " " + version + "\n\n[" + CURRENT_SEQUENCE_NAME + "]\n◀◀ = previous anim in sequence.\n▮▮ = pause sequence.\n▶▶ = skip to next anim in sequence.", order_buttons(["[BACK]"] + menu_items), menu_channel);
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 commit_sequence_data()
 {
     SEQUENCE_DATA_NAMES += CURRENT_SEQUENCE_NAME;
     SEQUENCE_DATA_ACTIONS += llDumpList2String(CURRENT_SEQUENCE_ACTIONS, "◆");
     SEQUENCE_DATA_DATAS += llDumpList2String(CURRENT_SEQUENCE_DATAS, "◆");
 }
+
 default
 {
     state_entry()
@@ -230,6 +243,7 @@ default
             notecard_query = llGetNotecardLine(notecard_name, notecard_line);
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_INVENTORY)
@@ -240,6 +254,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
@@ -279,6 +294,7 @@ default
         }
     }
 }
+
 state running
 {
     state_entry()
@@ -290,6 +306,7 @@ state running
             SITTERS += NULL_KEY;
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (sender == llGetLinkNumber())
@@ -326,7 +343,7 @@ state running
             else if (num == 90205)
             {
                 llMessageLinked(LINK_SET, 90005, "", id);
-                playsounds = (!playsounds);
+                playsounds = !playsounds;
                 if (playsounds)
                 {
                     llSay(0, "Sounds ON");
@@ -347,7 +364,7 @@ state running
                 if (index != -1)
                 {
                     start_sequence(index);
-                    if ((~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["WAIT"])) && (~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["PLAY"])))
+                    if (~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["WAIT"]) && ~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["PLAY"]))
                     {
                         sequence_control();
                     }
@@ -360,6 +377,7 @@ state running
             }
         }
     }
+
     listen(integer listen_channel, string name, key id, string msg)
     {
         if (msg == "▮▮")
@@ -401,21 +419,26 @@ state running
         }
         sequence_control();
     }
+
     timer()
     {
         llSetTimerEvent(0);
         SEQUENCE_POINTER++;
         run_sequence();
     }
+
     on_rez(integer start)
     {
         playsounds = TRUE;
     }
+
     changed(integer change)
     {
+        /*
         if (change & CHANGED_LINK)
         {
         }
+        */
         if (change & CHANGED_INVENTORY)
         {
             if (llGetInventoryKey(notecard_name) != notecard_key || get_number_of_scripts() != llGetListLength(SITTERS))

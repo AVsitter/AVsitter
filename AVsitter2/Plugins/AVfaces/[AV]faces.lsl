@@ -3,21 +3,44 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 integer is_running = TRUE;
-list facial_anim_list = ["express_afraid_emote", "express_anger_emote", "express_laugh_emote", "express_bored_emote", "express_cry_emote", "express_embarrassed_emote", "express_sad_emote", "express_toothsmile", "express_smile", "express_surprise_emote", "express_worry_emote", "express_repulsed_emote", "express_shrug_emote", "express_wink_emote", "express_disdain", "express_frown", "express_kiss", "express_open_mouth", "express_tongue_out"];
+list facial_anim_list =
+    [ "express_afraid_emote"
+    , "express_anger_emote"
+    , "express_laugh_emote"
+    , "express_bored_emote"
+    , "express_cry_emote"
+    , "express_embarrassed_emote"
+    , "express_sad_emote"
+    , "express_toothsmile"
+    , "express_smile"
+    , "express_surprise_emote"
+    , "express_worry_emote"
+    , "express_repulsed_emote"
+    , "express_shrug_emote"
+    , "express_wink_emote"
+    , "express_disdain"
+    , "express_frown"
+    , "express_kiss"
+    , "express_open_mouth"
+    , "express_tongue_out"
+    ];
+
 integer IsInteger(string data)
 {
     return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
 }
+
+// FIXME: make this 2.2
 string version = "2.1";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
@@ -34,6 +57,7 @@ list running_sequence_indexes;
 list running_pointers;
 list SITTERS;
 list SITTER_POSES;
+
 integer get_number_of_scripts()
 {
     integer i = 1;
@@ -43,7 +67,9 @@ integer get_number_of_scripts()
     }
     return i;
 }
+
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -51,15 +77,18 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 Readout_Say(string say, string SCRIPT_CHANNEL)
 {
     llSleep(0.2);
     llMessageLinked(LINK_THIS, 90022, say, SCRIPT_CHANNEL);
 }
+
 string Key2Number(key objKey)
 {
     return llGetSubString((string)llAbs((integer)("0x" + llGetSubString((string)objKey, -8, -1)) & 1073741823 ^ -1073741825), 6, -1);
 }
+
 init_sitters()
 {
     SITTERS = [];
@@ -71,10 +100,12 @@ init_sitters()
         SITTER_POSES += "";
     }
 }
+
 string element(string text, integer x)
 {
     return llList2String(llParseStringKeepNulls(text, ["|"], []), x);
 }
+
 start_sequence(integer sequence_index, key av)
 {
     integer wasRunning = llListFindList(running_sequence_indexes, [sequence_index]);
@@ -82,6 +113,7 @@ start_sequence(integer sequence_index, key av)
     {
         if (llList2Key(running_uuid, wasRunning) == av)
         {
+            // FIXME: use llDeleteSubList
             running_uuid = llListReplaceList(running_uuid, [], wasRunning, wasRunning);
             running_sequence_indexes = llListReplaceList(running_sequence_indexes, [], wasRunning, wasRunning);
             running_pointers = llListReplaceList(running_pointers, [], wasRunning, wasRunning);
@@ -92,6 +124,7 @@ start_sequence(integer sequence_index, key av)
     running_pointers += 0;
     llSetTimerEvent(0.01);
 }
+
 sequence()
 {
     list anims;
@@ -162,6 +195,7 @@ sequence()
         }
     }
 }
+
 remove_sequences(key id)
 {
     integer index;
@@ -174,7 +208,7 @@ remove_sequences(key id)
         running_pointers = llDeleteSubList(running_pointers, index, index);
         while (sequence)
         {
-            if ((!IsInteger(llList2String(sequence, 0))) && llList2String(sequence, 0) != "none")
+            if (!IsInteger(llList2String(sequence, 0)) && llList2String(sequence, 0) != "none")
             {
                 llMessageLinked(LINK_THIS, 90002, llList2String(sequence, 0), id);
             }
@@ -186,6 +220,7 @@ remove_sequences(key id)
         llSetTimerEvent(0);
     }
 }
+
 default
 {
     state_entry()
@@ -198,15 +233,18 @@ default
             notecard_query = llGetNotecardLine(notecard_name, 0);
         }
     }
+
     timer()
     {
         sequence();
         llSetTimerEvent(1);
     }
+
     on_rez(integer start)
     {
         is_running = TRUE;
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (num == 90100)
@@ -247,7 +285,7 @@ default
                         if (llList2String(anim_triggers, i) == given_posename)
                         {
                             integer reference = llListFindList(anim_triggers, [(string)sitter + "|" + llList2String(anim_animsequences, i)]);
-                            if (!~reference)
+                            if (reference == -1)
                             {
                                 reference = i;
                             }
@@ -303,7 +341,7 @@ default
                 integer i;
                 for (i = 0; i < llGetListLength(anim_triggers); i++)
                 {
-                    if (!llSubStringIndex(llList2String(anim_triggers, i), msg + "|"))
+                    if (llSubStringIndex(llList2String(anim_triggers, i), msg + "|") == 0)
                     {
                         list trigger = llParseString2List(llList2String(anim_triggers, i), ["|"], []);
                         list sequence = llParseString2List(llList2String(anim_animsequences, i), ["|"], []);
@@ -322,6 +360,7 @@ default
             }
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_INVENTORY)
@@ -335,13 +374,16 @@ default
                 init_sitters();
             }
         }
-        else if (change & CHANGED_LINK)
+        /*
+        else if (change & CHANGED_LINK) // FIXME: remove 'else'
         {
             if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) == ZERO_VECTOR)
             {
             }
         }
+        */
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
