@@ -32,8 +32,12 @@ To create a release version like the ones available for download, you need to ha
 
 ## Creating the release
 
-Once you have the required tools, edit the Makefile in the AVsitter2 folder to suit your needs, then using a terminal (also called command interpreter, shell, console... depending on the operating system) change to that folder using `cd <path-to-folder>` and type `make`. That should generate a file called `AVsitter2.zip` with the packaged version.
+Once you have the required tools, edit the Makefile in the AVsitter2 folder to suit your needs, then using a terminal (also called command interpreter, shell, console... depending on the operating system) change to that folder using `cd <path-to-folder>` and type `make`. That should generate a file called `AVsitter2.zip` with the packaged version for SL, and another file called `AVsitter2-oss.zip` with the packaged version for OpenSim.
 
-If you only want the optimized scripts without zipping them, use `make optimized`. The optimized files will have an `.lslo` extension, and they are ready to be copied and pasted each into a Second Life script.
+If you only want the Second Life optimized scripts without zipping them, use `make optimized`. The optimized files will have an `.lslo` extension, and they are ready to be copied and pasted each into a Second Life script.
 
-If you want to remove the optimized scripts and the zip file, use `make clean` (you can regenerate them at any time by typing `make`).
+If you only want the OpenSim scripts without zipping them, use `make opensim`. The OpenSim files will have an `.oss` extension.
+
+If you only want the SL zip, use `make AVsitter2.zip`; if you only want the OS zip, use `make AVsitter2-oss.zip`.
+
+If you want to remove the optimized scripts and the zip files, use `make clean` (you can regenerate them at any time by typing `make`).
