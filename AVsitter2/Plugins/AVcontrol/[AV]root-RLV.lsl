@@ -627,8 +627,8 @@ state running
             {
                 integer one = (integer)msg;
                 integer two = (integer)((string)id);
-                key des1 = llList2String(DESIGNATIONS_NOW, one);
-                key des2 = llList2String(DESIGNATIONS_NOW, two);
+                key des1 = llList2Key(DESIGNATIONS_NOW, one);
+                key des2 = llList2Key(DESIGNATIONS_NOW, two);
                 string role1 = llList2String(SITTER_DESIGNATIONS_MASTER, one);
                 string role2 = llList2String(SITTER_DESIGNATIONS_MASTER, two);
                 if (role1 != role2)
