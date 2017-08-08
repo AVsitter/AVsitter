@@ -155,7 +155,7 @@ sequence()
             {
                 anim = llStringTrim(llList2String(sequence_anims, j - 1), STRING_TRIM);
             }
-            if (anim)
+            if (anim != "")
             {
                 if (IsInteger(anim))
                 {
@@ -204,7 +204,7 @@ remove_sequences(key id)
         list sequence = llParseStringKeepNulls(llList2String(anim_animsequences, llList2Integer(running_sequence_indexes, index)), ["|"], []);
         running_sequence_indexes = llDeleteSubList(running_sequence_indexes, index, index);
         running_pointers = llDeleteSubList(running_pointers, index, index);
-        while (sequence)
+        while (sequence != [])
         {
             if (!IsInteger(llList2String(sequence, 0)) && llList2String(sequence, 0) != "none")
             {

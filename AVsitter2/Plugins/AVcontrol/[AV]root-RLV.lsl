@@ -183,7 +183,7 @@ relay_select_menu()
 
 playpose(string pose, string target_sitter)
 {
-    if (pose)
+    if (pose != "")
     {
         llSleep(1);
         llMessageLinked(LINK_SET, 90000, pose, target_sitter);
@@ -289,7 +289,7 @@ reset()
 unsit_all()
 {
     integer i = llGetNumberOfPrims();
-    while (llGetAgentSize(llGetLinkKey(i)))
+    while (llGetAgentSize(llGetLinkKey(i)) != ZERO_VECTOR)
     {
         llUnSit(llGetLinkKey(i));
         i--;
@@ -401,7 +401,7 @@ select_submissive_rlv()
     {
         if (llList2String(SITTER_DESIGNATIONS_MASTER, i) == "S")
         {
-            if (llList2Key(DESIGNATIONS_NOW, i))
+            if (llList2Key(DESIGNATIONS_NOW, i)) // OSS::key k = llList2Key(DESIGNATIONS_NOW, i); if (osIsUUID(k) && k != NULL_KEY)
             {
                 menu_items += llGetSubString(strReplace(llKey2Name(llList2Key(DESIGNATIONS_NOW, i)), " Resident", ""), 0, 11);
                 SITTERS_MENUKEYS += llList2Key(DESIGNATIONS_NOW, i);
@@ -635,7 +635,7 @@ state running
                 {
                     release_all();
                 }
-                if (des1)
+                if (des1) // OSS::if (osIsUUID(des1) && des1 != NULL_KEY)
                 {
                     DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [des1], two, two);
                 }
@@ -643,7 +643,7 @@ state running
                 {
                     DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [role2], two, two);
                 }
-                if (des2)
+                if (des2) // OSS::if (osIsUUID(des2) && des2 != NULL_KEY)
                 {
                     DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [des2], one, one);
                 }
@@ -895,7 +895,7 @@ state running
                     {
                         if (~llListFindList(DESIGNATIONS_NOW, ["S"]))
                         {
-                            if (CONTROLLER)
+                            if (CONTROLLER) // OSS::if (osIsUUID(CONTROLLER) && CONTROLLER != NULL_KEY)
                             {
                                 PairWhoStartedCapture = (string)CONTROLLER + (string)llGetOwnerKey(id);
                             }
@@ -935,7 +935,7 @@ state running
             }
             else if (msg == "[BACK]")
             {
-                if (menu)
+                if (menu != "")
                 {
                     rlv_top_menu();
                 }

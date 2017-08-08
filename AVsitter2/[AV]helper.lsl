@@ -31,11 +31,11 @@ rotation my_rot;
 
 stop_all_anims()
 {
-    if (llAvatarOnSitTarget())
+    if (llAvatarOnSitTarget()) // OSS::if (llAvatarOnSitTarget() != NULL_KEY)
     {
         if (llGetPermissions() & PERMISSION_TRIGGER_ANIMATION)
         {
-            if (llGetAgentSize(llGetPermissionsKey()))
+            if (llGetAgentSize(llGetPermissionsKey()) != ZERO_VECTOR)
             {
                 list anims = llGetAnimationList(llGetPermissionsKey());
                 integer n;
@@ -148,9 +148,9 @@ default
         if (chan == 5 && id == CURRENT_AV)
         {
             key av = (key)msg;
-            if (av)
+            if (av) // OSS::if (osIsUUID(av) && av != NULL_KEY)
             {
-                if (llGetAgentSize(av))
+                if (llGetAgentSize(av) != ZERO_VECTOR)
                 {
                     list avatar_location = llGetObjectDetails(av, [OBJECT_POS, OBJECT_ROT]);
                     if (llVecMag(llGetPos() - llList2Vector(avatar_location, 0)) < 10)
@@ -175,7 +175,7 @@ default
             {
                 if (OLD_HELPER_METHOD)
                 {
-                    if (llAvatarOnSitTarget())
+                    if (llAvatarOnSitTarget()) // OSS::if (llAvatarOnSitTarget() != NULL_KEY)
                     {
                         stop_all_anims();
                         llRegionSay(comm_channel, "GETUP");
@@ -244,7 +244,7 @@ default
             key av = llAvatarOnSitTarget();
             if (OLD_HELPER_METHOD)
             {
-                if (av)
+                if (av) // OSS::if (osIsUUID(av) && av != NULL_KEY)
                 {
                     llRequestPermissions(av, PERMISSION_TRIGGER_ANIMATION);
                     llRegionSay(comm_channel, "ANIMA|" + (string)av);
@@ -256,7 +256,7 @@ default
                     CURRENT_AV = "";
                 }
             }
-            else if (av)
+            else if (av) // OSS::if (osIsUUID(av) && av != NULL_KEY)
             {
                 llUnSit(av);
                 llDialog(av, product + " " + version + "\n\nDo not sit on the helper with AVsitter2 unless you have enabled the old helper mode. Move the helper while sitting on the furniture. Please see instructions at http://avsitter.com", ["OK"], -68154283);

@@ -18,8 +18,11 @@ PREPROC_PATH=mcpp
 # Command to remove files in your system. Use 'del' for Windows.
 RM=rm -f
 
-# Name of the zipped file to generate
-ZIP=AVsitter2.zip
+# Name of the zipped file to generate for SL
+SLZIP=AVsitter2.zip
+
+# Name of the zipped file to generate for OpenSim
+OSZIP=AVsitter2-oss.zip
 
 # End of configuration area
 
@@ -56,18 +59,32 @@ OPTIMIZED=[AV]sitA.lslo\
 
 UNOPTIMIZED=
 
-all: $(ZIP)
+OPENSIM=[AV]sitA.oss\
+ [AV]sitB.oss\
+ [AV]adjuster.oss\
+ [AV]helper.oss
+
+all: $(SLZIP) $(OSZIP)
 
 clean:
-	$(RM) $(ZIP) $(OPTIMIZED)
+	$(RM) $(SLZIP) $(OSZIP) $(OPTIMIZED) $(OPENSIM)
 
 optimized: $(OPTIMIZED)
 
-$(ZIP): $(OPTIMIZED) $(UNOPTIMIZED)
+opensim: $(OPENSIM)
+
+$(SLZIP): $(OPTIMIZED) $(UNOPTIMIZED)
 	$(RM) $@
 	zip $@ $(OPTIMIZED) $(UNOPTIMIZED)
 
 %.lslo: %.lsl
 	$(PYTHON) $(OPTIMIZER) -H -O addstrings,shrinknames,-extendedglobalexpr -p $(PREPROC_KIND) --precmd=$(PREPROC_PATH) $< -o $@
+
+$(OSZIP): $(OPENSIM)
+	$(RM) $@
+	zip $@ $(OPENSIM)
+
+%.oss: %.lsl
+	$(PYTHON) prepare-for-oss.py $< > $@
 
 .PHONY : all clean optimized

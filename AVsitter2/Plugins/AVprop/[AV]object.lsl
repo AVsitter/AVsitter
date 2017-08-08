@@ -26,7 +26,7 @@ key give_prop_warning_request;
 unsit_all()
 {
     integer i = llGetNumberOfPrims();
-    while (llGetAgentSize(llGetLinkKey(i)))
+    while (llGetAgentSize(llGetLinkKey(i)) != ZERO_VECTOR)
     {
         llUnSit(llGetLinkKey(i));
         i--;
@@ -216,7 +216,7 @@ state prop
                 }
                 else
                 {
-                    if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())))
+                    if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) != ZERO_VECTOR)
                     {
                         unsit_all();
                         llSleep(1);

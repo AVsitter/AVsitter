@@ -55,7 +55,7 @@ Readout_Say(string say, string SCRIPT_CHANNEL)
 
 set_camera(integer byButton)
 {
-    if (mySitter)
+    if (mySitter) // OSS::if (osIsUUID(mySitter) && mySitter != NULL_KEY)
     {
         if (llGetPermissions() & PERMISSION_CONTROL_CAMERA)
         {

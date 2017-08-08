@@ -275,7 +275,7 @@ default
                 }
                 else if (command == "SEQUENCE")
                 {
-                    if (CURRENT_SEQUENCE_NAME)
+                    if (CURRENT_SEQUENCE_NAME != "")
                     {
                         commit_sequence_data();
                     }

@@ -36,7 +36,7 @@ Out(integer level, string out)
 
 string FormatFloat(float f, integer num_decimals)
 {
-    float rounding = (float)(".5e-" + (string)num_decimals) - 5e-07;
+    float rounding = (float)(".5e-" + (string)num_decimals) - .5e-6;
     if (f < 0.)
         f -= rounding;
     else

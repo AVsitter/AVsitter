@@ -107,7 +107,7 @@ integer get_number_of_scripts()
 dialog(string text, list menu_items)
 {
     llListenRemove(menu_handle);
-    menu_handle = llListen(menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1, "", CONTROLLER, ""); // 7FFFFF80 = max float < 2^31
+    menu_handle = llListen((menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1), "", CONTROLLER, ""); // 7FFFFF80 = max float < 2^31
     llDialog(CONTROLLER, product + " " + version + "\n\n" + text, order_buttons(menu_items), menu_channel);
 }
 
@@ -262,7 +262,7 @@ release_sitter(integer i)
     {
         if (llGetPermissions() & PERMISSION_TRIGGER_ANIMATION)
         {
-            if (MY_SITTER)
+            if (MY_SITTER) // OSS::if (osIsUUID(MY_SITTER) && MY_SITTER != NULL_KEY)
             {
                 llMessageLinked(LINK_SET, 90065, (string)SCRIPT_CHANNEL, MY_SITTER);
             }
@@ -340,7 +340,7 @@ apply_current_anim(integer broadcast)
     }
     if (llGetPermissions() & PERMISSION_TRIGGER_ANIMATION)
     {
-        if (llGetAgentSize(MY_SITTER))
+        if (llGetAgentSize(MY_SITTER) != ZERO_VECTOR)
         {
             if (broadcast)
             {
@@ -368,7 +368,7 @@ apply_current_anim(integer broadcast)
             {
                 sit_using_prim_params();
             }
-            if (CURRENT_ANIMATION_FILENAME)
+            if (CURRENT_ANIMATION_FILENAME != "")
             {
                 llStartAnimation(CURRENT_ANIMATION_FILENAME);
             }
@@ -388,7 +388,7 @@ apply_current_anim(integer broadcast)
 sit_using_prim_params()
 {
     integer sitter_prim = llGetNumberOfPrims();
-    while (llGetAgentSize(llGetLinkKey(sitter_prim)))
+    while (llGetAgentSize(llGetLinkKey(sitter_prim)) != ZERO_VECTOR)
     {
         if (llGetLinkKey(sitter_prim) == MY_SITTER)
         {
@@ -425,9 +425,9 @@ sit_using_prim_params()
 end_sitter()
 {
     llSetTimerEvent(0);
-    if (MY_SITTER)
+    if (MY_SITTER) // OSS::if (osIsUUID(MY_SITTER) && MY_SITTER != NULL_KEY)
     {
-        if (CURRENT_ANIMATION_FILENAME)
+        if (CURRENT_ANIMATION_FILENAME != "")
         {
             llStopAnimation(CURRENT_ANIMATION_FILENAME);
         }
@@ -477,7 +477,7 @@ default
     {
         SEQUENCE_POINTER += 2;
         list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
-        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || ~llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER)))
+        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER)) != -1)
         {
             SEQUENCE_POINTER = 0;
         }
@@ -485,9 +485,9 @@ default
         update_current_anim_name();
         if (llGetPermissions() & PERMISSION_TRIGGER_ANIMATION)
         {
-            if (llGetAgentSize(MY_SITTER))
+            if (llGetAgentSize(MY_SITTER) != ZERO_VECTOR)
             {
-                if (CURRENT_ANIMATION_FILENAME)
+                if (CURRENT_ANIMATION_FILENAME != "")
                 {
                     llStartAnimation(CURRENT_ANIMATION_FILENAME);
                 }
@@ -657,7 +657,7 @@ default
                 {
                     reused_key = llList2Key(SITTERS, two);
                 }
-                if (reused_key)
+                if (reused_key) // OSS::if (osIsUUID(reused_key) && reused_key != NULL_KEY)
                 {
                     SWAPPED = TRUE;
                     llRequestPermissions(reused_key, PERMISSION_TRIGGER_ANIMATION);
@@ -833,7 +833,7 @@ default
                         {
                             if (sitterGender)
                             {
-                                if (MALE_POSENAME)
+                                if (MALE_POSENAME != "")
                                 {
                                     if (CURRENT_POSE_NAME == FIRST_POSENAME)
                                     {
@@ -844,7 +844,7 @@ default
                             }
                             else
                             {
-                                if (FEMALE_POSENAME)
+                                if (FEMALE_POSENAME != "")
                                 {
                                     if (CURRENT_POSE_NAME == FIRST_POSENAME)
                                     {
@@ -875,7 +875,7 @@ default
                         {
                             if (llGetPermissions() & PERMISSION_TRIGGER_ANIMATION)
                             {
-                                if (MY_SITTER)
+                                if (MY_SITTER) // OSS::if (osIsUUID(MY_SITTER) && MY_SITTER != NULL_KEY)
                                 {
                                     llMessageLinked(LINK_SET, 90065, (string)SCRIPT_CHANNEL, MY_SITTER);
                                 }
@@ -900,7 +900,7 @@ default
                     {
                         actual_sitter = llAvatarOnSitTarget();
                     }
-                    if (existing_sitter)
+                    if (existing_sitter != "")
                     {
                         if (actual_sitter == NULL_KEY)
                         {
@@ -909,13 +909,13 @@ default
                             release_sitter(i);
                         }
                     }
-                    else if (actual_sitter)
+                    else if (actual_sitter) // OSS::else if (osIsUUID(actual_sitter) && actual_sitter != NULL_KEY)
                     {
                         if (i == SCRIPT_CHANNEL)
                         {
                             if (llList2Integer(llGetObjectDetails(actual_sitter, [OBJECT_BODY_SHAPE_TYPE]), 0))
                             {
-                                if (MALE_POSENAME)
+                                if (MALE_POSENAME != "")
                                 {
                                     if (CURRENT_POSE_NAME == FIRST_POSENAME)
                                     {
@@ -926,7 +926,7 @@ default
                             }
                             else
                             {
-                                if (FEMALE_POSENAME)
+                                if (FEMALE_POSENAME != "")
                                 {
                                     if (CURRENT_POSE_NAME == FIRST_POSENAME)
                                     {
@@ -994,7 +994,7 @@ default
                 animation_menu_function = -1;
             }
             reused_key = "";
-            SITTERS = llListReplaceList(SITTERS, [CONTROLLER = MY_SITTER = llGetPermissionsKey()], SCRIPT_CHANNEL, SCRIPT_CHANNEL);
+            SITTERS = llListReplaceList(SITTERS, [(CONTROLLER = MY_SITTER = llGetPermissionsKey())], SCRIPT_CHANNEL, SCRIPT_CHANNEL);
             string channel_or_swap = (string)SCRIPT_CHANNEL;
             integer lnk = 90000;
             if (SWAPPED)
