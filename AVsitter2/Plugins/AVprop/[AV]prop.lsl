@@ -349,7 +349,7 @@ default
             if (num == 90045) // play pose
             {
                 list data = llParseStringKeepNulls(msg, ["|"], []);
-                integer sitter = (integer)llList2String(data, 0);
+                integer sitter = llList2Integer(data, 0);
                 if (id == llList2Key(SITTERS, sitter))
                 {
                     remove_sitter_props_by_pose(llList2String(SITTER_POSES, sitter), FALSE);
@@ -363,7 +363,7 @@ default
             else if (num == 90200 || num == 90220) // rez or clear prop with/without sending menu back
             {
                 list ids = llParseStringKeepNulls(id, ["|"], []);
-                key sitting_av_or_sitter = (key)llList2String(ids, -1);
+                key sitting_av_or_sitter = llList2Key(ids, -1);
                 if (llGetInventoryType(main_script) != INVENTORY_SCRIPT)
                 {
                     SITTERS = [sitting_av_or_sitter];
@@ -537,7 +537,7 @@ default
         list data = llParseStringKeepNulls(message, ["|"], []);
         if (llList2String(data, 0) == "SAVEPROP")
         {
-            integer index = (integer)llList2String(data, 1);
+            integer index = llList2Integer(data, 1);
             if (index >= 0 && index < llGetListLength(prop_triggers))
             {
                 if (llList2Vector(llGetObjectDetails(id, [OBJECT_POS]), 0) != ZERO_VECTOR)
@@ -564,8 +564,8 @@ default
         }
         else if (llList2String(data, 0) == "ATTACHED" || llList2String(data, 0) == "DETACHED" || llList2String(data, 0) == "REZ" || llList2String(data, 0) == "DEREZ")
         {
-            integer prop_index = (integer)llList2String(data, 1);
-            integer sitter = (integer)llList2String(llParseStringKeepNulls(llList2String(prop_triggers, prop_index), ["|"], []), 0);
+            integer prop_index = llList2Integer(data, 1);
+            integer sitter = llList2Integer(llParseStringKeepNulls(llList2String(prop_triggers, prop_index), ["|"], []), 0);
             key sitter_key = llList2Key(SITTERS, sitter);
             if (sitter_key != NULL_KEY && llList2String(data, 0) == "REZ" && llList2Integer(prop_types, prop_index) == 1)
             {
@@ -597,7 +597,7 @@ default
                 list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
                 if (command == "SITTER")
                 {
-                    notecard_section = (integer)llList2String(parts, 0);
+                    notecard_section = llList2Integer(parts, 0);
                 }
                 else if (llGetSubString(command, 0, 3) == "PROP")
                 {
@@ -636,7 +636,7 @@ default
                 }
                 else if (command == "WARN")
                 {
-                    WARN = (integer)llList2String(parts, 0);
+                    WARN = llList2Integer(parts, 0);
                 }
                 notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
             }

@@ -512,7 +512,7 @@ hovertext()
         for (i = 0; i < llGetListLength(CAPTIVES); i += 2)
         {
             string captiveName = llList2String(CAPTIVES, i);
-            key captiveUUID = (key)llList2String(CAPTIVES, i + 1);
+            key captiveUUID = llList2Key(CAPTIVES, i + 1);
             text += "\"" + captiveName + "\"\n";
         }
         if (TimelockSecUntilRelease)
@@ -815,12 +815,12 @@ state running
                     return;
                 }
                 new_controller(id);
-                if ((key)llList2String(data, 2) == id)
+                if (llList2Key(data, 2) == id)
                 {
                     select_submissive_rlv();
                     return;
                 }
-                SLAVE = (key)llList2String(data, 2);
+                SLAVE = llList2Key(data, 2);
                 check_submissive();
             }
         }

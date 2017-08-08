@@ -105,7 +105,7 @@ default
                     }
                     llSetTimerEvent(TIMER_DEFAULT);
                     list data = llParseStringKeepNulls(msg, ["|"], []);
-                    integer script_channel = (integer)llList2String(data, 0);
+                    integer script_channel = llList2Integer(data, 0);
                     CURRENT_POSE = llList2String(data, 1);
                     SITTERS = llParseStringKeepNulls(llList2String(data, 4), ["@"], []);
                     integer index = llListFindList(POSE_AND_SITTER, [CURRENT_POSE + "|" + (string)script_channel]);
@@ -178,17 +178,17 @@ default
                 list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
                 if (command == "TIMER")
                 {
-                    TIMER_DEFAULT = (integer)llList2String(parts, 0);
+                    TIMER_DEFAULT = llList2Integer(parts, 0);
                 }
                 else if (command == "DEBUG")
                 {
-                    DEBUG = (integer)llList2String(parts, 0);
+                    DEBUG = llList2Integer(parts, 0);
                 }
                 else if (command == "XCITE")
                 {
                     POSE_AND_SITTER += [llStringTrim(llList2String(parts, 0), STRING_TRIM) + "|" + llList2String(parts, 1)];
                     XCITE_COMMANDS += [llList2String(parts, 2) + "|" + llList2String(parts, 3) + "|" + llList2String(parts, 4) + "|" + llList2String(parts, 5)];
-                    XCITE_TILT += (integer)llList2String(parts, 6);
+                    XCITE_TILT += llList2Integer(parts, 6);
                 }
                 notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }

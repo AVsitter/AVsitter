@@ -178,16 +178,16 @@ state prop
         {
             llRequestPermissions(llGetOwner(), PERMISSION_ATTACH);
         }
-        else if (command == "ATTACHTO" && prop_type == 1 && (key)llList2String(data, 2) == llGetKey())
+        else if (command == "ATTACHTO" && prop_type == 1 && llList2Key(data, 2) == llGetKey())
         {
-            if (llGetAgentSize((key)llList2String(data, 1)) == ZERO_VECTOR)
+            if (llGetAgentSize(llList2Key(data, 1)) == ZERO_VECTOR)
             {
                 llSay(comm_channel, "DEREZ|" + (string)prop_id);
                 llDie();
             }
             else
             {
-                llRequestExperiencePermissions((key)llList2String(data, 1), "");
+                llRequestExperiencePermissions(llList2Key(data, 1), "");
             }
         }
         else if (llGetSubString(command, 0, 3) == "REM_")
@@ -204,7 +204,7 @@ state prop
                     remove = TRUE;
                 }
             }
-            else if (llGetAttached() && command == "REM_WORN" && (key)llList2String(data, 1) == llGetOwner())
+            else if (llGetAttached() && command == "REM_WORN" && llList2Key(data, 1) == llGetOwner())
             {
                 remove = TRUE;
             }

@@ -83,7 +83,7 @@ default
                 for (j = 0; j < llGetListLength(items); j = j + 2)
                 {
                     string item = llList2String(items, j);
-                    key item_key = (key)llList2String(items, j + 1);
+                    key item_key = llList2Key(items, j + 1);
                     if (item_key != llGetInventoryKey(item) || item_key == NULL_KEY)
                     {
                         if (llGetInventoryType(item) == INVENTORY_SCRIPT)

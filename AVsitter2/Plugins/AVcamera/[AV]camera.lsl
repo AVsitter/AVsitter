@@ -123,8 +123,8 @@ default
             if (num == 90230 | num == 90231)
             {
                 list data = llParseStringKeepNulls(id, ["|"], []);
-                key this_controller = (key)llList2String(data, 0);
-                key this_sitter = (key)llList2String(data, -1);
+                key this_controller = llList2Key(data, 0);
+                key this_sitter = llList2Key(data, -1);
                 if (this_sitter == mySitter)
                 {
                     myPose = msg;
@@ -143,7 +143,7 @@ default
             else if (num == 90045)
             {
                 list data = llParseStringKeepNulls(msg, ["|"], []);
-                integer sitter = (integer)llList2String(data, 0);
+                integer sitter = llList2Integer(data, 0);
                 if (sitter == SCRIPT_CHANNEL)
                 {
                     mySitter = id;

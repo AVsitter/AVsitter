@@ -139,7 +139,7 @@ sequence()
         integer j;
         while (j <= llGetListLength(sequence_durations))
         {
-            integer lastDuration = (integer)llList2String(sequence_durations, j - 1);
+            integer lastDuration = llList2Integer(sequence_durations, j - 1);
             integer repeats = FALSE;
             if (lastDuration < 0)
             {
@@ -169,7 +169,7 @@ sequence()
                 sequence_pointer++;
                 jump go;
             }
-            integer duration = llAbs((integer)llList2String(sequence_durations, j));
+            integer duration = llAbs(llList2Integer(sequence_durations, j));
             sequence_length += duration;
             j++;
         }
@@ -270,7 +270,7 @@ default
             if (num == 90045)
             {
                 list data = llParseStringKeepNulls(msg, ["|"], []);
-                integer sitter = (integer)llList2String(data, 0);
+                integer sitter = llList2Integer(data, 0);
                 if (id == llList2Key(SITTERS, sitter))
                 {
                     string given_posename = llList2String(data, 1);
@@ -348,7 +348,7 @@ default
                         {
                             if (IsInteger(llList2String(sequence, x)))
                             {
-                                sequence = llListReplaceList(sequence, [llList2String(facial_anim_list, (integer)llList2String(sequence, x))], x, x);
+                                sequence = llListReplaceList(sequence, [llList2String(facial_anim_list, llList2Integer(sequence, x))], x, x);
                             }
                         }
                         Readout_Say("ANIM " + llList2String(trigger, 1) + "|" + llDumpList2String(sequence, "|"), msg);

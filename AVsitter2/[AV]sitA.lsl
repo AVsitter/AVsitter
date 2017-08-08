@@ -221,10 +221,10 @@ sittargets()
                 list data = llParseStringKeepNulls(desc, ["-"], []);
                 if (llGetListLength(data) == 2 && IsInteger(llList2String(data, 0)) && IsInteger(llList2String(data, 1)))
                 {
-                    if ((integer)llList2String(data, 0) == SET)
+                    if (llList2Integer(data, 0) == SET)
                     {
-                        SITTERS_SITTARGETS = llListReplaceList(SITTERS_SITTARGETS, [i], (integer)llList2String(data, 1), (integer)llList2String(data, 1));
-                        ASSIGNED_SITTARGETS = llListReplaceList(ASSIGNED_SITTARGETS, [TRUE], (integer)llList2String(data, 1), (integer)llList2String(data, 1));
+                        SITTERS_SITTARGETS = llListReplaceList(SITTERS_SITTARGETS, [i], llList2Integer(data, 1), llList2Integer(data, 1));
+                        ASSIGNED_SITTARGETS = llListReplaceList(ASSIGNED_SITTARGETS, [TRUE], llList2Integer(data, 1), llList2Integer(data, 1));
                         if (llListFindList(ASSIGNED_SITTARGETS, [FALSE]) == -1)
                         {
                             jump end;
@@ -318,7 +318,7 @@ update_current_anim_name()
     {
         CURRENT_ANIMATION_FILENAME += speed_text;
     }
-    llSetTimerEvent((float)llList2String(SEQUENCE, SEQUENCE_POINTER + 1));
+    llSetTimerEvent(llList2Float(SEQUENCE, SEQUENCE_POINTER + 1));
 }
 
 apply_current_anim(integer broadcast)
@@ -517,7 +517,7 @@ default
             {
                 id = llDumpList2String([id, MY_SITTER], "|");
             }
-            llMessageLinked(LINK_SET, (integer)llList2String(ADJUST_MENU, index + 1), msg, id);
+            llMessageLinked(LINK_SET, llList2Integer(ADJUST_MENU, index + 1), msg, id);
         }
         else
         {
@@ -721,7 +721,7 @@ default
             }
             else if (num == 90101)
             {
-                CONTROLLER = (key)llList2String(data, 2);
+                CONTROLLER = llList2Key(data, 2);
                 if (llList2String(data, 1) == "[ADJUST]")
                 {
                     options_menu();
@@ -775,8 +775,8 @@ default
                     FIRST_ROTATION = DEFAULT_ROTATION;
                     FIRST_ANIMATION_SEQUENCE = CURRENT_ANIMATION_SEQUENCE;
                 }
-                speed_index = (integer)llList2String(data, 5);
-                apply_current_anim((integer)llList2String(data, 4));
+                speed_index = llList2Integer(data, 5);
+                apply_current_anim(llList2Integer(data, 4));
                 set_sittarget();
             }
             else if (num == 90057)

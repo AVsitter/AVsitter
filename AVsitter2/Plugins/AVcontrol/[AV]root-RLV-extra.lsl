@@ -167,8 +167,8 @@ state running
         if (num == 90208 || num == 90209)
         {
             list data = llParseStringKeepNulls(id, ["|"], []);
-            SLAVE = (key)llList2String(data, 0);
-            CONTROLLER = (key)llList2String(data, 1);
+            SLAVE = llList2Key(data, 0);
+            CONTROLLER = llList2Key(data, 1);
             product = llList2String(data, 2);
             llListenRemove(menu_handle);
             llListenRemove(GETSTATUShandle);

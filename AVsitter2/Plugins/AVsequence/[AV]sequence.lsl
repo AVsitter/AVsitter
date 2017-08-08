@@ -85,7 +85,7 @@ run_sequence()
             if (playsounds)
             {
                 string sound = llList2String(data_list, 0);
-                float volume = (float)llList2String(data_list, 1);
+                float volume = llList2Float(data_list, 1);
                 llPlaySound(sound, volume);
                 DEBUGSay(2, "Playing sound " + sound + " at volume " + (string)volume);
             }
@@ -357,8 +357,8 @@ state running
             {
                 stop_sequence(TRUE);
                 list data = llParseStringKeepNulls(id, ["|"], []);
-                CONTROLLER = (key)llList2String(data, 0);
-                CONTROLLED = (key)llList2String(data, -1);
+                CONTROLLER = llList2Key(data, 0);
+                CONTROLLED = llList2Key(data, -1);
                 integer index = llListFindList(SEQUENCE_DATA_NAMES, [msg]);
                 if (index != -1)
                 {

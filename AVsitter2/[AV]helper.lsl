@@ -185,8 +185,8 @@ default
             }
             else if (llList2String(data, 0) == "SWAP")
             {
-                integer one = (integer)llList2String(data, 1);
-                integer two = (integer)llList2String(data, 2);
+                integer one = llList2Integer(data, 1);
+                integer two = llList2Integer(data, 2);
                 if (sitter_number == one)
                 {
                     sitter_number = helper_index = two;
@@ -204,8 +204,8 @@ default
                 {
                     vector pos = (vector)llList2String(data, 2);
                     rotation rot = (rotation)llList2String(data, 3);
-                    OLD_HELPER_METHOD = (integer)llList2String(data, 4);
-                    CURRENT_AV = (key)llList2String(data, 5);
+                    OLD_HELPER_METHOD = llList2Integer(data, 4);
+                    CURRENT_AV = llList2Key(data, 5);
                     if (OLD_HELPER_METHOD)
                     {
                         llSetClickAction(CLICK_ACTION_SIT);

@@ -455,19 +455,19 @@ default
                         Readout_Say("--✄--COPY BELOW INTO \"AVpos\" NOTECARD--✄--");
                         Readout_Say("");
                         Readout_Say("\"" + llToUpper(llGetObjectName()) + "\" " + strReplace(llList2String(data, 0), "V:", "AVsitter "));
-                        if ((integer)llList2String(data, 1))
+                        if (llList2Integer(data, 1))
                         {
                             Readout_Say("MTYPE " + llList2String(data, 1));
                         }
-                        if ((integer)llList2String(data, 2) != 1)
+                        if (llList2Integer(data, 2) != 1)
                         {
                             Readout_Say("ETYPE " + llList2String(data, 2));
                         }
-                        if ((integer)llList2String(data, 3) > -1)
+                        if (llList2Integer(data, 3) > -1)
                         {
                             Readout_Say("SET " + llList2String(data, 3));
                         }
-                        if ((integer)llList2String(data, 4) != 2)
+                        if (llList2Integer(data, 4) != 2)
                         {
                             Readout_Say("SWAP " + llList2String(data, 4));
                         }
@@ -479,15 +479,15 @@ default
                         {
                             Readout_Say("ADJUST " + strReplace(llList2String(data, 7), "�", "|"));
                         }
-                        if ((integer)llList2String(data, 8))
+                        if (llList2Integer(data, 8))
                         {
                             Readout_Say("SELECT " + llList2String(data, 8));
                         }
-                        if ((integer)llList2String(data, 9) != 2)
+                        if (llList2Integer(data, 9) != 2)
                         {
                             Readout_Say("AMENU " + llList2String(data, 9));
                         }
-                        if ((integer)llList2String(data, 10))
+                        if (llList2Integer(data, 10))
                         {
                             Readout_Say("HELPER " + llList2String(data, 10));
                         }
@@ -564,8 +564,8 @@ default
                 }
                 else if (llList2String(data, 1) == "[NEW]")
                 {
-                    controller = (key)llList2String(data, 2);
-                    active_sitter = (integer)llList2String(data, 0);
+                    controller = llList2Key(data, 2);
+                    active_sitter = llList2Integer(data, 0);
                     adding = "";
                     new_menu();
                 }
@@ -594,7 +594,7 @@ default
                 else if (llList2String(data, 1) == "[HELPER]")
                 {
                     controller = id;
-                    OLD_HELPER_METHOD = (integer)llList2String(data, 3);
+                    OLD_HELPER_METHOD = llList2Integer(data, 3);
                     toggle_helper_mode();
                 }
                 else if (llList2String(data, 1) == "[ADJUST]")
@@ -866,7 +866,7 @@ default
         else if (llGetOwnerKey(id) == llGetOwner())
         {
             list data = llParseString2List(msg, ["|"], []);
-            integer num = (integer)llList2String(data, 1);
+            integer num = llList2Integer(data, 1);
             if (llList2String(data, 0) == "REG")
             {
                 HELPER_KEY_LIST = llListReplaceList(HELPER_KEY_LIST, [id], num, num);

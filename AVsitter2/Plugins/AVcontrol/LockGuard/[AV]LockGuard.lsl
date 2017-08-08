@@ -128,7 +128,7 @@ default
         if (num == 90500 && USES_PROPS)
         {
             list data = llParseStringKeepNulls(msg, ["|"], []);
-            integer SITTER_NUMBER = (integer)llList2String(data, 1);
+            integer SITTER_NUMBER = llList2Integer(data, 1);
             if (SITTER_NUMBER == SITTER)
             {
                 avatar = id;

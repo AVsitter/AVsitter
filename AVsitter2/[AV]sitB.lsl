@@ -444,10 +444,10 @@ default
         else if (num == 90004 || num == 90005)
         {
             list data = llParseStringKeepNulls(id, ["|"], []);
-            if ((key)llList2String(data, -1) == MY_SITTER)
+            if (llList2Key(data, -1) == MY_SITTER)
             {
                 key lastController = CONTROLLER;
-                CONTROLLER = (key)llList2String(data, 0);
+                CONTROLLER = llList2Key(data, 0);
                 integer index = llListFindList(MENU_LIST, ["M:" + msg + "*"]);
                 if (num == 90004)
                 {
@@ -474,7 +474,7 @@ default
             {
                 menu_page = 0;
                 helper_mode = !helper_mode;
-                if ((key)llList2String(data, 2) == MY_SITTER && !OLD_HELPER_METHOD)
+                if (llList2Key(data, 2) == MY_SITTER && !OLD_HELPER_METHOD)
                 {
                     animation_menu(0);
                 }
@@ -579,19 +579,19 @@ default
             }
             else if (num == 90302)
             {
-                number_of_sitters = (integer)llList2String(data, 0);
+                number_of_sitters = llList2Integer(data, 0);
                 SITTER_INFO = llList2String(data, 1);
-                SET = (integer)llList2String(data, 2);
-                MTYPE = (integer)llList2String(data, 3);
-                ETYPE = (integer)llList2String(data, 4);
-                SWAP = (integer)llList2String(data, 5);
+                SET = llList2Integer(data, 2);
+                MTYPE = llList2Integer(data, 3);
+                ETYPE = llList2Integer(data, 4);
+                SWAP = llList2Integer(data, 5);
                 FIRST_INDEX = ANIM_INDEX = llListFindList(MENU_LIST, [llList2String(data, 6)]);
                 BRAND = llList2String(data, 7);
                 CUSTOM_TEXT = llList2String(data, 8);
                 ADJUST_MENU = llList2String(data, 9);
-                SELECT = (integer)llList2String(data, 10);
-                AMENU = (integer)llList2String(data, 11);
-                OLD_HELPER_METHOD = (integer)llList2String(data, 12);
+                SELECT = llList2Integer(data, 10);
+                AMENU = llList2Integer(data, 11);
+                OLD_HELPER_METHOD = llList2Integer(data, 12);
                 RLVDesignations = llList2String(data, 13);
                 onSit = llList2String(data, 14);
                 memory();

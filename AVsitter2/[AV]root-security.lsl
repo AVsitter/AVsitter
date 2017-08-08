@@ -157,8 +157,8 @@ default
                 if (id == llGetOwner())
                 {
                     active_prim = sender;
-                    active_script_channel = (integer)llList2String(data, 0);
-                    active_sitter = (key)llList2String(data, 2);
+                    active_script_channel = llList2Integer(data, 0);
+                    active_sitter = llList2Key(data, 2);
                     main_menu();
                 }
                 else

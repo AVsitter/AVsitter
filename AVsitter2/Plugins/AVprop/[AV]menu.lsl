@@ -384,7 +384,7 @@ default
             {
                 id = llList2String(button_data, 2);
             }
-            llMessageLinked(LINK_SET, (integer)llList2String(button_data, 0), msg, id);
+            llMessageLinked(LINK_SET, llList2Integer(button_data, 0), msg, id);
             return;
         }
         else if (msg == "[>>]" || msg == "[<<]")
