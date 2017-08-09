@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
@@ -26,7 +26,7 @@ key give_prop_warning_request;
 unsit_all()
 {
     integer i = llGetNumberOfPrims();
-    while (llGetAgentSize(llGetLinkKey(i)))
+    while (llGetAgentSize(llGetLinkKey(i)) != ZERO_VECTOR)
     {
         llUnSit(llGetLinkKey(i));
         i--;
@@ -45,10 +45,6 @@ Out(integer level, string out)
 
 default
 {
-    state_entry()
-    {
-    }
-
     on_rez(integer start)
     {
         if (start)
@@ -121,7 +117,7 @@ state prop
 
     touch_start(integer touched)
     {
-        if ((!llGetAttached()) && (prop_type == 2 || prop_type == 1))
+        if (!llGetAttached() && (prop_type == 2 || prop_type == 1))
         {
             llRequestExperiencePermissions(llDetectedKey(0), "");
         }
@@ -182,16 +178,16 @@ state prop
         {
             llRequestPermissions(llGetOwner(), PERMISSION_ATTACH);
         }
-        else if (command == "ATTACHTO" && prop_type == 1 && (key)llList2String(data, 2) == llGetKey())
+        else if (command == "ATTACHTO" && prop_type == 1 && llList2Key(data, 2) == llGetKey())
         {
-            if (llGetAgentSize((key)llList2String(data, 1)) == ZERO_VECTOR)
+            if (llGetAgentSize(llList2Key(data, 1)) == ZERO_VECTOR)
             {
                 llSay(comm_channel, "DEREZ|" + (string)prop_id);
                 llDie();
             }
             else
             {
-                llRequestExperiencePermissions((key)llList2String(data, 1), "");
+                llRequestExperiencePermissions(llList2Key(data, 1), "");
             }
         }
         else if (llGetSubString(command, 0, 3) == "REM_")
@@ -201,14 +197,14 @@ state prop
             {
                 remove = TRUE;
             }
-            else if (command == "REM_INDEX" || (command == "REM_WORLD" && (!llGetAttached())))
+            else if (command == "REM_INDEX" || (command == "REM_WORLD" && !llGetAttached()))
             {
                 if (~llListFindList(data, [(string)prop_id]))
                 {
                     remove = TRUE;
                 }
             }
-            else if (llGetAttached() && command == "REM_WORN" && (key)llList2String(data, 1) == llGetOwner())
+            else if (llGetAttached() && command == "REM_WORN" && llList2Key(data, 1) == llGetOwner())
             {
                 remove = TRUE;
             }
@@ -220,7 +216,7 @@ state prop
                 }
                 else
                 {
-                    if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())))
+                    if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) != ZERO_VECTOR)
                     {
                         unsit_all();
                         llSleep(1);
@@ -230,7 +226,7 @@ state prop
                 }
             }
         }
-        else if (message == "PROPSEARCH" && (!llGetAttached()))
+        else if (message == "PROPSEARCH" && !llGetAttached())
         {
             llSay(comm_channel, "SAVEPROP|" + (string)prop_id);
         }

@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 integer OLD_HELPER_METHOD;
 key key_request;
 string url = "https://avsitter.com/settings.php"; // the settings dump service remains up for AVsitter customers. settings clear periodically.
@@ -46,15 +46,16 @@ list chosen_animations;
 string cache;
 string webkey;
 integer webcount;
+
 string FormatFloat(float f, integer num_decimals)
 {
-    float rounding = (float)(".5e-" + (string)num_decimals) - 5e-07;
+    float rounding = (float)(".5e-" + (string)num_decimals) - .5e-6;
     if (f < 0.)
         f -= rounding;
     else
         f += rounding;
-    string ret = llGetSubString((string)f, 0, num_decimals - (!num_decimals) - 7);
-    if (~llSubStringIndex(ret, "."))
+    string ret = llGetSubString((string)f, 0, num_decimals - !num_decimals - 7);
+    if (llSubStringIndex(ret, ".") != -1)
     {
         while (llGetSubString(ret, -1, -1) == "0")
         {
@@ -67,6 +68,7 @@ string FormatFloat(float f, integer num_decimals)
     }
     return ret;
 }
+
 web(integer force)
 {
     if (llStringLength(llEscapeURL(cache)) > 1024 || force)
@@ -81,6 +83,7 @@ web(integer force)
         cache = "";
     }
 }
+
 Readout_Say(string say)
 {
     string objectname = llGetObjectName();
@@ -91,6 +94,7 @@ Readout_Say(string say)
     say = "";
     web(FALSE);
 }
+
 stop_all_anims(key id)
 {
     list animations = llGetAnimationList(id);
@@ -100,22 +104,26 @@ stop_all_anims(key id)
         llMessageLinked(LINK_THIS, 90002, llList2String(animations, i), id);
     }
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 string strReplace(string str, string search, string replace)
 {
-    return llDumpList2String(llParseStringKeepNulls((str = "") + str, [search], []), replace);
+    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace); // OSS::return osReplaceString(str, search, replace, -1, 0);
 }
+
 preview_anim(string anim, key id)
 {
-    if (id)
+    if (id) // OSS::if (osIsUUID(id) && id != NULL_KEY)
     {
         stop_all_anims(id);
         llMessageLinked(LINK_THIS, 90001, anim, id);
     }
 }
+
 list get_choices()
 {
     integer my_number_per_page = number_per_page;
@@ -129,7 +137,28 @@ list get_choices()
     integer end = start + my_number_per_page;
     if (adding == "[FACE]")
     {
-        list facial_anim_list = ["none", "express_afraid_emote", "express_anger_emote", "express_laugh_emote", "express_bored_emote", "express_cry_emote", "express_embarrassed_emote", "express_sad_emote", "express_toothsmile", "express_smile", "express_surprise_emote", "express_worry_emote", "express_repulsed_emote", "express_shrug_emote", "express_wink_emote", "express_disdain", "express_frown", "express_kiss", "express_open_mouth", "express_tongue_out"];
+        list facial_anim_list =
+            [ "none"
+            , "express_afraid_emote"
+            , "express_anger_emote"
+            , "express_laugh_emote"
+            , "express_bored_emote"
+            , "express_cry_emote"
+            , "express_embarrassed_emote"
+            , "express_sad_emote"
+            , "express_toothsmile"
+            , "express_smile"
+            , "express_surprise_emote"
+            , "express_worry_emote"
+            , "express_repulsed_emote"
+            , "express_shrug_emote"
+            , "express_wink_emote"
+            , "express_disdain"
+            , "express_frown"
+            , "express_kiss"
+            , "express_open_mouth"
+            , "express_tongue_out"
+            ];
         i = llGetListLength(facial_anim_list);
         options = llList2List(facial_anim_list, start, end - 1);
     }
@@ -154,10 +183,12 @@ list get_choices()
     menu_pages = llCeil((float)i / my_number_per_page);
     return options;
 }
+
 ask_anim()
 {
     choice_menu(get_choices(), "Choose anim" + sitter_text(sitter_count) + ":");
 }
+
 choice_menu(list options, string menu_text)
 {
     last_text = menu_text;
@@ -196,6 +227,7 @@ choice_menu(list options, string menu_text)
     }
     llDialog(controller, menu_text, order_buttons(menu_items), comm_channel);
 }
+
 new_menu()
 {
     menu_page = 0;
@@ -208,15 +240,18 @@ new_menu()
     string menu_text = "\nWhat would you like to create?\n";
     llDialog(controller, menu_text, order_buttons(menu_items), comm_channel);
 }
+
 end_helper_mode()
 {
     llRegionSay(comm_channel, "DONEA");
     helper_mode = FALSE;
 }
+
 Out(string out)
 {
     llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
 }
+
 integer get_number_of_scripts()
 {
     integer i;
@@ -224,6 +259,7 @@ integer get_number_of_scripts()
         ;
     return i;
 }
+
 string convert_to_world_positions(integer num)
 {
     list details = llGetObjectDetails(llGetLinkKey(llGetLinkNumber()), [OBJECT_POS, OBJECT_ROT]);
@@ -231,10 +267,12 @@ string convert_to_world_positions(integer num)
     vector target_pos = llList2Vector(POS_LIST, num) * llList2Rot(details, 1) + llList2Vector(details, 0);
     return (string)target_pos + "|" + (string)target_rot;
 }
+
 string sitter_text(integer sitter)
 {
     return " for SITTER " + (string)sitter;
 }
+
 remove_script(string reason)
 {
     string message = "\n" + llGetScriptName() + " ==Script Removed==\n\n" + reason;
@@ -242,6 +280,7 @@ remove_script(string reason)
     llInstantMessage(llGetOwner(), message);
     llRemoveInventory(llGetScriptName());
 }
+
 done_choosing_anims()
 {
     string adding_text = llList2String(llParseString2List(adding, ["[", "]"], []), 0);
@@ -254,6 +293,7 @@ done_choosing_anims()
     }
     llTextBox(controller, "\nType a menu name for " + adding_text + text, comm_channel);
 }
+
 camera_menu()
 {
     string text = "\nCamera:\n\n";
@@ -267,19 +307,21 @@ camera_menu()
     }
     llDialog(controller, text, ["[BACK]", "[SAVE]", "[CLEAR]"], comm_channel);
 }
+
 unsit_all()
 {
     integer i = llGetNumberOfPrims();
-    while (llGetAgentSize(llGetLinkKey(i)))
+    while (llGetAgentSize(llGetLinkKey(i)) != ZERO_VECTOR)
     {
         stop_all_anims(llGetLinkKey(i));
         llUnSit(llGetLinkKey(i));
         i--;
     }
 }
+
 toggle_helper_mode()
 {
-    helper_mode = (!helper_mode);
+    helper_mode = !helper_mode;
     if (helper_mode)
     {
         if (OLD_HELPER_METHOD)
@@ -308,11 +350,12 @@ toggle_helper_mode()
         end_helper_mode();
     }
 }
+
 default
 {
     state_entry()
     {
-        if (~llSubStringIndex(llGetScriptName(), " "))
+        if (llSubStringIndex(llGetScriptName(), " ") != -1)
         {
             remove_script("Use only one of this script!");
         }
@@ -332,6 +375,7 @@ default
             comm_channel -= 1000000000;
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         integer one = (integer)msg;
@@ -342,7 +386,7 @@ default
             if (num == 90065)
             {
                 integer index = llListFindList(SITTERS, [id]);
-                if (~index)
+                if (index != -1)
                 {
                     SITTERS = llListReplaceList(SITTERS, [NULL_KEY], index, index);
                 }
@@ -378,7 +422,7 @@ default
                     }
                     if (llGetInventoryType(lookfor) == INVENTORY_SCRIPT)
                     {
-                        llMessageLinked(LINK_THIS, 90020, (string)script_channel, llList2String(scripts, index));
+                        llMessageLinked(LINK_THIS, 90020, (string)script_channel, llList2Key(scripts, index));
                         return;
                     }
                 }
@@ -411,39 +455,39 @@ default
                         Readout_Say("--✄--COPY BELOW INTO \"AVpos\" NOTECARD--✄--");
                         Readout_Say("");
                         Readout_Say("\"" + llToUpper(llGetObjectName()) + "\" " + strReplace(llList2String(data, 0), "V:", "AVsitter "));
-                        if ((integer)llList2String(data, 1))
+                        if (llList2Integer(data, 1))
                         {
                             Readout_Say("MTYPE " + llList2String(data, 1));
                         }
-                        if ((integer)llList2String(data, 2) != 1)
+                        if (llList2Integer(data, 2) != 1)
                         {
                             Readout_Say("ETYPE " + llList2String(data, 2));
                         }
-                        if ((integer)llList2String(data, 3) > -1)
+                        if (llList2Integer(data, 3) > -1)
                         {
                             Readout_Say("SET " + llList2String(data, 3));
                         }
-                        if ((integer)llList2String(data, 4) != 2)
+                        if (llList2Integer(data, 4) != 2)
                         {
                             Readout_Say("SWAP " + llList2String(data, 4));
                         }
-                        if (llList2String(data, 6))
+                        if (llList2String(data, 6) != "")
                         {
                             Readout_Say("TEXT " + strReplace(llList2String(data, 6), "\n", "\\n"));
                         }
-                        if (llList2String(data, 7))
+                        if (llList2String(data, 7) != "")
                         {
                             Readout_Say("ADJUST " + strReplace(llList2String(data, 7), "�", "|"));
                         }
-                        if ((integer)llList2String(data, 8))
+                        if (llList2Integer(data, 8))
                         {
                             Readout_Say("SELECT " + llList2String(data, 8));
                         }
-                        if ((integer)llList2String(data, 9) != 2)
+                        if (llList2Integer(data, 9) != 2)
                         {
                             Readout_Say("AMENU " + llList2String(data, 9));
                         }
-                        if ((integer)llList2String(data, 10))
+                        if (llList2Integer(data, 10))
                         {
                             Readout_Say("HELPER " + llList2String(data, 10));
                         }
@@ -452,7 +496,7 @@ default
                     if (llGetListLength(SITTERS) > 1 || llList2String(data, 5) != "")
                     {
                         string SITTER_TEXT;
-                        if (llList2String(data, 5))
+                        if (llList2String(data, 5) != "")
                         {
                             SITTER_TEXT = "|" + strReplace(llList2String(data, 5), "�", "|");
                         }
@@ -486,7 +530,7 @@ default
                     else
                     {
                         msg = strReplace(msg, "S:B:", "BUTTON ");
-                        if (!~llSubStringIndex(msg, "�"))
+                        if (llSubStringIndex(msg, "�") != -1)
                         {
                             msg = strReplace(msg, "|90200", "");
                         }
@@ -520,8 +564,8 @@ default
                 }
                 else if (llList2String(data, 1) == "[NEW]")
                 {
-                    controller = (key)llList2String(data, 2);
-                    active_sitter = (integer)llList2String(data, 0);
+                    controller = llList2Key(data, 2);
+                    active_sitter = llList2Integer(data, 0);
                     adding = "";
                     new_menu();
                 }
@@ -530,11 +574,11 @@ default
                     integer i;
                     for (i = 0; i < llGetListLength(SITTERS); i++)
                     {
-                        if (llList2String(SITTER_POSES, i))
+                        if (llList2String(SITTER_POSES, i) != "")
                         {
                             string type = "SYNC";
                             string temp_pose_name = llList2String(SITTER_POSES, i);
-                            if (!llSubStringIndex(llList2String(SITTER_POSES, i), "P:"))
+                            if (llSubStringIndex(llList2String(SITTER_POSES, i), "P:") == 0)
                             {
                                 type = "POSE";
                                 temp_pose_name = llGetSubString(temp_pose_name, 2, -1);
@@ -550,7 +594,7 @@ default
                 else if (llList2String(data, 1) == "[HELPER]")
                 {
                     controller = id;
-                    OLD_HELPER_METHOD = (integer)llList2String(data, 3);
+                    OLD_HELPER_METHOD = llList2Integer(data, 3);
                     toggle_helper_mode();
                 }
                 else if (llList2String(data, 1) == "[ADJUST]")
@@ -571,13 +615,14 @@ default
             }
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_LINK)
         {
             if (OLD_HELPER_METHOD)
             {
-                if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())))
+                if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) != ZERO_VECTOR)
                 {
                     end_helper_mode();
                 }
@@ -594,6 +639,7 @@ default
             llResetScript();
         }
     }
+
     run_time_permissions(integer perm)
     {
         if (llGetPermissions() & PERMISSION_TRACK_CAMERA)
@@ -613,6 +659,7 @@ default
             camera_menu();
         }
     }
+
     listen(integer chan, string name, key id, string msg)
     {
         if (chan == chat_channel)
@@ -732,7 +779,7 @@ default
             {
                 llRequestPermissions(id, PERMISSION_TRACK_CAMERA);
             }
-            else if ((~llListFindList(["[DONE]", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [msg])) && (~llListFindList(["[POSE]", "[SYNC]", "[SYNC]2", "[PROP]", "[FACE]"], [adding])))
+            else if (llListFindList(["[DONE]", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [msg]) != -1 && llListFindList(["[POSE]", "[SYNC]", "[SYNC]2", "[PROP]", "[FACE]"], [adding]) != -1)
             {
                 string choice = llList2String(get_choices(), (integer)msg - 1);
                 if (adding == "[PROP]")
@@ -819,7 +866,7 @@ default
         else if (llGetOwnerKey(id) == llGetOwner())
         {
             list data = llParseString2List(msg, ["|"], []);
-            integer num = (integer)llList2String(data, 1);
+            integer num = llList2Integer(data, 1);
             if (llList2String(data, 0) == "REG")
             {
                 HELPER_KEY_LIST = llListReplaceList(HELPER_KEY_LIST, [id], num, num);
@@ -827,7 +874,7 @@ default
             }
             else if (llList2String(data, 0) == "MENU")
             {
-                if (llList2String(data, 1) == controller)
+                if (llList2Key(data, 1) == controller)
                 {
                     llMessageLinked(LINK_SET, 90005, "", llDumpList2String([controller, llList2String(SITTERS, num)], "|"));
                 }
@@ -859,6 +906,7 @@ default
             }
         }
     }
+
     on_rez(integer x)
     {
         llResetScript();

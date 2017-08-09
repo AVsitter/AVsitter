@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
  *
@@ -11,7 +11,7 @@
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 //  For use attaching particle chains to LockGuard V2 compatible cuffs such as Open Collar
 //  This script should be placed inside the prim that contains your poses and props.
 //  Inspiration and function (not code) from the Bright CISS system by Shan Bright & Innula Zenovka.
@@ -128,7 +128,7 @@ default
         if (num == 90500 && USES_PROPS)
         {
             list data = llParseStringKeepNulls(msg, ["|"], []);
-            integer SITTER_NUMBER = (integer)llList2String(data, 1);
+            integer SITTER_NUMBER = llList2Integer(data, 1);
             if (SITTER_NUMBER == SITTER)
             {
                 avatar = id;

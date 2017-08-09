@@ -3,22 +3,44 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 integer is_running = TRUE;
-list facial_anim_list = ["express_afraid_emote", "express_anger_emote", "express_laugh_emote", "express_bored_emote", "express_cry_emote", "express_embarrassed_emote", "express_sad_emote", "express_toothsmile", "express_smile", "express_surprise_emote", "express_worry_emote", "express_repulsed_emote", "express_shrug_emote", "express_wink_emote", "express_disdain", "express_frown", "express_kiss", "express_open_mouth", "express_tongue_out"];
+list facial_anim_list =
+    [ "express_afraid_emote"
+    , "express_anger_emote"
+    , "express_laugh_emote"
+    , "express_bored_emote"
+    , "express_cry_emote"
+    , "express_embarrassed_emote"
+    , "express_sad_emote"
+    , "express_toothsmile"
+    , "express_smile"
+    , "express_surprise_emote"
+    , "express_worry_emote"
+    , "express_repulsed_emote"
+    , "express_shrug_emote"
+    , "express_wink_emote"
+    , "express_disdain"
+    , "express_frown"
+    , "express_kiss"
+    , "express_open_mouth"
+    , "express_tongue_out"
+    ];
+
 integer IsInteger(string data)
 {
     return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
 }
-string version = "2.1";
+
+string version = "2.2";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
 key key_request;
@@ -34,6 +56,7 @@ list running_sequence_indexes;
 list running_pointers;
 list SITTERS;
 list SITTER_POSES;
+
 integer get_number_of_scripts()
 {
     integer i = 1;
@@ -43,7 +66,9 @@ integer get_number_of_scripts()
     }
     return i;
 }
+
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -51,15 +76,18 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 Readout_Say(string say, string SCRIPT_CHANNEL)
 {
     llSleep(0.2);
     llMessageLinked(LINK_THIS, 90022, say, SCRIPT_CHANNEL);
 }
+
 string Key2Number(key objKey)
 {
     return llGetSubString((string)llAbs((integer)("0x" + llGetSubString((string)objKey, -8, -1)) & 1073741823 ^ -1073741825), 6, -1);
 }
+
 init_sitters()
 {
     SITTERS = [];
@@ -71,10 +99,12 @@ init_sitters()
         SITTER_POSES += "";
     }
 }
+
 string element(string text, integer x)
 {
     return llList2String(llParseStringKeepNulls(text, ["|"], []), x);
 }
+
 start_sequence(integer sequence_index, key av)
 {
     integer wasRunning = llListFindList(running_sequence_indexes, [sequence_index]);
@@ -82,9 +112,9 @@ start_sequence(integer sequence_index, key av)
     {
         if (llList2Key(running_uuid, wasRunning) == av)
         {
-            running_uuid = llListReplaceList(running_uuid, [], wasRunning, wasRunning);
-            running_sequence_indexes = llListReplaceList(running_sequence_indexes, [], wasRunning, wasRunning);
-            running_pointers = llListReplaceList(running_pointers, [], wasRunning, wasRunning);
+            running_uuid = llDeleteSubList(running_uuid, wasRunning, wasRunning);
+            running_sequence_indexes = llDeleteSubList(running_sequence_indexes, wasRunning, wasRunning);
+            running_pointers = llDeleteSubList(running_pointers, wasRunning, wasRunning);
         }
     }
     running_uuid += av;
@@ -92,6 +122,7 @@ start_sequence(integer sequence_index, key av)
     running_pointers += 0;
     llSetTimerEvent(0.01);
 }
+
 sequence()
 {
     list anims;
@@ -108,7 +139,7 @@ sequence()
         integer j;
         while (j <= llGetListLength(sequence_durations))
         {
-            integer lastDuration = (integer)llList2String(sequence_durations, j - 1);
+            integer lastDuration = llList2Integer(sequence_durations, j - 1);
             integer repeats = FALSE;
             if (lastDuration < 0)
             {
@@ -124,7 +155,7 @@ sequence()
             {
                 anim = llStringTrim(llList2String(sequence_anims, j - 1), STRING_TRIM);
             }
-            if (anim)
+            if (anim != "")
             {
                 if (IsInteger(anim))
                 {
@@ -138,7 +169,7 @@ sequence()
                 sequence_pointer++;
                 jump go;
             }
-            integer duration = llAbs((integer)llList2String(sequence_durations, j));
+            integer duration = llAbs(llList2Integer(sequence_durations, j));
             sequence_length += duration;
             j++;
         }
@@ -162,6 +193,7 @@ sequence()
         }
     }
 }
+
 remove_sequences(key id)
 {
     integer index;
@@ -172,9 +204,9 @@ remove_sequences(key id)
         list sequence = llParseStringKeepNulls(llList2String(anim_animsequences, llList2Integer(running_sequence_indexes, index)), ["|"], []);
         running_sequence_indexes = llDeleteSubList(running_sequence_indexes, index, index);
         running_pointers = llDeleteSubList(running_pointers, index, index);
-        while (sequence)
+        while (sequence != [])
         {
-            if ((!IsInteger(llList2String(sequence, 0))) && llList2String(sequence, 0) != "none")
+            if (!IsInteger(llList2String(sequence, 0)) && llList2String(sequence, 0) != "none")
             {
                 llMessageLinked(LINK_THIS, 90002, llList2String(sequence, 0), id);
             }
@@ -186,6 +218,7 @@ remove_sequences(key id)
         llSetTimerEvent(0);
     }
 }
+
 default
 {
     state_entry()
@@ -198,15 +231,18 @@ default
             notecard_query = llGetNotecardLine(notecard_name, 0);
         }
     }
+
     timer()
     {
         sequence();
         llSetTimerEvent(1);
     }
+
     on_rez(integer start)
     {
         is_running = TRUE;
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (num == 90100)
@@ -214,7 +250,7 @@ default
             list data = llParseString2List(msg, ["|"], []);
             if (llList2String(data, 1) == "[FACES]")
             {
-                llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2String(data, 2));
+                llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2Key(data, 2));
                 if (id == llGetOwner())
                 {
                     is_running = (!is_running);
@@ -234,7 +270,7 @@ default
             if (num == 90045)
             {
                 list data = llParseStringKeepNulls(msg, ["|"], []);
-                integer sitter = (integer)llList2String(data, 0);
+                integer sitter = llList2Integer(data, 0);
                 if (id == llList2Key(SITTERS, sitter))
                 {
                     string given_posename = llList2String(data, 1);
@@ -247,7 +283,7 @@ default
                         if (llList2String(anim_triggers, i) == given_posename)
                         {
                             integer reference = llListFindList(anim_triggers, [(string)sitter + "|" + llList2String(anim_animsequences, i)]);
-                            if (!~reference)
+                            if (reference == -1)
                             {
                                 reference = i;
                             }
@@ -303,7 +339,7 @@ default
                 integer i;
                 for (i = 0; i < llGetListLength(anim_triggers); i++)
                 {
-                    if (!llSubStringIndex(llList2String(anim_triggers, i), msg + "|"))
+                    if (llSubStringIndex(llList2String(anim_triggers, i), msg + "|") == 0)
                     {
                         list trigger = llParseString2List(llList2String(anim_triggers, i), ["|"], []);
                         list sequence = llParseString2List(llList2String(anim_animsequences, i), ["|"], []);
@@ -312,7 +348,7 @@ default
                         {
                             if (IsInteger(llList2String(sequence, x)))
                             {
-                                sequence = llListReplaceList(sequence, [llList2String(facial_anim_list, (integer)llList2String(sequence, x))], x, x);
+                                sequence = llListReplaceList(sequence, [llList2String(facial_anim_list, llList2Integer(sequence, x))], x, x);
                             }
                         }
                         Readout_Say("ANIM " + llList2String(trigger, 1) + "|" + llDumpList2String(sequence, "|"), msg);
@@ -322,26 +358,32 @@ default
             }
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_INVENTORY)
         {
             if (llGetInventoryKey(notecard_name) != notecard_key)
             {
-                llResetScript();
+                llResetScript(); // llResetScript() never returns
             }
-            else if (get_number_of_scripts() != llGetListLength(SITTERS))
+            if (get_number_of_scripts() != llGetListLength(SITTERS))
             {
                 init_sitters();
             }
         }
-        else if (change & CHANGED_LINK)
+        /*
+        // If you uncomment this, don't make this an 'else if', as
+        // changed events may come several at a time.
+        if (change & CHANGED_LINK)
         {
             if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) == ZERO_VECTOR)
             {
             }
         }
+        */
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)

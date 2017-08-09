@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™ Xcite!";
 string version = "1.02";
 string notecard_name = "[AV]Xcite_settings";
@@ -27,6 +27,7 @@ string CURRENT_POSE;
 list TIMERS;
 list SITTERS;
 integer DEBUG;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -34,13 +35,15 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "]:" + out);
     }
 }
+
 key key_request;
+
 string parse_text(string say)
 {
     integer i;
     for (i = 0; i < llGetListLength(SITTERS); i++)
     {
-        string sitter_name = llList2String(llParseString2List(llKey2Name(llList2String(SITTERS, i)), [" "], []), 0);
+        string sitter_name = llList2String(llParseString2List(llKey2Name(llList2Key(SITTERS, i)), [" "], []), 0);
         if (sitter_name == "")
         {
             sitter_name = "(nobody)";
@@ -49,10 +52,12 @@ string parse_text(string say)
     }
     return say;
 }
+
 string strReplace(string str, string search, string replace)
 {
     return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
+
 default
 {
     state_entry()
@@ -61,6 +66,7 @@ default
         Out(0, "Loading...");
         notecard_query = llGetNotecardLine(notecard_name, 0);
     }
+
     changed(integer change)
     {
         if (change & CHANGED_INVENTORY)
@@ -78,6 +84,7 @@ default
             }
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (sender == llGetLinkNumber())
@@ -98,17 +105,17 @@ default
                     }
                     llSetTimerEvent(TIMER_DEFAULT);
                     list data = llParseStringKeepNulls(msg, ["|"], []);
-                    integer script_channel = (integer)llList2String(data, 0);
+                    integer script_channel = llList2Integer(data, 0);
                     CURRENT_POSE = llList2String(data, 1);
                     SITTERS = llParseStringKeepNulls(llList2String(data, 4), ["@"], []);
                     integer index = llListFindList(POSE_AND_SITTER, [CURRENT_POSE + "|" + (string)script_channel]);
-                    if (!~index)
+                    if (index == -1)
                     {
                         index = llListFindList(POSE_AND_SITTER, [CURRENT_POSE + "|*"]);
-                        if (!~index)
+                        if (index == -1)
                         {
                             index = llListFindList(POSE_AND_SITTER, ["*|*"]);
-                            if (!~index)
+                            if (index == -1)
                             {
                                 return;
                             }
@@ -118,9 +125,9 @@ default
                     {
                         if (DEBUG)
                         {
-                            Out(0, "Setting " + name + "'s tilt to " + (string)llList2Integer(XCITE_TILT, index));
+                            Out(0, "Setting " + name + "'s tilt to " + llList2String(XCITE_TILT, index));
                         }
-                        llMessageLinked(LINK_SET, 20020, name + "|" + (string)llList2Integer(XCITE_TILT, index), "");
+                        llMessageLinked(LINK_SET, 20020, name + "|" + llList2String(XCITE_TILT, index), "");
                     }
                     else
                     {
@@ -142,6 +149,7 @@ default
             }
         }
     }
+
     timer()
     {
         integer i;
@@ -154,6 +162,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
@@ -169,17 +178,17 @@ default
                 list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
                 if (command == "TIMER")
                 {
-                    TIMER_DEFAULT = (integer)llList2String(parts, 0);
+                    TIMER_DEFAULT = llList2Integer(parts, 0);
                 }
                 else if (command == "DEBUG")
                 {
-                    DEBUG = (integer)llList2String(parts, 0);
+                    DEBUG = llList2Integer(parts, 0);
                 }
                 else if (command == "XCITE")
                 {
                     POSE_AND_SITTER += [llStringTrim(llList2String(parts, 0), STRING_TRIM) + "|" + llList2String(parts, 1)];
                     XCITE_COMMANDS += [llList2String(parts, 2) + "|" + llList2String(parts, 3) + "|" + llList2String(parts, 4) + "|" + llList2String(parts, 5)];
-                    XCITE_TILT += (integer)llList2String(parts, 6);
+                    XCITE_TILT += llList2Integer(parts, 6);
                 }
                 notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }

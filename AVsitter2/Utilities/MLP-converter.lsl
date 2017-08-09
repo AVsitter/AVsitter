@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter2 MLP converter";
 string version = "2.2";
 string notecard_basename = "AVpos";
@@ -25,6 +25,7 @@ integer animator_count;
 integer animator_total;
 list ommit = ["default", "stand"];
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -32,14 +33,15 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 string FormatFloat(float f, integer num_decimals)
 {
-    float rounding = (float)(".5e-" + (string)num_decimals) - 5e-07;
+    float rounding = (float)(".5e-" + (string)num_decimals) - .5e-6;
     if (f < 0.)
         f -= rounding;
     else
         f += rounding;
-    string ret = llGetSubString((string)f, 0, num_decimals - (!num_decimals) - 7);
+    string ret = llGetSubString((string)f, 0, num_decimals - !num_decimals - 7);
     if (llSubStringIndex(ret, ".") != -1)
     {
         while (llGetSubString(ret, -1, -1) == "0")
@@ -53,6 +55,7 @@ string FormatFloat(float f, integer num_decimals)
     }
     return ret;
 }
+
 finish()
 {
     if (llSubStringIndex(llGetObjectName(), "Utilities") == -1) // remove it except from Utilities box
@@ -61,6 +64,7 @@ finish()
         llRemoveInventory(llGetScriptName());
     }
 }
+
 get_notecards()
 {
     integer i;
@@ -77,6 +81,7 @@ get_notecards()
         }
     }
 }
+
 Readout_Say(string say)
 {
     string objectname = llGetObjectName();
@@ -84,6 +89,7 @@ Readout_Say(string say)
     llRegionSayTo(llGetOwner(), 0, "◆" + say);
     llSetObjectName(objectname);
 }
+
 default
 {
     state_entry()
@@ -105,6 +111,7 @@ default
             finish();
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)

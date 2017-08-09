@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this 
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user 
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™ Security 2.2";
 string script_basename = "[AV]sitA";
 string menucontrol_script = "[AV]root-control";
@@ -26,6 +26,7 @@ list MENU_TYPES = ["ALL", "OWNER", "GROUP"];
 integer SIT_INDEX;
 integer MENU_INDEX;
 string lastmenu;
+
 integer pass_security(key id, string context)
 {
     integer ALLOWED = FALSE;
@@ -47,6 +48,7 @@ integer pass_security(key id, string context)
     }
     return ALLOWED;
 }
+
 check_sitters()
 {
     integer i = llGetNumberOfPrims();
@@ -61,14 +63,17 @@ check_sitters()
         i--;
     }
 }
+
 back_to_adjust(integer SCRIPT_CHANNEL, key sitter)
 {
     llMessageLinked(LINK_SET, 90101, (string)SCRIPT_CHANNEL + "|[ADJUST]", sitter);
 }
+
 list order_buttons(list menu_items)
 {
     return llList2List(menu_items, -3, -1) + llList2List(menu_items, -6, -4) + llList2List(menu_items, -9, -7) + llList2List(menu_items, -12, -10);
 }
+
 register_touch(key id, integer animation_menu_function, integer active_prim, integer giveFailedMessage)
 {
     if (pass_security(id, "MENU"))
@@ -94,18 +99,21 @@ register_touch(key id, integer animation_menu_function, integer active_prim, int
         llDialog(id, product + "\n\nSorry, Menu access is set to: " + llList2String(MENU_TYPES, MENU_INDEX), [], -164289491);
     }
 }
+
 main_menu()
 {
     dialog("Sit access: " + llList2String(SIT_TYPES, SIT_INDEX) + "\nMenu access: " + llList2String(MENU_TYPES, MENU_INDEX) + "\n\nChange security settings:", ["[BACK]", "Sit", "Menu"]);
     lastmenu = "";
 }
+
 dialog(string text, list menu_items)
 {
     llListenRemove(menu_handle);
-    menu_handle = llListen(menu_channel = ((integer)llFrand(2147483646) + 1) * -1, "", llGetOwner(), "");
+    menu_handle = llListen(menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1, "", llGetOwner(), ""); // 7FFFFF80 = max float < 2^31
     llDialog(llGetOwner(), product + "\n\n" + text, order_buttons(menu_items), menu_channel);
     llSetTimerEvent(600);
 }
+
 integer check_for_RLV()
 {
     if (llGetInventoryType(RLV_script) == INVENTORY_SCRIPT)
@@ -114,17 +122,20 @@ integer check_for_RLV()
     }
     return FALSE;
 }
+
 default
 {
     state_entry()
     {
         llMessageLinked(LINK_SET, 90202, (string)check_for_RLV(), "");
     }
+
     timer()
     {
         llSetTimerEvent(0);
         llListenRemove(menu_handle);
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (num == 90201)
@@ -146,14 +157,14 @@ default
                 if (id == llGetOwner())
                 {
                     active_prim = sender;
-                    active_script_channel = (integer)llList2String(data, 0);
-                    active_sitter = (key)llList2String(data, 2);
+                    active_script_channel = llList2Integer(data, 0);
+                    active_sitter = llList2Key(data, 2);
                     main_menu();
                 }
                 else
                 {
                     llRegionSayTo(id, 0, "Sorry, only the owner can change security settings.");
-                    llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2String(data, 2));
+                    llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2Key(data, 2));
                 }
             }
         }
@@ -162,6 +173,7 @@ default
             llListenRemove(menu_handle);
         }
     }
+
     listen(integer listen_channel, string name, key id, string msg)
     {
         if (msg == "Sit")
@@ -198,6 +210,7 @@ default
         }
         llListenRemove(menu_handle);
     }
+
     changed(integer change)
     {
         if (change & CHANGED_LINK)
@@ -205,6 +218,7 @@ default
             check_sitters();
         }
     }
+
     touch_end(integer touched)
     {
         if (check_for_RLV() || llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) != ZERO_VECTOR)

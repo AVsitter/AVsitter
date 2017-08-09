@@ -4,13 +4,22 @@ NOTES.md
 MARKETPLACE.md
 optimized
 
-# Compressed/optimized LSL scripts
+# Release
+AVsitter2/AVsitter2.zip
+AVsitter2/AVsitter2-oss.zip
+
+# Compressed/optimized/processed LSL scripts
 *.lslz
+*.lslo
+*.oss
 
 .project
 .buildpath
 .settings
 .externalToolBuilders
+
+# Linux backup files
+*~
 
 # Windows image file caches
 Thumbs.db
