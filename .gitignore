@@ -6,10 +6,12 @@ optimized
 
 # Release
 AVsitter2/AVsitter2.zip
+AVsitter2/AVsitter2-oss.zip
 
-# Compressed/optimized LSL scripts
+# Compressed/optimized/processed LSL scripts
 *.lslz
 *.lslo
+*.oss
 
 .project
 .buildpath
