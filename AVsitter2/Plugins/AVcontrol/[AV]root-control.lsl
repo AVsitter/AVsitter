@@ -80,7 +80,7 @@ controller_menu(key id)
             integer i;
             for (i = 0; i < llGetListLength(SITTERS); i++)
             {
-                if (llList2Key(SITTERS, i) != NULL_KEY)
+                if (llList2String(SITTERS, i) != NULL_KEY)
                 {
                     menu_items += llGetSubString(strReplace(llKey2Name(llList2Key(SITTERS, i)), " Resident", ""), 0, 11);
                     SITTERS_MENUKEYS += llList2Key(SITTERS, i);

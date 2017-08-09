@@ -736,7 +736,7 @@ default
                     list X = SITTERS + SITTERS;
                     if (llSubStringIndex(CURRENT_POSE_NAME, "P:"))
                     {
-                        while (llList2Key(X, target_script) == "" && target_script + 1 < llGetListLength(X))
+                        while (llList2String(X, target_script) == "" && target_script + 1 < llGetListLength(X))
                         {
                             target_script++;
                         }
@@ -747,7 +747,7 @@ default
                     }
                     else
                     {
-                        while (llList2Key(X, target_script) != "" && target_script < llGetListLength(SITTERS) + SCRIPT_CHANNEL + 1)
+                        while (llList2String(X, target_script) != "" && target_script < llGetListLength(SITTERS) + SCRIPT_CHANNEL + 1)
                         {
                             target_script++;
                         }
@@ -866,7 +866,7 @@ default
                 }
                 for (i = 0; i < llGetListLength(SITTERS); i++)
                 {
-                    if (llList2Key(SITTERS, i) != "" && llListFindList(AVPRIMS, [llList2Key(SITTERS, i)]) == -1)
+                    if (llList2String(SITTERS, i) != "" && llListFindList(AVPRIMS, [llList2Key(SITTERS, i)]) == -1)
                     {
                         llSetTimerEvent(0);
                         stood = TRUE;

@@ -288,7 +288,7 @@ default
             integer n = llList2Integer(button_data, 0);
             if (llGetListLength(button_data) > 2)
             {
-                id = llList2String(button_data, 2);
+                id = llList2Key(button_data, 2);
             }
             else if (CONTROLLER != MY_SITTER)
             {

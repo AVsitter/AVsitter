@@ -115,7 +115,7 @@ default
             {
                 llMessageLinked(LINK_SET, 90101, llDumpList2String(["X", message, id], "|"), id);
             }
-            else if (llGetSubString(message, 0, 0) == "⊘" || (!select_type && llList2Integer(SYNCS, button_index) == FALSE && llList2Key(SITTERS, button_index) != NULL_KEY && llList2Key(SITTERS, button_index) != id))
+            else if (llGetSubString(message, 0, 0) == "⊘" || (!select_type && llList2Integer(SYNCS, button_index) == FALSE && llList2String(SITTERS, button_index) != NULL_KEY && llList2Key(SITTERS, button_index) != id))
             {
                 menu(id);
             }

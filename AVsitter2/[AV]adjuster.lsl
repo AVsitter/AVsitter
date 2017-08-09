@@ -422,7 +422,7 @@ default
                     }
                     if (llGetInventoryType(lookfor) == INVENTORY_SCRIPT)
                     {
-                        llMessageLinked(LINK_THIS, 90020, (string)script_channel, llList2String(scripts, index));
+                        llMessageLinked(LINK_THIS, 90020, (string)script_channel, llList2Key(scripts, index));
                         return;
                     }
                 }
@@ -874,7 +874,7 @@ default
             }
             else if (llList2String(data, 0) == "MENU")
             {
-                if (llList2String(data, 1) == controller)
+                if (llList2Key(data, 1) == controller)
                 {
                     llMessageLinked(LINK_SET, 90005, "", llDumpList2String([controller, llList2String(SITTERS, num)], "|"));
                 }

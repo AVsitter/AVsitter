@@ -962,7 +962,7 @@ state running
                 integer index = llListFindList(DETECTED_AVATAR_SHORTNAMES, [msg]);
                 if (~index)
                 {
-                    if (llList2String(DETECTED_AVATAR_KEYS, index) == CONTROLLER)
+                    if (llList2Key(DETECTED_AVATAR_KEYS, index) == CONTROLLER)
                     {
                         info_dialog(CONTROLLER, "you can not capture yourself");
                     }

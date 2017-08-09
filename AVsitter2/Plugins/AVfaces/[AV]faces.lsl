@@ -250,7 +250,7 @@ default
             list data = llParseString2List(msg, ["|"], []);
             if (llList2String(data, 1) == "[FACES]")
             {
-                llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2String(data, 2));
+                llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2Key(data, 2));
                 if (id == llGetOwner())
                 {
                     is_running = (!is_running);

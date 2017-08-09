@@ -492,7 +492,7 @@ default
                 {
                     if (llSubStringIndex(llList2String(prop_triggers, i), msg + "|") == 0)
                     {
-                        string type = (string)llList2Integer(prop_types, i);
+                        string type = llList2String(prop_types, i);
                         if (type == "0")
                         {
                             type = "";

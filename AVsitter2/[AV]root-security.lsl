@@ -164,7 +164,7 @@ default
                 else
                 {
                     llRegionSayTo(id, 0, "Sorry, only the owner can change security settings.");
-                    llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2String(data, 2));
+                    llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2Key(data, 2));
                 }
             }
         }

@@ -43,7 +43,7 @@ string parse_text(string say)
     integer i;
     for (i = 0; i < llGetListLength(SITTERS); i++)
     {
-        string sitter_name = llList2String(llParseString2List(llKey2Name(llList2String(SITTERS, i)), [" "], []), 0);
+        string sitter_name = llList2String(llParseString2List(llKey2Name(llList2Key(SITTERS, i)), [" "], []), 0);
         if (sitter_name == "")
         {
             sitter_name = "(nobody)";
