@@ -21,6 +21,7 @@ integer prop_id;
 integer prop_point;
 integer experience_denied_reason;
 key originalowner;
+key parentkey;
 key give_prop_warning_request;
 
 unsit_all()
@@ -88,6 +89,11 @@ state prop
         else
         {
             llSetClickAction(CLICK_ACTION_TOUCH);
+        }
+        if(llGetStartParameter())
+        {
+            parentkey = llList2String(llGetObjectDetails(llGetKey(), [OBJECT_REZZER_KEY]), 0);
+            llSetTimerEvent(10);
         }
     }
 
@@ -233,6 +239,22 @@ state prop
         else if (message == "PROPSEARCH" && (!llGetAttached()))
         {
             llSay(comm_channel, "SAVEPROP|" + (string)prop_id);
+        }
+    }
+    
+    timer()
+    {
+        //the parent key should be stored global?
+        if(llGetBoundingBox(parentkey) == [])
+        {
+            if(!llGetAttached())
+            {
+                llDie();
+            }
+            else
+            {
+                llRequestPermissions(llGetOwner(), PERMISSION_ATTACH);
+            }
         }
     }
 }
