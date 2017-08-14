@@ -79,7 +79,7 @@ memory()
 
 integer animation_menu(integer animation_menu_function)
 {
-    if (animation_menu_function == -1 || (MENU_LIST != []) < 2 && (!helper_mode) && llGetInventoryType(select_script) == INVENTORY_SCRIPT)
+    if ((animation_menu_function == -1 || (MENU_LIST != []) < 2) && !helper_mode && llGetInventoryType(select_script) == INVENTORY_SCRIPT)
     {
         llMessageLinked(LINK_SET, 90009, CONTROLLER, MY_SITTER);
     }
@@ -137,7 +137,7 @@ integer animation_menu(integer animation_menu_function)
         }
         list menu_items0;
         list menu_items2;
-        if ((~current_menu) || llGetInventoryType(select_script) == INVENTORY_SCRIPT)
+        if (~current_menu || llGetInventoryType(select_script) == INVENTORY_SCRIPT)
         {
             menu_items0 += "[BACK]";
         }
@@ -160,14 +160,14 @@ integer animation_menu(integer animation_menu_function)
             menu_items0 += "<< Softer";
             menu_items0 += "Harder >>";
         }
-        if (AMENU == 2 || (AMENU == 1 && (!~current_menu)) || (~llSubStringIndex(submenu_info, "A")))
+        if (AMENU == 2 || (AMENU == 1 && !~current_menu) || ~llSubStringIndex(submenu_info, "A"))
         {
             if (!(OLD_HELPER_METHOD && helper_mode))
             {
                 menu_items2 += "[ADJUST]";
             }
         }
-        if (llSubStringIndex(onSit, "ASK") && ((!~current_menu) && SWAP == 1 || SWAP == 2 || (~llSubStringIndex(submenu_info, "S"))) && (number_of_sitters > 1 && (!(llGetInventoryType(select_script) == INVENTORY_SCRIPT))))
+        if (llSubStringIndex(onSit, "ASK") && ((!~current_menu && SWAP == 1) || SWAP == 2 || ~llSubStringIndex(submenu_info, "S")) && (number_of_sitters > 1 && llGetInventoryType(select_script) != INVENTORY_SCRIPT))
         {
             menu_items2 += "[SWAP]";
         }
@@ -339,7 +339,7 @@ default
                     if (~current_menu)
                     {
                         current_menu -= 1;
-                        while ((~current_menu) && llSubStringIndex(llList2String(MENU_LIST, current_menu), "M:") != 0)
+                        while (~current_menu && llSubStringIndex(llList2String(MENU_LIST, current_menu), "M:") != 0)
                         {
                             current_menu--;
                         }
@@ -409,7 +409,7 @@ default
             {
                 doit = TRUE;
             }
-            if (doit && ((~index) || msg == ""))
+            if (doit && (~index || msg == ""))
             {
                 ANIM_INDEX = index;
                 integer broadcast = TRUE;
@@ -465,7 +465,7 @@ default
         }
         else if (num == 90030 && (one == SCRIPT_CHANNEL || two == SCRIPT_CHANNEL))
         {
-            CONTROLLER = (MY_SITTER = "");
+            CONTROLLER = MY_SITTER = "";
         }
         else if (num == 90100 || num == 90101)
         {
@@ -473,8 +473,8 @@ default
             if (llList2String(data, 1) == "[HELPER]")
             {
                 menu_page = 0;
-                helper_mode = (!helper_mode);
-                if ((key)llList2String(data, 2) == MY_SITTER && (!OLD_HELPER_METHOD))
+                helper_mode = !helper_mode;
+                if ((key)llList2String(data, 2) == MY_SITTER && !OLD_HELPER_METHOD)
                 {
                     animation_menu(0);
                 }
@@ -517,11 +517,11 @@ default
             }
             if (num == 90299)
             {
-                MENU_LIST = (DATA_LIST = (POS_ROT_LIST = []));
+                MENU_LIST = DATA_LIST = POS_ROT_LIST = [];
             }
             else if (num == 90070)
             {
-                CONTROLLER = (MY_SITTER = id);
+                CONTROLLER = MY_SITTER = id;
                 menu_page = 0;
                 current_menu = -1;
                 menu_channel = ((integer)llFrand(2147483646) + 1) * -1;
@@ -529,7 +529,7 @@ default
             }
             else if (num == 90065 && sender == llGetLinkNumber())
             {
-                CONTROLLER = (MY_SITTER = "");
+                CONTROLLER = MY_SITTER = "";
                 llListenRemove(menu_handle);
             }
             else if (num == 90300)
@@ -585,7 +585,7 @@ default
                 MTYPE = (integer)llList2String(data, 3);
                 ETYPE = (integer)llList2String(data, 4);
                 SWAP = (integer)llList2String(data, 5);
-                FIRST_INDEX = (ANIM_INDEX = llListFindList(MENU_LIST, [llList2String(data, 6)]));
+                FIRST_INDEX = ANIM_INDEX = llListFindList(MENU_LIST, [llList2String(data, 6)]);
                 BRAND = llList2String(data, 7);
                 CUSTOM_TEXT = llList2String(data, 8);
                 ADJUST_MENU = llList2String(data, 9);

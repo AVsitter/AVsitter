@@ -205,7 +205,7 @@ remove_sequences(key id)
         running_pointers = llDeleteSubList(running_pointers, index, index);
         while (sequence)
         {
-            if ((!IsInteger(llList2String(sequence, 0))) && llList2String(sequence, 0) != "none")
+            if (!IsInteger(llList2String(sequence, 0)) && llList2String(sequence, 0) != "none")
             {
                 llMessageLinked(LINK_THIS, 90002, llList2String(sequence, 0), id);
             }

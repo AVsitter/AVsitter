@@ -182,7 +182,7 @@ string parse_text(string say)
 
 start_sequence(integer index)
 {
-    no_waits_yet = (sequence_running = TRUE);
+    no_waits_yet = sequence_running = TRUE;
     SEQUENCE_POINTER = 0;
     CURRENT_SEQUENCE_NAME = llList2String(SEQUENCE_DATA_NAMES, index);
     CURRENT_SEQUENCE_ACTIONS = llParseStringKeepNulls(llList2String(SEQUENCE_DATA_ACTIONS, index), ["◆"], []);
@@ -199,7 +199,7 @@ stop_sequence(integer stopSound)
     sequence_running = FALSE;
     SEQUENCE_POINTER = -1;
     llSetTimerEvent(0);
-    if (stopSound && (~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["SOUND"])))
+    if (stopSound && ~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["SOUND"]))
     {
         llStopSound();
     }
@@ -342,7 +342,7 @@ state running
             else if (num == 90205)
             {
                 llMessageLinked(LINK_SET, 90005, "", id);
-                playsounds = (!playsounds);
+                playsounds = !playsounds;
                 if (playsounds)
                 {
                     llSay(0, "Sounds ON");
@@ -363,7 +363,7 @@ state running
                 if (index != -1)
                 {
                     start_sequence(index);
-                    if ((~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["WAIT"])) && (~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["PLAY"])))
+                    if (~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["WAIT"]) && ~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["PLAY"]))
                     {
                         sequence_control();
                     }

@@ -44,7 +44,7 @@ default
 
     timer()
     {
-        if (llGetLinkNumber() == 0 || llGetLinkNumber() == 1 && llGetInventoryType("[AV]object") != INVENTORY_SCRIPT)
+        if ((llGetLinkNumber() == 0 || llGetLinkNumber() == 1) && llGetInventoryType("[AV]object") != INVENTORY_SCRIPT)
         {
             if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) == ZERO_VECTOR)
             {

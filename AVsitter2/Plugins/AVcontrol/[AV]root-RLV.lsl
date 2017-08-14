@@ -196,7 +196,7 @@ rlv_top_menu()
     list menu_items;
     string text = "RLV for " + slaveName;
     list extra;
-    if (llGetListLength(SITTING_AVATARS) > 1 || (~llListFindList(DESIGNATIONS_NOW, ["S"])))
+    if (llGetListLength(SITTING_AVATARS) > 1 || ~llListFindList(DESIGNATIONS_NOW, ["S"]))
     {
         extra += "[BACK]";
     }
@@ -207,7 +207,7 @@ rlv_top_menu()
         {
             if (slaveWearingRelay)
             {
-                if ((~designationIndex) && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
+                if (~designationIndex && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
                 {
                     text = slaveName + " has not chosen submissive role.";
                 }
@@ -320,7 +320,7 @@ release(key SLAVE, integer allowUnsit)
         llSay(0, llKey2Name(SLAVE) + " was released.");
         relay(SLAVE, baseReleaseRestrictions);
         relay(SLAVE, "!release");
-        if (allowUnsit && (~llSubStringIndex(baseReleaseRestrictions, "@unsit=force")))
+        if (allowUnsit && ~llSubStringIndex(baseReleaseRestrictions, "@unsit=force"))
         {
             llUnSit(SLAVE);
         }
@@ -413,7 +413,7 @@ select_submissive_rlv()
     {
         text = "There are no submissives sitting.";
     }
-    if ((~llListFindList(DESIGNATIONS_NOW, ["S"])) && llGetListLength(SITTING_AVATARS) < llGetListLength(DESIGNATIONS_NOW))
+    if (~llListFindList(DESIGNATIONS_NOW, ["S"]) && llGetListLength(SITTING_AVATARS) < llGetListLength(DESIGNATIONS_NOW))
     {
         text += "\n\nCapture = trap a new avatar.";
         menu_items += "Capture...";
@@ -745,7 +745,7 @@ state running
                 integer isSittingIndex = llListFindList(SITTING_AVATARS, [id]);
                 if (~isSittingIndex)
                 {
-                    if (RLV_ON && (~designationIndex) && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "S")
+                    if (RLV_ON && ~designationIndex && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "S")
                     {
                         if (subControl)
                         {
@@ -1014,12 +1014,12 @@ state running
                 }
                 else if (msg == "Stop" || msg == "Start")
                 {
-                    TimelockPaused = (!TimelockPaused);
+                    TimelockPaused = !TimelockPaused;
                     llSetTimerEvent(1);
                 }
                 else if (msg == "Hide" || msg == "Show")
                 {
-                    TimelockHidden = (!TimelockHidden);
+                    TimelockHidden = !TimelockHidden;
                 }
                 else
                 {
@@ -1264,7 +1264,7 @@ state running
                 }
                 else if (command == "TIMELOCK")
                 {
-                    defaultTimelock = (TimelockSecUntilRelease = (integer)part0 * 60);
+                    defaultTimelock = TimelockSecUntilRelease = (integer)part0 * 60;
                 }
                 else if (command == "ONCAPTURE")
                 {

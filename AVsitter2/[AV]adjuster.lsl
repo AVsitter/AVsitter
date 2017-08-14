@@ -54,7 +54,7 @@ string FormatFloat(float f, integer num_decimals)
         f -= rounding;
     else
         f += rounding;
-    string ret = llGetSubString((string)f, 0, num_decimals - (!num_decimals) - 7);
+    string ret = llGetSubString((string)f, 0, num_decimals - !num_decimals - 7);
     if (~llSubStringIndex(ret, "."))
     {
         while (llGetSubString(ret, -1, -1) == "0")
@@ -321,7 +321,7 @@ unsit_all()
 
 toggle_helper_mode()
 {
-    helper_mode = (!helper_mode);
+    helper_mode = !helper_mode;
     if (helper_mode)
     {
         if (OLD_HELPER_METHOD)
@@ -779,7 +779,7 @@ default
             {
                 llRequestPermissions(id, PERMISSION_TRACK_CAMERA);
             }
-            else if ((~llListFindList(["[DONE]", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [msg])) && (~llListFindList(["[POSE]", "[SYNC]", "[SYNC]2", "[PROP]", "[FACE]"], [adding])))
+            else if (~llListFindList(["[DONE]", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [msg]) && ~llListFindList(["[POSE]", "[SYNC]", "[SYNC]2", "[PROP]", "[FACE]"], [adding]))
             {
                 string choice = llList2String(get_choices(), (integer)msg - 1);
                 if (adding == "[PROP]")
