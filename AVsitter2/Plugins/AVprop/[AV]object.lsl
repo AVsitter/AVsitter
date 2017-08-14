@@ -90,10 +90,15 @@ state prop
         {
             llSetClickAction(CLICK_ACTION_TOUCH);
         }
-        if(llGetStartParameter())
+
+        parentkey = llList2String(llGetObjectDetails(llGetKey(), [OBJECT_REZZER_KEY]), 0);
+        if(llGetStartParameter() && !llList2Integer(llGetObjectDetails(parentkey, [OBJECT_ATTACHED_POINT]), 0))
         {
-            parentkey = llList2String(llGetObjectDetails(llGetKey(), [OBJECT_REZZER_KEY]), 0);
             llSetTimerEvent(10);
+        }
+        else
+        {
+            llSetTimerEvent(0);
         }
     }
 
@@ -244,8 +249,7 @@ state prop
     
     timer()
     {
-        //the parent key should be stored global?
-        if(llGetBoundingBox(parentkey) == [])
+        if(llGetObjectMass(parentkey) == 0)
         {
             if(!llGetAttached())
             {
