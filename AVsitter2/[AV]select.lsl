@@ -42,7 +42,7 @@ Out(integer level, string out)
 
 string strReplace(string str, string search, string replace)
 {
-    return llDumpList2String(llParseStringKeepNulls((str = "") + str, [search], []), replace);
+    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
 
 list order_buttons(list buttons)

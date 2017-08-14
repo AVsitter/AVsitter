@@ -62,7 +62,7 @@ controller_menu(key id)
     }
     else
     {
-        if (llGetListLength(SITTERS) == 1 && ((!check_for_RLV()) || (!~llListFindList(DESIGNATIONS_NOW, ["S"])) || llGetListLength(DESIGNATIONS_NOW) == 1))
+        if (llGetListLength(SITTERS) == 1 && ((!check_for_RLV()) || (llListFindList(DESIGNATIONS_NOW, ["S"]) == -1) || llGetListLength(DESIGNATIONS_NOW) == 1))
         {
             if (check_for_RLV())
             {

@@ -55,7 +55,7 @@ string FormatFloat(float f, integer num_decimals)
     else
         f += rounding;
     string ret = llGetSubString((string)f, 0, num_decimals - !num_decimals - 7);
-    if (~llSubStringIndex(ret, "."))
+    if (llSubStringIndex(ret, ".") != -1)
     {
         while (llGetSubString(ret, -1, -1) == "0")
         {
@@ -112,7 +112,7 @@ list order_buttons(list buttons)
 
 string strReplace(string str, string search, string replace)
 {
-    return llDumpList2String(llParseStringKeepNulls((str = "") + str, [search], []), replace);
+    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
 
 preview_anim(string anim, key id)
@@ -355,7 +355,7 @@ default
 {
     state_entry()
     {
-        if (~llSubStringIndex(llGetScriptName(), " "))
+        if (llSubStringIndex(llGetScriptName(), " ") != -1)
         {
             remove_script("Use only one of this script!");
         }
@@ -386,7 +386,7 @@ default
             if (num == 90065)
             {
                 integer index = llListFindList(SITTERS, [id]);
-                if (~index)
+                if (index != -1)
                 {
                     SITTERS = llListReplaceList(SITTERS, [NULL_KEY], index, index);
                 }
@@ -530,7 +530,7 @@ default
                     else
                     {
                         msg = strReplace(msg, "S:B:", "BUTTON ");
-                        if (!~llSubStringIndex(msg, "�"))
+                        if (llSubStringIndex(msg, "�") == -1)
                         {
                             msg = strReplace(msg, "|90200", "");
                         }
@@ -578,7 +578,7 @@ default
                         {
                             string type = "SYNC";
                             string temp_pose_name = llList2String(SITTER_POSES, i);
-                            if (!llSubStringIndex(llList2String(SITTER_POSES, i), "P:"))
+                            if (llSubStringIndex(llList2String(SITTER_POSES, i), "P:") == 0)
                             {
                                 type = "POSE";
                                 temp_pose_name = llGetSubString(temp_pose_name, 2, -1);
@@ -779,7 +779,7 @@ default
             {
                 llRequestPermissions(id, PERMISSION_TRACK_CAMERA);
             }
-            else if (~llListFindList(["[DONE]", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [msg]) && ~llListFindList(["[POSE]", "[SYNC]", "[SYNC]2", "[PROP]", "[FACE]"], [adding]))
+            else if (llListFindList(["[DONE]", "1", "2", "3", "4", "5", "6", "7", "8", "9"], [msg]) != -1 && llListFindList(["[POSE]", "[SYNC]", "[SYNC]2", "[PROP]", "[FACE]"], [adding]) != -1)
             {
                 string choice = llList2String(get_choices(), (integer)msg - 1);
                 if (adding == "[PROP]")

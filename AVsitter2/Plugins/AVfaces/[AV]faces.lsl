@@ -282,7 +282,7 @@ default
                         if (llList2String(anim_triggers, i) == given_posename)
                         {
                             integer reference = llListFindList(anim_triggers, [(string)sitter + "|" + llList2String(anim_animsequences, i)]);
-                            if (!~reference)
+                            if (reference == -1)
                             {
                                 reference = i;
                             }
@@ -338,7 +338,7 @@ default
                 integer i;
                 for (i = 0; i < llGetListLength(anim_triggers); i++)
                 {
-                    if (!llSubStringIndex(llList2String(anim_triggers, i), msg + "|"))
+                    if (llSubStringIndex(llList2String(anim_triggers, i), msg + "|") == 0)
                     {
                         list trigger = llParseString2List(llList2String(anim_triggers, i), ["|"], []);
                         list sequence = llParseString2List(llList2String(anim_animsequences, i), ["|"], []);

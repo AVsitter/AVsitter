@@ -477,7 +477,7 @@ default
     {
         SEQUENCE_POINTER += 2;
         list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
-        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || ~llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER)))
+        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER)) != -1)
         {
             SEQUENCE_POINTER = 0;
         }
@@ -621,7 +621,7 @@ default
                 }
                 adjust_pose_menu();
             }
-            else if (msg == "[HELPER]" && id != llGetOwner() && !~llSubStringIndex(llGetLinkName(!!llGetLinkNumber()), "HELPER"))
+            else if (msg == "[HELPER]" && id != llGetOwner() && llSubStringIndex(llGetLinkName(!!llGetLinkNumber()), "HELPER") == -1)
             {
                 dialog("Only the owner can rez the helpers. If the owner is nearby they can type '/5 helper' in chat.", ["[BACK]"]);
             }
@@ -945,9 +945,9 @@ default
                     }
                 }
             }
-            if (stood && !llStringLength(llDumpList2String(SITTERS, "")))
+            if (stood && (string)SITTERS == "")
             {
-                if (DFLT || !~llSubStringIndex(CURRENT_POSE_NAME, "P:"))
+                if (DFLT || llSubStringIndex(CURRENT_POSE_NAME, "P:") == -1)
                 {
                     DEFAULT_POSITION = FIRST_POSITION;
                     DEFAULT_ROTATION = FIRST_ROTATION;

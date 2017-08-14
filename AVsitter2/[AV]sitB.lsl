@@ -74,12 +74,12 @@ list order_buttons(list buttons)
 
 memory()
 {
-    llOwnerSay(llGetScriptName() + "[" + version + "] " + (string)(MENU_LIST != []) + " Items Ready, Mem=" + (string)(65536 - llGetUsedMemory()));
+    llOwnerSay(llGetScriptName() + "[" + version + "] " + (string)llGetListLength(MENU_LIST) + " Items Ready, Mem=" + (string)(65536 - llGetUsedMemory()));
 }
 
 integer animation_menu(integer animation_menu_function)
 {
-    if ((animation_menu_function == -1 || (MENU_LIST != []) < 2) && !helper_mode && llGetInventoryType(select_script) == INVENTORY_SCRIPT)
+    if ((animation_menu_function == -1 || llGetListLength(MENU_LIST) < 2) && !helper_mode && llGetInventoryType(select_script) == INVENTORY_SCRIPT)
     {
         llMessageLinked(LINK_SET, 90009, CONTROLLER, MY_SITTER);
     }
@@ -112,7 +112,7 @@ integer animation_menu(integer animation_menu_function)
             anim_has_speeds = TRUE;
         }
         string CURRENT_POSE_NAME;
-        if (~FIRST_INDEX)
+        if (FIRST_INDEX != -1)
         {
             CURRENT_POSE_NAME = llList2String(MENU_LIST, ANIM_INDEX);
             menu += " [" + llList2String(llParseString2List(CURRENT_POSE_NAME, ["P:"], []), 0);
@@ -131,18 +131,18 @@ integer animation_menu(integer animation_menu_function)
         }
         integer total_items;
         integer i = current_menu + 1;
-        while (i++ < (MENU_LIST != []) && llSubStringIndex(llList2String(MENU_LIST, i), "M:"))
+        while (i++ < llGetListLength(MENU_LIST) && llSubStringIndex(llList2String(MENU_LIST, i), "M:"))
         {
             ++total_items;
         }
         list menu_items0;
         list menu_items2;
-        if (~current_menu || llGetInventoryType(select_script) == INVENTORY_SCRIPT)
+        if (current_menu != -1 || llGetInventoryType(select_script) == INVENTORY_SCRIPT)
         {
             menu_items0 += "[BACK]";
         }
         string submenu_info;
-        if (~current_menu)
+        if (current_menu != -1)
         {
             submenu_info = llList2String(DATA_LIST, current_menu);
         }
@@ -155,23 +155,23 @@ integer animation_menu(integer animation_menu_function)
                 menu_items2 += "[SAVE]";
             }
         }
-        else if (~llSubStringIndex(submenu_info, "V"))
+        else if (llSubStringIndex(submenu_info, "V") != -1)
         {
             menu_items0 += "<< Softer";
             menu_items0 += "Harder >>";
         }
-        if (AMENU == 2 || (AMENU == 1 && !~current_menu) || ~llSubStringIndex(submenu_info, "A"))
+        if (AMENU == 2 || (AMENU == 1 && current_menu == -1) || llSubStringIndex(submenu_info, "A") != -1)
         {
             if (!(OLD_HELPER_METHOD && helper_mode))
             {
                 menu_items2 += "[ADJUST]";
             }
         }
-        if (llSubStringIndex(onSit, "ASK") && ((!~current_menu && SWAP == 1) || SWAP == 2 || ~llSubStringIndex(submenu_info, "S")) && (number_of_sitters > 1 && llGetInventoryType(select_script) != INVENTORY_SCRIPT))
+        if (llSubStringIndex(onSit, "ASK") && ((current_menu == -1 && SWAP == 1) || SWAP == 2 || llSubStringIndex(submenu_info, "S") != -1) && (number_of_sitters > 1 && llGetInventoryType(select_script) != INVENTORY_SCRIPT))
         {
             menu_items2 += "[SWAP]";
         }
-        if (!~current_menu)
+        if (current_menu == -1)
         {
             if (has_RLV && (llGetSubString(RLVDesignations, SCRIPT_CHANNEL, SCRIPT_CHANNEL) == "D" || CONTROLLER != MY_SITTER))
             {
@@ -182,7 +182,7 @@ integer animation_menu(integer animation_menu_function)
                 }
             }
         }
-        integer items_per_page = 12 - (menu_items2 != []) - (menu_items0 != []);
+        integer items_per_page = 12 - llGetListLength(menu_items2) - llGetListLength(menu_items0);
         if (items_per_page < total_items)
         {
             menu_items2 += ["[<<]", "[>>]"];
@@ -192,14 +192,14 @@ integer animation_menu(integer animation_menu_function)
         integer page_start = i = current_menu + 1 + menu_page * items_per_page;
         do
         {
-            if (i < (MENU_LIST != []))
+            if (i < llGetListLength(MENU_LIST))
             {
                 string m = llList2String(MENU_LIST, i);
                 if (!llSubStringIndex(m, "M:"))
                 {
                     jump end;
                 }
-                if (!~llListFindList(["T:", "P:", "B:"], [llGetSubString(m, 0, 1)]))
+                if (llListFindList(["T:", "P:", "B:"], [llGetSubString(m, 0, 1)]) == -1)
                 {
                     menu_items1 += m;
                 }
@@ -213,8 +213,8 @@ integer animation_menu(integer animation_menu_function)
         @end;
         if (animation_menu_function == 1)
         {
-            integer pages = total_items / (12 - (menu_items2 != []) - (menu_items0 != []));
-            if (!(total_items % (12 - (menu_items2 != []) - (menu_items0 != []))))
+            integer pages = total_items / (12 - llGetListLength(menu_items2) - llGetListLength(menu_items0));
+            if (!(total_items % (12 - llGetListLength(menu_items2) - llGetListLength(menu_items0))))
             {
                 pages--;
             }
@@ -222,7 +222,7 @@ integer animation_menu(integer animation_menu_function)
         }
         if (submenu_info == "V")
         {
-            while ((menu_items1 != []) < items_per_page)
+            while (llGetListLength(menu_items1) < items_per_page)
             {
                 menu_items1 += " ";
             }
@@ -252,12 +252,12 @@ default
     {
         string channel;
         integer index = llListFindList(MENU_LIST, [msg]);
-        if (!~index)
+        if (index == -1)
         {
             channel = (string)SCRIPT_CHANNEL;
             index = llListFindList(MENU_LIST, ["P:" + msg]);
         }
-        if (~index)
+        if (index != -1)
         {
             llMessageLinked(LINK_THIS, 90050, (string)channel + "|" + msg + "|" + (string)SET, MY_SITTER);
             llMessageLinked(LINK_THIS, 90000, msg, channel);
@@ -268,7 +268,7 @@ default
             return;
         }
         index = llListFindList(MENU_LIST, ["M:" + msg]);
-        if (~index)
+        if (index != -1)
         {
             llMessageLinked(LINK_SET, 90051, (string)channel + "|" + llGetSubString(msg, 0, -2) + "|" + (string)SET, MY_SITTER);
             menu_page = 0;
@@ -278,7 +278,7 @@ default
             return;
         }
         index = llListFindList(MENU_LIST, ["B:" + msg]);
-        if (~index)
+        if (index != -1)
         {
             list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, index), ["�"], []);
             if (llList2String(button_data, 1))
@@ -301,7 +301,7 @@ default
         {
             if (msg == "[<<]")
             {
-                if (!~--menu_page)
+                if (--menu_page == -1)
                 {
                     menu_page = animation_menu(1);
                 }
@@ -318,7 +318,7 @@ default
         else if (msg == "[BACK]")
         {
             menu_page = 0;
-            if (!~current_menu)
+            if (current_menu == -1)
             {
                 if (llGetInventoryType(select_script) == INVENTORY_SCRIPT)
                 {
@@ -328,7 +328,7 @@ default
             }
             else
             {
-                if (~last_menu)
+                if (last_menu != -1)
                 {
                     current_menu = last_menu;
                     last_menu = -1;
@@ -336,10 +336,10 @@ default
                 else
                 {
                     current_menu = llListFindList(MENU_LIST, ["T:" + llGetSubString(llList2String(MENU_LIST, current_menu), 2, -1)]);
-                    if (~current_menu)
+                    if (current_menu != -1)
                     {
                         current_menu -= 1;
-                        while (~current_menu && llSubStringIndex(llList2String(MENU_LIST, current_menu), "M:") != 0)
+                        while (current_menu != -1 && llSubStringIndex(llList2String(MENU_LIST, current_menu), "M:") != 0)
                         {
                             current_menu--;
                         }
@@ -352,7 +352,7 @@ default
         {
             llMessageLinked(LINK_SET, 90100, llDumpList2String([SCRIPT_CHANNEL, msg, MY_SITTER], "|"), id);
         }
-        else if (!~index)
+        else if (index == -1)
         {
             llMessageLinked(LINK_SET, 90101, llDumpList2String([SCRIPT_CHANNEL, msg, CONTROLLER], "|"), MY_SITTER);
         }
@@ -389,7 +389,7 @@ default
         if (num == 90000 || num == 90010 || num == 90003)
         {
             integer index = llListFindList(MENU_LIST, [msg]);
-            if (!~index)
+            if (index == -1)
             {
                 index = llListFindList(MENU_LIST, ["P:" + msg]);
             }
@@ -409,7 +409,7 @@ default
             {
                 doit = TRUE;
             }
-            if (doit && (~index || msg == ""))
+            if (doit && (index != -1 || msg == ""))
             {
                 ANIM_INDEX = index;
                 integer broadcast = TRUE;
@@ -453,7 +453,7 @@ default
                 {
                     current_menu = -1;
                 }
-                else if (~index)
+                else if (index != -1)
                 {
                     last_menu = -1;
                     menu_page = 0;
@@ -511,7 +511,7 @@ default
         {
             list data = llParseStringKeepNulls(id, ["|"], []);
             integer index = llListFindList(MENU_LIST, [llList2String(data, 0)]);
-            if (!~index)
+            if (index == -1)
             {
                 index = llListFindList(MENU_LIST, ["P:" + llList2String(data, 0)]);
             }
@@ -538,11 +538,11 @@ default
                 if (llGetListLength(data) > 2)
                 {
                     place_to_add = current_menu;
-                    while (place_to_add < llGetListLength(MENU_LIST) && llSubStringIndex(llList2String(MENU_LIST, place_to_add + 1), "M:"))
+                    while (place_to_add < llGetListLength(MENU_LIST) && llSubStringIndex(llList2String(MENU_LIST, place_to_add + 1), "M:") != 0)
                     {
                         ++place_to_add;
                     }
-                    if (!llSubStringIndex(llList2String(MENU_LIST, place_to_add + 1), "M:"))
+                    if (llSubStringIndex(llList2String(MENU_LIST, place_to_add + 1), "M:") == 0)
                     {
                         ++place_to_add;
                     }
@@ -552,11 +552,11 @@ default
                 POS_ROT_LIST = llListInsertList(POS_ROT_LIST, [0, 0], place_to_add * 2);
                 if (llGetListLength(data) == 4)
                 {
-                    if (!~FIRST_INDEX)
+                    if (FIRST_INDEX == -1)
                     {
                         FIRST_INDEX = place_to_add;
                     }
-                    if (~index)
+                    if (index != -1)
                     {
                         place_to_add = index;
                     }
@@ -568,7 +568,7 @@ default
             }
             else if (num == 90301)
             {
-                if (~index)
+                if (index != -1)
                 {
                     POS_ROT_LIST = llListReplaceList(POS_ROT_LIST, [(vector)llList2String(data, 1), (vector)llList2String(data, 2)], index * 2, index * 2 + 1);
                     if (llGetListLength(data) != 3)
@@ -600,13 +600,13 @@ default
             {
                 Readout_Say("V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"));
                 integer i = -1;
-                while (++i < (MENU_LIST != []))
+                while (++i < llGetListLength(MENU_LIST))
                 {
                     llSleep(0.5);
                     Readout_Say("S:" + llList2String(MENU_LIST, i) + "|" + llList2String(DATA_LIST, i));
                 }
                 i = -1;
-                while (++i < (MENU_LIST != []))
+                while (++i < llGetListLength(MENU_LIST))
                 {
                     if (llList2Vector(POS_ROT_LIST, i * 2))
                     {

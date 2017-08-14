@@ -164,7 +164,7 @@ relay_select_menu()
     integer i;
     for (i = 0; i < llGetListLength(DETECTED_AVATAR_KEYS); i++)
     {
-        if (!~llListFindList(SITTING_AVATARS, [llList2Key(DETECTED_AVATAR_KEYS, i)]))
+        if (llListFindList(SITTING_AVATARS, [llList2Key(DETECTED_AVATAR_KEYS, i)]) == -1)
         {
             menu_items += llList2String(DETECTED_AVATAR_SHORTNAMES, i);
         }
@@ -203,7 +203,7 @@ rlv_top_menu()
     integer designationIndex = llListFindList(DESIGNATIONS_NOW, [SLAVE]);
     if (RLV_ON)
     {
-        if (!~llListFindList(CAPTIVES, [SLAVE]))
+        if (llListFindList(CAPTIVES, [SLAVE]) == -1)
         {
             if (slaveWearingRelay)
             {
@@ -236,7 +236,7 @@ rlv_top_menu()
         }
         if (llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "S")
         {
-            if (!~llListFindList(SITTING_AVATARS, [CONTROLLER]))
+            if (llListFindList(SITTING_AVATARS, [CONTROLLER]) == -1)
             {
                 menu_items += ["[STOP]"];
             }
@@ -463,12 +463,12 @@ find_seat(key id, integer index, string msg, integer captureSub)
                 }
             }
             DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [id], first_available, first_available);
-            if (!~llListFindList(DESIGNATIONS_NOW, ["S"]))
+            if (llListFindList(DESIGNATIONS_NOW, ["S"]) == -1)
             {
                 integer i = llGetListLength(CAPTIVES) - 1;
                 while (i > 0)
                 {
-                    if (!~llListFindList(SITTING_AVATARS, [llList2Key(CAPTIVES, i)]))
+                    if (llListFindList(SITTING_AVATARS, [llList2Key(CAPTIVES, i)]) == -1)
                     {
                         CAPTIVES = llDeleteSubList(CAPTIVES, i - 1, i);
                     }
@@ -759,7 +759,7 @@ state running
                     }
                     if (onSit == "ASK")
                     {
-                        if (!~designationIndex)
+                        if (designationIndex == -1)
                         {
                             ask_role(id);
                             return;
@@ -859,7 +859,7 @@ state running
                     TimelockSecUntilRelease = defaultTimelock;
                 }
                 llSay(0, newSlaveName + " was captured!");
-                if (!~llListFindList(CAPTIVES, [newSlave]))
+                if (llListFindList(CAPTIVES, [newSlave]) == -1)
                 {
                     CAPTIVES += [newSlaveName, newSlave];
                     if (llGetListLength(CAPTIVES) / 2 > llGetListLength(DESIGNATIONS_NOW))
@@ -917,7 +917,7 @@ state running
         else if (channel == RELAY_SEARCH_CHANNEL && expecting_relay_results)
         {
             key relay_owner = llGetOwnerKey(id);
-            if (!~llListFindList(DETECTED_AVATAR_KEYS, [relay_owner]))
+            if (llListFindList(DETECTED_AVATAR_KEYS, [relay_owner]) == -1)
             {
                 DETECTED_AVATAR_KEYS += relay_owner;
                 DETECTED_AVATAR_SHORTNAMES += llGetSubString(strReplace(llKey2Name(relay_owner), " Resident", ""), 0, 11);
@@ -1066,7 +1066,7 @@ state running
                 llSetTimerEvent(0);
                 PairWhoStartedCapture = (string)CONTROLLER + (string)SLAVE;
                 integer index = llListFindList(SITTERS, [(string)SLAVE]);
-                if (!~index)
+                if (index == -1)
                 {
                     index = 0;
                 }
