@@ -62,7 +62,7 @@ set_camera(integer byButton)
             if (llGetPermissionsKey() == mySitter)
             {
                 integer index = llListFindList(camera_triggers, [myPose]);
-                if (!~index)
+                if (index == -1)
                 {
                     if (~lastByButton)
                     {

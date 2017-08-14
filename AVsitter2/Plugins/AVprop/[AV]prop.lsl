@@ -261,7 +261,7 @@ remove_sitter_props_by_pose_group(string msg)
     for (; i < llGetListLength(props); i++)
     {
         string prop_group = llList2String(prop_groups, llList2Integer(props, i));
-        if (!~llListFindList(groups, [prop_group]))
+        if (llListFindList(groups, [prop_group]) == -1)
         {
             groups += prop_group;
             remove_props_by_group(llListFindList(sequential_prop_groups, [prop_group]));
@@ -394,7 +394,7 @@ default
                         if (llList2Key(SITTERS, i) == sitting_av_or_sitter || id == "" || (string)sitting_av_or_sitter == (string)i)
                         {
                             integer index = llListFindList(prop_triggers, [(string)i + "|" + msg]);
-                            if (!~index)
+                            if (index == -1)
                             {
                                 if (llGetInventoryType(main_script) != INVENTORY_SCRIPT)
                                 {

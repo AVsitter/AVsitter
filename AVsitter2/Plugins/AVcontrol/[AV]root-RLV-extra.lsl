@@ -264,7 +264,7 @@ state running
             {
                 integer index = llListFindList(CLOTHING_LAYERS, [msg]);
                 command = "outfit";
-                if (!~index)
+                if (index == -1)
                 {
                     index = llListFindList(ATTACHMENT_POINTS, [msg]);
                     command = "attach";
@@ -420,7 +420,7 @@ state running
                     integer j;
                     while (j < llGetListLength(subRestrictions))
                     {
-                        if (!~llListFindList(currentRestrictions, [llList2String(subRestrictions, j)]))
+                        if (llListFindList(currentRestrictions, [llList2String(subRestrictions, j)]) == -1)
                         {
                             inActive = TRUE;
                         }

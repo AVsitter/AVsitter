@@ -109,13 +109,13 @@ default
                     CURRENT_POSE = llList2String(data, 1);
                     SITTERS = llParseStringKeepNulls(llList2String(data, 4), ["@"], []);
                     integer index = llListFindList(POSE_AND_SITTER, [CURRENT_POSE + "|" + (string)script_channel]);
-                    if (!~index)
+                    if (index == -1)
                     {
                         index = llListFindList(POSE_AND_SITTER, [CURRENT_POSE + "|*"]);
-                        if (!~index)
+                        if (index == -1)
                         {
                             index = llListFindList(POSE_AND_SITTER, ["*|*"]);
-                            if (!~index)
+                            if (index == -1)
                             {
                                 return;
                             }
