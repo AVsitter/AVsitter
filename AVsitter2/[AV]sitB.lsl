@@ -1,17 +1,17 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™";
 string version = "2.2";
 string BRAND;
@@ -48,6 +48,7 @@ string RLVDesignations;
 string onSit;
 integer speed_index;
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -55,22 +56,27 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "]:" + out);
     }
 }
+
 send_anim_info(integer broadcast)
 {
     llMessageLinked(LINK_THIS, 90055, (string)SCRIPT_CHANNEL, llDumpList2String([llList2String(MENU_LIST, ANIM_INDEX), llList2String(DATA_LIST, ANIM_INDEX), llList2String(POS_ROT_LIST, ANIM_INDEX * 2), llList2String(POS_ROT_LIST, ANIM_INDEX * 2 + 1), broadcast, speed_index], "|"));
 }
+
 Readout_Say(string say)
 {
     llMessageLinked(LINK_THIS, 90022, say, (string)SCRIPT_CHANNEL);
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 memory()
 {
     llOwnerSay(llGetScriptName() + "[" + version + "] " + (string)(MENU_LIST != []) + " Items Ready, Mem=" + (string)(65536 - llGetUsedMemory()));
 }
+
 integer animation_menu(integer animation_menu_function)
 {
     if (animation_menu_function == -1 || (MENU_LIST != []) < 2 && (!helper_mode) && llGetInventoryType(select_script) == INVENTORY_SCRIPT)
@@ -227,6 +233,7 @@ integer animation_menu(integer animation_menu_function)
     }
     return 0;
 }
+
 default
 {
     state_entry()
@@ -240,6 +247,7 @@ default
             llResetOtherScript(main_script);
         }
     }
+
     listen(integer listen_channel, string name, key id, string msg)
     {
         string channel;
@@ -349,6 +357,7 @@ default
             llMessageLinked(LINK_SET, 90101, llDumpList2String([SCRIPT_CHANNEL, msg, CONTROLLER], "|"), MY_SITTER);
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_LINK)
@@ -372,6 +381,7 @@ default
             }
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         integer one = (integer)msg;

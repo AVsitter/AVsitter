@@ -1,26 +1,28 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string notecard_basename = "AVpos";
 integer variable1;
 key notecard_query;
 list ALL_USED_ANIMATIONS;
 list UNUSED_ANIMS;
+
 Owner_Say(string say)
 {
     llOwnerSay(llGetScriptName() + ": " + say);
 }
+
 finish()
 {
     Owner_Say("Check complete, removing script.");
@@ -31,6 +33,7 @@ finish()
         llRemoveInventory(llGetScriptName());
     }
 }
+
 default
 {
     state_entry()
@@ -51,6 +54,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
@@ -100,6 +104,7 @@ default
             }
         }
     }
+
     listen(integer chan, string name, key id, string msg)
     {
         if (msg == "YES")
@@ -116,6 +121,7 @@ default
         }
         finish();
     }
+
     timer()
     {
         Owner_Say("timeout");

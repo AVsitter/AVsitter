@@ -1,24 +1,24 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
 
 /*
  * Simple script used for updating a large number of furniture items at once
- * This script goes in a "sender" prim along with the latest copies of the 
- * (not running) scripts and inventory objects (e.g. prop objects) 
+ * This script goes in a "sender" prim along with the latest copies of the
+ * (not running) scripts and inventory objects (e.g. prop objects)
  * Touching the sender will shout in a radius and update all prims that respond.
  */
- 
+
 integer pin = -29752;
 string receiver_script = "update receiver (auto removing)";
 list objects_to_update;
@@ -26,12 +26,13 @@ list objects_files;
 integer menu_handle;
 key av;
 integer listenhandle;
+
 particles_on(key target)
 {
      llParticleSystem([
      PSYS_PART_FLAGS, 0 | PSYS_PART_INTERP_COLOR_MASK | PSYS_PART_INTERP_SCALE_MASK | PSYS_PART_FOLLOW_VELOCITY_MASK | PSYS_PART_EMISSIVE_MASK | PSYS_PART_TARGET_POS_MASK,
      PSYS_SRC_PATTERN, 0 | PSYS_SRC_PATTERN_DROP,
-     PSYS_PART_START_ALPHA, 1.00000,
+     PSYS_PART_START_ALPHA, 1.0,
      PSYS_PART_END_ALPHA, 1,
      PSYS_PART_START_COLOR, <1, 0, 0>,
      PSYS_PART_END_COLOR, <0, 0, 1>,
@@ -41,32 +42,35 @@ particles_on(key target)
      PSYS_SRC_MAX_AGE, 0,
      PSYS_SRC_ACCEL, <0, 0, 0>,
      PSYS_SRC_BURST_PART_COUNT, 250,
-     PSYS_SRC_BURST_RADIUS, 0.00000,
+     PSYS_SRC_BURST_RADIUS, 0.0,
      PSYS_SRC_BURST_RATE, 0.05766,
      PSYS_SRC_BURST_SPEED_MIN, 0.07813,
      PSYS_SRC_BURST_SPEED_MAX, 0.15625,
      PSYS_SRC_INNERANGLE, 0.09375,
-     PSYS_SRC_OUTERANGLE, 0.00000,
+     PSYS_SRC_OUTERANGLE, 0.0,
      PSYS_SRC_OMEGA, <0, 0, 0>,
      PSYS_SRC_TEXTURE, (key)"",
      PSYS_SRC_TARGET_KEY, target
      ]);
 }
+
 default
 {
     state_entry()
     {
         llParticleSystem([]);
-        listenhandle=llListen(pin, "", "", "");
+        listenhandle = llListen(pin, "", "", "");
     }
+
     on_rez(integer x)
     {
         llResetScript();
     }
+
     timer()
     {
-    	llSetTimerEvent(0);
-    	llListenRemove(listenhandle);
+        llSetTimerEvent(0);
+        llListenRemove(listenhandle);
         llRegionSayTo(av, 0, "Found " + (string)llGetListLength(objects_to_update) + " objects...");
         integer i;
         for (i = 0; i < llGetListLength(objects_to_update); i++)
@@ -146,6 +150,7 @@ default
         llRegionSayTo(av, 0, "Updating Complete!");
         llResetScript();
     }
+
     touch_start(integer touched)
     {
         if (llDetectedKey(0) == llGetOwner() || llSameGroup(llDetectedKey(0)))
@@ -167,6 +172,7 @@ default
             llSay(pin, "OBJECT_SEARCH|" + llDumpList2String(items, "|"));
         }
     }
+
     listen(integer chan, string name, key id, string msg)
     {
         if (llGetOwnerKey(id) == llGetOwner())
