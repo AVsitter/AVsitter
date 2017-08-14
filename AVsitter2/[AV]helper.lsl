@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
  * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string registration_product = "AVsitter2";
 string product = "AVhelper";
 string version = "2.2";
@@ -28,6 +28,7 @@ vector default_size = <0.12,0.12,3.5>;
 key key_request;
 vector my_pos;
 rotation my_rot;
+
 stop_all_anims()
 {
     if (llAvatarOnSitTarget())
@@ -46,6 +47,7 @@ stop_all_anims()
         }
     }
 }
+
 set_text()
 {
     string text = "▽";
@@ -62,6 +64,7 @@ set_text()
     text = t + " " + (string)helper_index + "\n" + text;
     llSetLinkPrimitiveParamsFast(llGetLinkNumber(), [PRIM_TEXT, text, llList2Vector(colors, helper_index % llGetListLength(colors)), 1]);
 }
+
 setup()
 {
     alpha = llList2Float(llGetPrimitiveParams([PRIM_COLOR, 0]), 1);
@@ -88,6 +91,7 @@ setup()
     }
     llRegionSay(comm_channel, "REG|" + (string)sitter_number);
 }
+
 default
 {
     state_entry()
@@ -110,6 +114,7 @@ default
         llSitTarget(-<0,0,0.35>, ZERO_ROTATION);
         llSetStatus(STATUS_PHANTOM, TRUE);
     }
+
     on_rez(integer start)
     {
         llResetTime();
@@ -137,6 +142,7 @@ default
             setup();
         }
     }
+
     listen(integer chan, string name, key id, string msg)
     {
         if (chan == 5 && id == CURRENT_AV)
@@ -216,6 +222,7 @@ default
             }
         }
     }
+
     timer()
     {
         if (my_pos != llGetPos() || my_rot != llGetRot())
@@ -229,6 +236,7 @@ default
             llDie();
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_LINK)
@@ -255,6 +263,7 @@ default
             }
         }
     }
+
     touch_start(integer total_number)
     {
         if (llGetStartParameter() != 0)
@@ -262,6 +271,7 @@ default
             llRegionSay(comm_channel, "MENU|" + (string)sitter_number + "|" + (string)llDetectedKey(0));
         }
     }
+
     run_time_permissions(integer perm)
     {
         if (perm & PERMISSION_TRIGGER_ANIMATION)

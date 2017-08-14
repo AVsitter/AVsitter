@@ -1,17 +1,17 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 float version = 1.2;
 string notecard_name = "AVpos";
 string url = "https://avsitter.com/settings.php"; // the settings dump service remains up for AVsitter customers. settings clear periodically.
@@ -24,14 +24,18 @@ vector pos_offset;
 string cache;
 string webkey;
 integer webcount;
-web(string say, integer force){
-    cache+=say;
-    if(llStringLength(llEscapeURL(cache))>1024 || force){
+
+web(string say, integer force)
+{
+    cache += say;
+    if (llStringLength(llEscapeURL(cache)) > 1024 || force)
+    {
         webcount++;
-        llHTTPRequest(url, [HTTP_METHOD,"POST",HTTP_MIMETYPE,"application/x-www-form-urlencoded",HTTP_VERIFY_CERT,FALSE], "w="+webkey+"&c="+(string)webcount+"&t="+llEscapeURL(cache));
-        cache="";
+        llHTTPRequest(url, [HTTP_METHOD, "POST", HTTP_MIMETYPE, "application/x-www-form-urlencoded", HTTP_VERIFY_CERT, FALSE], "w=" + webkey + "&c=" + (string)webcount + "&t=" + llEscapeURL(cache));
+        cache = "";
     }
 }
+
 integer IsVector(string s)
 {
     list split = llParseString2List(s, [" "], ["<", ">", ","]);
@@ -39,6 +43,7 @@ integer IsVector(string s)
         return FALSE;
     return !((string)((vector)s) == (string)((vector)((string)llListInsertList(split, ["-"], 5))));
 }
+
 string FormatFloat(float f, integer num_decimals)
 {
     float rounding = (float)(".5e-" + (string)num_decimals) - 5e-07;
@@ -60,10 +65,12 @@ string FormatFloat(float f, integer num_decimals)
     }
     return ret;
 }
+
 instructions()
 {
     llOwnerSay("\n\nINSTRUCTIONS:\n\nFOR MOVING ALL POSE & PROP POSITIONS BY AN OFFSET:\nManual Position: specify a position offset on channel 5, and positions will be converted by that offset. E.g. /5 <0,0,1.5>\nManual Rotation: specify a rotation offset on channel 6 (in degrees), and rotations will be converted by that offset, relative to the prim center. E.g. /6 <0,0,180>\n\nFOR RELOCATING SCRIPTS TO NEW PRIM:\n1. Unlink your object and re-link so that the prim you want to move the animations from is the root prim, then place this script inside the root prim.\n2. Touch the prim you want to locate the poses to. This prim should be empty or contain a script with llPassTouches(TRUE);\n3. The script will read out the notecard in chat, with pos/rot modified to the prim you touched.\n\nHave Fun! :)\n");
 }
+
 cut_above_text()
 {
     webkey = (string)llGenerateKey();
@@ -72,12 +79,14 @@ cut_above_text()
     Readout_Say("--✄--COPY BELOW INTO \"AVpos\" NOTECARD--✄--");
     Readout_Say("");
 }
+
 cut_below_text()
 {
     Readout_Say("");
     Readout_Say("--✄--COPY ABOVE INTO \"AVpos\" NOTECARD--✄--");
     Readout_Say("");
 }
+
 Readout_Say(string say)
 {
     llSleep(0.1);
@@ -85,8 +94,9 @@ Readout_Say(string say)
     llSetObjectName("");
     llRegionSayTo(llGetOwner(), 0, "◆" + say);
     llSetObjectName(objectname);
-    web(say+"\n",FALSE);
+    web(say + "\n", FALSE);
 }
+
 integer check_in_root()
 {
     if (llGetLinkNumber() > 1 || llGetInventoryType("AVpos") != INVENTORY_NOTECARD)
@@ -100,6 +110,7 @@ integer check_in_root()
     }
     return TRUE;
 }
+
 default
 {
     state_entry()
@@ -109,6 +120,7 @@ default
         llListen(5, "", llGetOwner(), "");
         llListen(6, "", llGetOwner(), "");
     }
+
     touch_start(integer touched)
     {
         check_in_root();
@@ -122,6 +134,7 @@ default
             notecard_query = llGetNotecardLine(notecard_name, notecard_line);
         }
     }
+
     listen(integer chan, string name, key id, string msg)
     {
         if (chan == 5)
@@ -155,6 +168,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)

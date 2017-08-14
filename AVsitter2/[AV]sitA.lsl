@@ -1,17 +1,17 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string product = "AVsitter™";
 string version = "2.2";
 string notecard_name = "AVpos";
@@ -82,6 +82,7 @@ string BRAND;
 string onSit;
 integer speed_index;
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -89,10 +90,12 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 list order_buttons(list buttons)
 {
     return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
 }
+
 integer get_number_of_scripts()
 {
     integer i;
@@ -100,12 +103,14 @@ integer get_number_of_scripts()
         ;
     return i;
 }
+
 dialog(string text, list menu_items)
 {
     llListenRemove(menu_handle);
     menu_handle = llListen(menu_channel = ((integer)llFrand(2147483646) + 1) * -1, "", CONTROLLER, "");
     llDialog(CONTROLLER, product + " " + version + "\n\n" + text, order_buttons(menu_items), menu_channel);
 }
+
 options_menu()
 {
     list menu_items;
@@ -139,6 +144,7 @@ options_menu()
     menu_items += "[POSE]";
     dialog("Adjust:", ["[BACK]"] + menu_items);
 }
+
 adjust_pose_menu()
 {
     string posrot_button = "Position";
@@ -150,10 +156,12 @@ adjust_pose_menu()
     }
     dialog("Personal adjustment:", ["[BACK]", posrot_button, value_button, "[DEFAULT]", "[SAVE]", "[SAVE ALL]", "X+", "Y+", "Z+", "X-", "Y-", "Z-"]);
 }
+
 integer IsInteger(string data)
 {
     return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
 }
+
 wipe_sit_targets()
 {
     integer i;
@@ -166,10 +174,12 @@ wipe_sit_targets()
         }
     }
 }
+
 primcount_error()
 {
     llDialog(llGetOwner(), "\nThere aren't enough prims for required SitTargets.\nYou must have one prim for each avatar to sit!", [], 23658);
 }
+
 sittargets()
 {
     wrong_primcount = FALSE;
@@ -235,14 +245,16 @@ sittargets()
     prep();
     set_sittarget();
 }
+
 prep()
 {
     has_security = (has_texture = FALSE);
     if (!SCRIPT_CHANNEL)
     {
-        llMessageLinked(LINK_SET, 90201, "", "");
+        llMessageLinked(LINK_SET, 90201, "", ""); // 90201=Ask for info about plugins
     }
 }
+
 release_sitter(integer i)
 {
     SITTERS = llListReplaceList(SITTERS, [""], i, i);
@@ -252,7 +264,7 @@ release_sitter(integer i)
         {
             if (MY_SITTER)
             {
-                llMessageLinked(LINK_SET, 90065, (string)SCRIPT_CHANNEL, MY_SITTER);
+                llMessageLinked(LINK_SET, 90065, (string)SCRIPT_CHANNEL, MY_SITTER); // 90065=sitter gone
             }
             if (llGetAgentSize(MY_SITTER) != ZERO_VECTOR && CURRENT_ANIMATION_FILENAME != "")
             {
@@ -263,6 +275,7 @@ release_sitter(integer i)
         }
     }
 }
+
 set_sittarget()
 {
     vector target_pos = DEFAULT_POSITION;
@@ -295,6 +308,7 @@ set_sittarget()
         llLinkSitTarget(target, target_pos - <0.,0.,0.4> + llRot2Up(target_rot) * 0.05, target_rot);
     }
 }
+
 update_current_anim_name()
 {
     list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
@@ -306,6 +320,7 @@ update_current_anim_name()
     }
     llSetTimerEvent((float)llList2String(SEQUENCE, SEQUENCE_POINTER + 1));
 }
+
 apply_current_anim(integer broadcast)
 {
     SEQUENCE_POINTER = 0;
@@ -347,7 +362,7 @@ apply_current_anim(integer broadcast)
                         OLD_SYNC = OLD_POSE_NAME;
                     }
                 }
-                llMessageLinked(LINK_SET, 90045, llDumpList2String([SCRIPT_CHANNEL, POSENAME, CURRENT_ANIMATION_SEQUENCE, SET, llDumpList2String(SITTERS, "@"), OLD_SYNC, IS_SYNC], "|"), MY_SITTER);
+                llMessageLinked(LINK_SET, 90045, llDumpList2String([SCRIPT_CHANNEL, POSENAME, CURRENT_ANIMATION_SEQUENCE, SET, llDumpList2String(SITTERS, "@"), OLD_SYNC, IS_SYNC], "|"), MY_SITTER); // 90045=Broadcast info about pose playing
             }
             if (HASKEYFRAME)
             {
@@ -369,6 +384,7 @@ apply_current_anim(integer broadcast)
         }
     }
 }
+
 sit_using_prim_params()
 {
     integer sitter_prim = llGetNumberOfPrims();
@@ -405,6 +421,7 @@ sit_using_prim_params()
         llSetKeyframedMotion([], [KFM_COMMAND, KFM_CMD_PLAY]);
     }
 }
+
 end_sitter()
 {
     llSetTimerEvent(0);
@@ -420,6 +437,7 @@ end_sitter()
         }
     }
 }
+
 default
 {
     state_entry()
@@ -444,7 +462,7 @@ default
             reading_notecard_section = TRUE;
         }
         notecard_key = llGetInventoryKey(notecard_name);
-        llMessageLinked(LINK_THIS, 90299, (string)SCRIPT_CHANNEL, "");
+        llMessageLinked(LINK_THIS, 90299, (string)SCRIPT_CHANNEL, ""); // 90299=send Reset to AVsitB
         if (llGetInventoryType(notecard_name) == INVENTORY_NOTECARD)
         {
             if (!SCRIPT_CHANNEL)
@@ -454,6 +472,7 @@ default
             notecard_query = llGetNotecardLine(notecard_name, reused_variable);
         }
     }
+
     timer()
     {
         SEQUENCE_POINTER += 2;
@@ -480,13 +499,15 @@ default
             }
         }
     }
+
     touch_end(integer touched)
     {
         if ((!SCRIPT_CHANNEL) && (!has_security) && MTYPE < 3)
         {
-            llMessageLinked(LINK_SET, 90005, "", llDetectedKey(0));
+            llMessageLinked(LINK_SET, 90005, "", llDetectedKey(0)); // 90005=send menu to user
         }
     }
+
     listen(integer listen_channel, string name, key id, string msg)
     {
         integer index = llListFindList(ADJUST_MENU, [msg]);
@@ -503,7 +524,7 @@ default
             index = llListFindList(["Position", "Rotation", "X+", "Y+", "Z+", "X-", "Y-", "Z-", "0.05m", "0.25m", "0.01m", "5°", "25°", "1°"], [msg]);
             if (msg == "[BACK]")
             {
-                llMessageLinked(LINK_SET, 90005, "", llDumpList2String([CONTROLLER, MY_SITTER], "|"));
+                llMessageLinked(LINK_SET, 90005, "", llDumpList2String([CONTROLLER, MY_SITTER], "|")); // 90005=send menu to user
             }
             else if (msg == "[POSE]")
             {
@@ -606,26 +627,27 @@ default
             }
             else
             {
-                llMessageLinked(LINK_SET, 90100, (string)SCRIPT_CHANNEL + "|" + msg + "|" + (string)MY_SITTER + "|" + (string)OLD_HELPER_METHOD, id);
+                llMessageLinked(LINK_SET, 90100, (string)SCRIPT_CHANNEL + "|" + msg + "|" + (string)MY_SITTER + "|" + (string)OLD_HELPER_METHOD, id); // 90100=Menu choice
             }
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         integer one = (integer)msg;
         integer two = (integer)((string)id);
-        if (num == 90075)
+        if (num == 90075) // 90075=old-style helper ask to animate
         {
             if (one == SCRIPT_CHANNEL)
             {
                 llRequestPermissions(id, PERMISSION_TRIGGER_ANIMATION);
             }
         }
-        else if (num == 90076)
+        else if (num == 90076) // 90076=old-style helper stop animating
         {
             release_sitter(one);
         }
-        else if (num == 90030)
+        else if (num == 90030) // 90030=swap sitters
         {
             if (one == SCRIPT_CHANNEL || two == SCRIPT_CHANNEL)
             {
@@ -647,27 +669,27 @@ default
             SITTERS = llListReplaceList(llListReplaceList(SITTERS, [""], one, one), [""], two, two);
             MY_SITTER = llList2Key(SITTERS, SCRIPT_CHANNEL);
         }
-        else if (num == 90070)
+        else if (num == 90070) // 90070=update SITTERS after permission granted
         {
             if (one != SCRIPT_CHANNEL)
             {
                 SITTERS = llListReplaceList(SITTERS, [id], one, one);
             }
         }
-        if (num == 90150)
+        if (num == 90150) // 90150=ask other AVsitA scripts to place their sittargets again
         {
             sittargets();
         }
-        else if (num == 90202)
+        else if (num == 90202) // 90202=security script present in root
         {
             has_security = TRUE;
             llPassTouches(has_security);
         }
-        else if (num == 90203)
+        else if (num == 90203) // 90203=texture script present in root (unused)
         {
             has_texture = TRUE;
         }
-        else if (num == 90298)
+        else if (num == 90298) // 90298=show SitTargets (/5 targets)
         {
             integer target = my_sittarget;
             if (llGetNumberOfPrims() == 1 && target == 1)
@@ -678,26 +700,26 @@ default
             llSleep(5);
             llSetLinkPrimitiveParams(target, [PRIM_TEXT, "", <1,1,1>, 1]);
         }
-        else if (num == 90011)
+        else if (num == 90011) // 90011=set link camera
         {
             llSetLinkCamera(LINK_THIS, (vector)msg, (vector)((string)id));
         }
-        else if (num == 90033)
+        else if (num == 90033) // 90033=clear menu listener
         {
             llListenRemove(menu_handle);
         }
         else if (id == MY_SITTER)
         {
             list data = llParseStringKeepNulls(msg, ["|"], []);
-            if (num == 90001)
+            if (num == 90001) // 90001=start an overlay animation
             {
                 llStartAnimation(msg);
             }
-            else if (num == 90002)
+            else if (num == 90002) // 90002=stop an overlay animation
             {
                 llStopAnimation(msg);
             }
-            else if (num == 90101)
+            else if (num == 90101) // 90101=menu option chosen
             {
                 CONTROLLER = (key)llList2String(data, 2);
                 if (llList2String(data, 1) == "[ADJUST]")
@@ -737,7 +759,7 @@ default
         }
         if (one == SCRIPT_CHANNEL)
         {
-            if (num == 90055)
+            if (num == 90055) // 90055=anim info from AVsitB
             {
                 list data = llParseStringKeepNulls(id, ["|"], []);
                 OLD_POSE_NAME = CURRENT_POSE_NAME;
@@ -757,7 +779,7 @@ default
                 apply_current_anim((integer)llList2String(data, 4));
                 set_sittarget();
             }
-            else if (num == 90057)
+            else if (num == 90057) // 90057=helper moved, update position
             {
                 list data = llParseStringKeepNulls(id, ["|"], []);
                 CURRENT_POSITION = (vector)llList2String(data, 0);
@@ -766,6 +788,7 @@ default
             }
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_LINK)
@@ -831,11 +854,11 @@ default
                                 }
                             }
                             llRequestPermissions(llGetLinkKey(i), PERMISSION_TRIGGER_ANIMATION);
-                            llMessageLinked(LINK_SET, 90060, (string)SCRIPT_CHANNEL, llGetLinkKey(i));
+                            llMessageLinked(LINK_SET, 90060, (string)SCRIPT_CHANNEL, llGetLinkKey(i)); // 90060=new sitter
                         }
                         else
                         {
-                            llMessageLinked(LINK_THIS, 90056, (string)SCRIPT_CHANNEL, llDumpList2String([CURRENT_POSE_NAME, CURRENT_ANIMATION_SEQUENCE, CURRENT_POSITION, CURRENT_ROTATION], "|"));
+                            llMessageLinked(LINK_THIS, 90056, (string)SCRIPT_CHANNEL, llDumpList2String([CURRENT_POSE_NAME, CURRENT_ANIMATION_SEQUENCE, CURRENT_POSITION, CURRENT_ROTATION], "|")); // 90056=send anim info
                         }
                     }
                     AVPRIMS += llGetLinkKey(i);
@@ -854,7 +877,7 @@ default
                             {
                                 if (MY_SITTER)
                                 {
-                                    llMessageLinked(LINK_SET, 90065, (string)SCRIPT_CHANNEL, MY_SITTER);
+                                    llMessageLinked(LINK_SET, 90065, (string)SCRIPT_CHANNEL, MY_SITTER); // 90065=sitter gone
                                 }
                                 if (llGetAgentSize(MY_SITTER) != ZERO_VECTOR && (integer)CURRENT_ANIMATION_FILENAME)
                                 {
@@ -913,11 +936,11 @@ default
                                 }
                             }
                             llRequestPermissions(actual_sitter, PERMISSION_TRIGGER_ANIMATION);
-                            llMessageLinked(LINK_SET, 90060, (string)SCRIPT_CHANNEL, actual_sitter);
+                            llMessageLinked(LINK_SET, 90060, (string)SCRIPT_CHANNEL, actual_sitter); // 90060=new sitter
                         }
                         else
                         {
-                            llMessageLinked(LINK_THIS, 90056, (string)SCRIPT_CHANNEL, llDumpList2String([CURRENT_POSE_NAME, CURRENT_ANIMATION_SEQUENCE, CURRENT_POSITION, CURRENT_ROTATION], "|"));
+                            llMessageLinked(LINK_THIS, 90056, (string)SCRIPT_CHANNEL, llDumpList2String([CURRENT_POSE_NAME, CURRENT_ANIMATION_SEQUENCE, CURRENT_POSITION, CURRENT_ROTATION], "|")); // 90056=send anim info
                         }
                     }
                 }
@@ -941,7 +964,7 @@ default
                 if (!SCRIPT_CHANNEL)
                 {
                     wipe_sit_targets();
-                    llMessageLinked(LINK_SET, 90150, "", "");
+                    llMessageLinked(LINK_SET, 90150, "", ""); // 90150=ask other AVsitA scripts to place their sittargets again
                 }
                 prep();
             }
@@ -955,6 +978,7 @@ default
             }
         }
     }
+
     run_time_permissions(integer perm)
     {
         if (perm & PERMISSION_TRIGGER_ANIMATION)
@@ -972,10 +996,10 @@ default
             reused_key = "";
             SITTERS = llListReplaceList(SITTERS, [CONTROLLER = (MY_SITTER = llGetPermissionsKey())], SCRIPT_CHANNEL, SCRIPT_CHANNEL);
             string channel_or_swap = (string)SCRIPT_CHANNEL;
-            integer lnk = 90000;
+            integer lnk = 90000; // 90000=play pose
             if (SWAPPED)
             {
-                lnk = 90010;
+                lnk = 90010; // 90010=play pose, ignoring ETYPE
                 SWAPPED = FALSE;
             }
             else if (llGetSubString(CURRENT_POSE_NAME, 0, 1) != "P:")
@@ -987,7 +1011,7 @@ default
             {
                 posename = llGetSubString(CURRENT_POSE_NAME, 2, -1);
             }
-            llMessageLinked(LINK_THIS, 90070, (string)SCRIPT_CHANNEL, MY_SITTER);
+            llMessageLinked(LINK_THIS, 90070, (string)SCRIPT_CHANNEL, MY_SITTER); // 90070=update SITTERS after permissions granted
             llMessageLinked(LINK_THIS, lnk, posename, channel_or_swap);
             if (wrong_primcount && WARN)
             {
@@ -998,14 +1022,17 @@ default
                 if (has_security)
                 {
                     llMessageLinked(LINK_SET, 90006, (string)animation_menu_function, MY_SITTER);
+                    // Docs say 90006 is:
+                    // "Register touch or sit to [AV]root-security script from [AV]sitA after permissions granted."
                 }
                 else
                 {
-                    llMessageLinked(LINK_SET, 90005, (string)animation_menu_function, llDumpList2String([CONTROLLER, MY_SITTER], "|"));
+                    llMessageLinked(LINK_SET, 90005, (string)animation_menu_function, llDumpList2String([CONTROLLER, MY_SITTER], "|")); // 90005=send menu to user
                 }
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
@@ -1019,9 +1046,9 @@ default
                 else
                 {
                     llSetText("", <1,1,1>, 1);
-                    llMessageLinked(LINK_SET, 90150, "", "");
+                    llMessageLinked(LINK_SET, 90150, "", ""); // 90150=ask other AVsitA scripts to place their sittargets again
                 }
-                llMessageLinked(LINK_THIS, 90302, (string)SCRIPT_CHANNEL, llDumpList2String([llGetListLength(SITTERS), llDumpList2String(SITTER_INFO, "�"), SET, MTYPE, ETYPE, SWAP, FIRST_POSENAME, BRAND, CUSTOM_TEXT, llDumpList2String(ADJUST_MENU, "�"), SELECT, AMENU, OLD_HELPER_METHOD, RLVDesignations, onSit], "|"));
+                llMessageLinked(LINK_THIS, 90302, (string)SCRIPT_CHANNEL, llDumpList2String([llGetListLength(SITTERS), llDumpList2String(SITTER_INFO, "�"), SET, MTYPE, ETYPE, SWAP, FIRST_POSENAME, BRAND, CUSTOM_TEXT, llDumpList2String(ADJUST_MENU, "�"), SELECT, AMENU, OLD_HELPER_METHOD, RLVDesignations, onSit], "|")); // 90302=send notecard settings to AVsitB
                 reused_variable = (llGetFreeMemory() - 5000) / 100;
             }
             else
@@ -1146,15 +1173,15 @@ default
                             FIRST_POSITION = (DEFAULT_POSITION = (CURRENT_POSITION = (vector)pos));
                             FIRST_ROTATION = (DEFAULT_ROTATION = (CURRENT_ROTATION = (vector)rot));
                         }
-                        llMessageLinked(LINK_THIS, 90301, (string)SCRIPT_CHANNEL, command + "|" + pos + "|" + rot);
+                        llMessageLinked(LINK_THIS, 90301, (string)SCRIPT_CHANNEL, command + "|" + pos + "|" + rot); // 90301=send update to AVsitB
                     }
                     else
                     {
                         part0 = llGetSubString(part0, 0, 22);
                         if (command == "SEQUENCE")
                         {
-                            command = "BUTTON";
-                            part1 = "90210";
+                            command = "BUTTON"; // Act as a button
+                            part1 = "90210"; // Link code: Trigger sequence
                         }
                         if (command == "POSE" || command == "SYNC" || command == "MENU" || command == "TOMENU" || command == "BUTTON")
                         {
@@ -1186,9 +1213,9 @@ default
                             }
                             else if (command == "BUTTON" && part1 == "")
                             {
-                                part1 = "90200";
+                                part1 = "90200"; // default to rez prop
                             }
-                            llMessageLinked(LINK_THIS, 90300, (string)SCRIPT_CHANNEL, part0 + "|" + part1);
+                            llMessageLinked(LINK_THIS, 90300, (string)SCRIPT_CHANNEL, part0 + "|" + part1); // 90300=update AVsitB
                         }
                     }
                 }

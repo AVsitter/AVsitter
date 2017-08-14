@@ -1,17 +1,17 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
+ * Copyright © the AVsitter Contributors (http://avsitter.github.io)
  * AVsitter™ is a trademark. For trademark use policy see:
  * https://avsitter.github.io/TRADEMARK.mediawiki
- * 
+ *
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
- 
+
 string version = "2.2";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
@@ -26,6 +26,7 @@ list camera_triggers;
 list camera_settings;
 integer lastByButton = -1;
 string lastPose;
+
 integer get_number_of_scripts()
 {
     integer i = 1;
@@ -35,7 +36,9 @@ integer get_number_of_scripts()
     }
     return i;
 }
+
 integer verbose = 0;
+
 Out(integer level, string out)
 {
     if (verbose >= level)
@@ -43,11 +46,13 @@ Out(integer level, string out)
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
 }
+
 Readout_Say(string say, string SCRIPT_CHANNEL)
 {
     llSleep(0.2);
     llMessageLinked(LINK_THIS, 90022, say, SCRIPT_CHANNEL);
 }
+
 set_camera(integer byButton)
 {
     if (mySitter)
@@ -89,6 +94,7 @@ set_camera(integer byButton)
         llRequestPermissions(mySitter, PERMISSION_CONTROL_CAMERA);
     }
 }
+
 default
 {
     run_time_permissions(integer perm)
@@ -98,6 +104,7 @@ default
             set_camera(FALSE);
         }
     }
+
     state_entry()
     {
         SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), -1);
@@ -108,6 +115,7 @@ default
             notecard_query = llGetNotecardLine(notecard_name, 0);
         }
     }
+
     link_message(integer sender, integer num, string msg, key id)
     {
         if (sender == llGetLinkNumber())
@@ -193,6 +201,7 @@ default
             }
         }
     }
+
     changed(integer change)
     {
         if (change & CHANGED_INVENTORY)
@@ -203,6 +212,7 @@ default
             }
         }
     }
+
     dataserver(key query_id, string data)
     {
         if (query_id == notecard_query)
