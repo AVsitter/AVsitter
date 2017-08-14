@@ -107,7 +107,7 @@ default
             llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, "5748decc-f629-461c-9a36-a35a221fe21f", <1,1,0>, <0,0,0>, 0, PRIM_FULLBRIGHT, ALL_SIDES, TRUE]);
         }
         integer everyonePerms = llGetObjectPermMask(MASK_EVERYONE);
-        if ((!(everyonePerms & PERM_MOVE)) && llGetOwner() == llGetInventoryCreator(llGetScriptName()))
+        if (!(everyonePerms & PERM_MOVE) && llGetOwner() == llGetInventoryCreator(llGetScriptName()))
         {
             llOwnerSay("WARNING! AVhelper should be set to 'Anyone Can Move'");
         }
@@ -134,7 +134,7 @@ default
             sitter_number = helper_index;
             if (start < -1000000000)
             {
-                helper_index = (sitter_number = 0);
+                helper_index = sitter_number = 0;
             }
             comm_channel = llFloor(start / 1000) * 1000;
             llListen(5, "", "", "");
@@ -189,12 +189,12 @@ default
                 integer two = (integer)llList2String(data, 2);
                 if (sitter_number == one)
                 {
-                    sitter_number = (helper_index = two);
+                    sitter_number = helper_index = two;
                     setup();
                 }
                 else if (sitter_number == two)
                 {
-                    sitter_number = (helper_index = one);
+                    sitter_number = helper_index = one;
                     setup();
                 }
             }

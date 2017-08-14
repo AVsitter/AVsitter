@@ -132,7 +132,7 @@ state prop
 
     touch_start(integer touched)
     {
-        if ((!llGetAttached()) && (prop_type == 2 || prop_type == 1))
+        if (!llGetAttached() && (prop_type == 2 || prop_type == 1))
         {
             llRequestExperiencePermissions(llDetectedKey(0), "");
         }
@@ -212,7 +212,7 @@ state prop
             {
                 remove = TRUE;
             }
-            else if (command == "REM_INDEX" || (command == "REM_WORLD" && (!llGetAttached())))
+            else if (command == "REM_INDEX" || (command == "REM_WORLD" && !llGetAttached()))
             {
                 if (~llListFindList(data, [(string)prop_id]))
                 {
@@ -241,7 +241,7 @@ state prop
                 }
             }
         }
-        else if (message == "PROPSEARCH" && (!llGetAttached()))
+        else if (message == "PROPSEARCH" && !llGetAttached())
         {
             llSay(comm_channel, "SAVEPROP|" + (string)prop_id);
         }

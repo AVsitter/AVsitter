@@ -366,7 +366,7 @@ state running
                             {
                                 icon = iconHalf;
                             }
-                            if (wornThis == 3 && wornSub == 0 || (wornThis == 0 && wornSub == 3) || (wornThis == 3 && wornSub == 3))
+                            if ((wornThis == 3 && wornSub == 0) || (wornThis == 0 && wornSub == 3) || (wornThis == 3 && wornSub == 3))
                             {
                                 icon = iconFull;
                             }
@@ -394,7 +394,7 @@ state running
                         msg = "Folder: /" + llDumpList2String(folderPath, "/") + "\n[" + icon + "]\n" + folderInfo;
                     }
                 }
-                if ((!llGetListLength(folderOptions)) && (!llGetListLength(BUTTONS)))
+                if (!llGetListLength(folderOptions) && !llGetListLength(BUTTONS))
                 {
                     msg = "#RLV folder empty";
                 }

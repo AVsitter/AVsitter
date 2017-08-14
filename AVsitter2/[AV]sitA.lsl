@@ -248,7 +248,7 @@ sittargets()
 
 prep()
 {
-    has_security = (has_texture = FALSE);
+    has_security = has_texture = FALSE;
     if (!SCRIPT_CHANNEL)
     {
         llMessageLinked(LINK_SET, 90201, "", ""); // 90201=Ask for info about plugins
@@ -405,17 +405,17 @@ sit_using_prim_params()
         localrot = llGetLocalRot();
         localpos = llGetLocalPos();
     }
-    if (HASKEYFRAME == 2 && (!llGetStatus(STATUS_PHYSICS)))
+    if (HASKEYFRAME == 2 && !llGetStatus(STATUS_PHYSICS))
     {
         llSleep(0.4);
     }
-    if (HASKEYFRAME && (!llGetStatus(STATUS_PHYSICS)))
+    if (HASKEYFRAME && !llGetStatus(STATUS_PHYSICS))
     {
         llSetKeyframedMotion([], [KFM_COMMAND, KFM_CMD_PAUSE]);
         llSleep(0.15);
     }
     llSetLinkPrimitiveParamsFast(sitter_prim, [PRIM_ROT_LOCAL, llEuler2Rot((CURRENT_ROTATION + <0,0,0.002>) * DEG_TO_RAD) * localrot, PRIM_POS_LOCAL, CURRENT_POSITION * localrot + localpos]);
-    if (HASKEYFRAME && (!llGetStatus(STATUS_PHYSICS)))
+    if (HASKEYFRAME && !llGetStatus(STATUS_PHYSICS))
     {
         llSleep(0.15);
         llSetKeyframedMotion([], [KFM_COMMAND, KFM_CMD_PLAY]);
@@ -477,7 +477,7 @@ default
     {
         SEQUENCE_POINTER += 2;
         list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
-        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || (~llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER))))
+        if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || ~llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER)))
         {
             SEQUENCE_POINTER = 0;
         }
@@ -502,7 +502,7 @@ default
 
     touch_end(integer touched)
     {
-        if ((!SCRIPT_CHANNEL) && (!has_security) && MTYPE < 3)
+        if (!SCRIPT_CHANNEL && !has_security && MTYPE < 3)
         {
             llMessageLinked(LINK_SET, 90005, "", llDetectedKey(0)); // 90005=send menu to user
         }
@@ -575,7 +575,7 @@ default
             {
                 if (index < 2)
                 {
-                    pos_rot_adjust_toggle = (!pos_rot_adjust_toggle);
+                    pos_rot_adjust_toggle = !pos_rot_adjust_toggle;
                 }
                 else if (index < 8)
                 {
@@ -621,7 +621,7 @@ default
                 }
                 adjust_pose_menu();
             }
-            else if (msg == "[HELPER]" && id != llGetOwner() && (!~llSubStringIndex(llGetLinkName(!!llGetLinkNumber()), "HELPER")))
+            else if (msg == "[HELPER]" && id != llGetOwner() && !~llSubStringIndex(llGetLinkName(!!llGetLinkNumber()), "HELPER"))
             {
                 dialog("Only the owner can rez the helpers. If the owner is nearby they can type '/5 helper' in chat.", ["[BACK]"]);
             }
@@ -766,8 +766,8 @@ default
                 CURRENT_POSE_NAME = llList2String(data, 0);
                 OLD_ANIMATION_FILENAME = CURRENT_ANIMATION_FILENAME;
                 CURRENT_ANIMATION_SEQUENCE = llList2String(data, 1);
-                DEFAULT_POSITION = (CURRENT_POSITION = (vector)llList2String(data, 2));
-                DEFAULT_ROTATION = (CURRENT_ROTATION = (vector)llList2String(data, 3));
+                DEFAULT_POSITION = CURRENT_POSITION = (vector)llList2String(data, 2);
+                DEFAULT_ROTATION = CURRENT_ROTATION = (vector)llList2String(data, 3);
                 if (FIRST_POSENAME == "" || CURRENT_POSE_NAME == FIRST_POSENAME)
                 {
                     FIRST_POSENAME = CURRENT_POSE_NAME;
@@ -945,9 +945,9 @@ default
                     }
                 }
             }
-            if (stood && (!llStringLength(llDumpList2String(SITTERS, ""))))
+            if (stood && !llStringLength(llDumpList2String(SITTERS, "")))
             {
-                if (DFLT || (!~llSubStringIndex(CURRENT_POSE_NAME, "P:")))
+                if (DFLT || !~llSubStringIndex(CURRENT_POSE_NAME, "P:"))
                 {
                     DEFAULT_POSITION = FIRST_POSITION;
                     DEFAULT_ROTATION = FIRST_ROTATION;
@@ -994,7 +994,7 @@ default
                 animation_menu_function = -1;
             }
             reused_key = "";
-            SITTERS = llListReplaceList(SITTERS, [CONTROLLER = (MY_SITTER = llGetPermissionsKey())], SCRIPT_CHANNEL, SCRIPT_CHANNEL);
+            SITTERS = llListReplaceList(SITTERS, [CONTROLLER = MY_SITTER = llGetPermissionsKey()], SCRIPT_CHANNEL, SCRIPT_CHANNEL);
             string channel_or_swap = (string)SCRIPT_CHANNEL;
             integer lnk = 90000; // 90000=play pose
             if (SWAPPED)
@@ -1170,8 +1170,8 @@ default
                         string rot = "<" + llList2String(parts, 2);
                         if (command == FIRST_POSENAME || "P:" + command == FIRST_POSENAME)
                         {
-                            FIRST_POSITION = (DEFAULT_POSITION = (CURRENT_POSITION = (vector)pos));
-                            FIRST_ROTATION = (DEFAULT_ROTATION = (CURRENT_ROTATION = (vector)rot));
+                            FIRST_POSITION = DEFAULT_POSITION = CURRENT_POSITION = (vector)pos;
+                            FIRST_ROTATION = DEFAULT_ROTATION = CURRENT_ROTATION = (vector)rot;
                         }
                         llMessageLinked(LINK_THIS, 90301, (string)SCRIPT_CHANNEL, command + "|" + pos + "|" + rot); // 90301=send update to AVsitB
                     }
@@ -1197,8 +1197,8 @@ default
                             {
                                 if (FIRST_POSENAME == "")
                                 {
-                                    FIRST_POSENAME = (CURRENT_POSE_NAME = part0);
-                                    FIRST_ANIMATION_SEQUENCE = (CURRENT_ANIMATION_SEQUENCE = part1);
+                                    FIRST_POSENAME = CURRENT_POSE_NAME = part0;
+                                    FIRST_ANIMATION_SEQUENCE = CURRENT_ANIMATION_SEQUENCE = part1;
                                 }
                                 if (llList2String(parts, -1) == "M")
                                 {

@@ -41,7 +41,7 @@ string FormatFloat(float f, integer num_decimals)
         f -= rounding;
     else
         f += rounding;
-    string ret = llGetSubString((string)f, 0, num_decimals - (!num_decimals) - 7);
+    string ret = llGetSubString((string)f, 0, num_decimals - !num_decimals - 7);
     if (llSubStringIndex(ret, ".") != -1)
     {
         while (llGetSubString(ret, -1, -1) == "0")
