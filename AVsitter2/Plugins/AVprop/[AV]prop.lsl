@@ -601,54 +601,54 @@ default
                 return;
             }
 
-                data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1);
-                data = llStringTrim(data, STRING_TRIM);
-                string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
-                list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
-                if (command == "SITTER")
+            data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1);
+            data = llStringTrim(data, STRING_TRIM);
+            string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
+            list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
+            if (command == "SITTER")
+            {
+                notecard_section = (integer)llList2String(parts, 0);
+            }
+            if (llGetSubString(command, 0, 3) == "PROP")
+            {
+                if (llGetListLength(prop_triggers) == 100)
                 {
-                    notecard_section = (integer)llList2String(parts, 0);
+                    Out(0, "Max props is 100, could not add prop!"); // the real limit is less than this due to memory running out first :)
                 }
-                if (llGetSubString(command, 0, 3) == "PROP")
+                else
                 {
-                    if (llGetListLength(prop_triggers) == 100)
+                    integer prop_type;
+                    if (command == "PROP1")
                     {
-                        Out(0, "Max props is 100, could not add prop!"); // the real limit is less than this due to memory running out first :)
+                        prop_type = 1;
                     }
-                    else
+                    if (command == "PROP2")
                     {
-                        integer prop_type;
-                        if (command == "PROP1")
-                        {
-                            prop_type = 1;
-                        }
-                        if (command == "PROP2")
-                        {
-                            prop_type = 2;
-                        }
-                        if (command == "PROP3")
-                        {
-                            prop_type = 3;
-                        }
-                        prop_triggers += [(string)notecard_section + "|" + llList2String(parts, 0)];
-                        prop_types += prop_type;
-                        prop_objects += llList2String(parts, 1);
-                        string prop_group = (string)notecard_section + "|" + llList2String(parts, 2);
-                        prop_groups += prop_group;
-                        if (llListFindList(sequential_prop_groups, [prop_group]) == -1)
-                        {
-                            sequential_prop_groups += prop_group;
-                        }
-                        prop_positions += (vector)llList2String(parts, 3);
-                        prop_rotations += (vector)llList2String(parts, 4);
-                        prop_points += llList2String(parts, 5);
+                        prop_type = 2;
                     }
+                    if (command == "PROP3")
+                    {
+                        prop_type = 3;
+                    }
+                    prop_triggers += [(string)notecard_section + "|" + llList2String(parts, 0)];
+                    prop_types += prop_type;
+                    prop_objects += llList2String(parts, 1);
+                    string prop_group = (string)notecard_section + "|" + llList2String(parts, 2);
+                    prop_groups += prop_group;
+                    if (llListFindList(sequential_prop_groups, [prop_group]) == -1)
+                    {
+                        sequential_prop_groups += prop_group;
+                    }
+                    prop_positions += (vector)llList2String(parts, 3);
+                    prop_rotations += (vector)llList2String(parts, 4);
+                    prop_points += llList2String(parts, 5);
                 }
-                if (command == "WARN")
-                {
-                    WARN = (integer)llList2String(parts, 0);
-                }
-                notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
+            }
+            if (command == "WARN")
+            {
+                WARN = (integer)llList2String(parts, 0);
+            }
+            notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
         }
     }
 }
