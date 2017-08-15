@@ -223,7 +223,7 @@ remove_props_by_sitter(string sitter, integer remove_type3)
     {
         command = "REM_WORLD";
     }
-    if (text)
+    if (text != [])
     {
         send_command(llDumpList2String([command] + text, "|"));
     }
@@ -248,7 +248,7 @@ remove_sitter_props_by_pose(string sitter_pose, integer remove_type3)
             }
         }
     }
-    if (text)
+    if (text != [])
     {
         send_command(llDumpList2String(["REM_INDEX"] + text, "|"));
     }
@@ -286,7 +286,7 @@ remove_props_by_group(integer gp)
     {
         command = "REM_WORLD";
     }
-    if (text)
+    if (text != [])
     {
         send_command(llDumpList2String([command] + text, "|"));
     }
@@ -413,7 +413,7 @@ default
                         }
                     }
                 }
-                if (sitting_av_or_sitter)
+                if (sitting_av_or_sitter) // OSS::if (osIsUUID(sitting_av_or_sitter) && sitting_av_or_sitter != NULL_KEY)
                 {
                     if (num == 90200) // send menu back?
                     {

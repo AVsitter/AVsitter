@@ -49,7 +49,7 @@ integer webcount;
 
 string FormatFloat(float f, integer num_decimals)
 {
-    float rounding = (float)(".5e-" + (string)num_decimals) - 5e-07;
+    float rounding = (float)(".5e-" + (string)num_decimals) - .5e-6;
     if (f < 0.)
         f -= rounding;
     else
@@ -112,12 +112,12 @@ list order_buttons(list buttons)
 
 string strReplace(string str, string search, string replace)
 {
-    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
+    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace); // OSS::return osReplaceString(str, search, replace, -1, 0);
 }
 
 preview_anim(string anim, key id)
 {
-    if (id)
+    if (id) // OSS::if (osIsUUID(id) && id != NULL_KEY)
     {
         stop_all_anims(id);
         llMessageLinked(LINK_THIS, 90001, anim, id);
@@ -311,7 +311,7 @@ camera_menu()
 unsit_all()
 {
     integer i = llGetNumberOfPrims();
-    while (llGetAgentSize(llGetLinkKey(i)))
+    while (llGetAgentSize(llGetLinkKey(i)) != ZERO_VECTOR)
     {
         stop_all_anims(llGetLinkKey(i));
         llUnSit(llGetLinkKey(i));
@@ -471,11 +471,11 @@ default
                         {
                             Readout_Say("SWAP " + llList2String(data, 4));
                         }
-                        if (llList2String(data, 6))
+                        if (llList2String(data, 6) != "")
                         {
                             Readout_Say("TEXT " + strReplace(llList2String(data, 6), "\n", "\\n"));
                         }
-                        if (llList2String(data, 7))
+                        if (llList2String(data, 7) != "")
                         {
                             Readout_Say("ADJUST " + strReplace(llList2String(data, 7), "�", "|"));
                         }
@@ -496,7 +496,7 @@ default
                     if (llGetListLength(SITTERS) > 1 || llList2String(data, 5) != "")
                     {
                         string SITTER_TEXT;
-                        if (llList2String(data, 5))
+                        if (llList2String(data, 5) != "")
                         {
                             SITTER_TEXT = "|" + strReplace(llList2String(data, 5), "�", "|");
                         }
@@ -574,7 +574,7 @@ default
                     integer i;
                     for (i = 0; i < llGetListLength(SITTERS); i++)
                     {
-                        if (llList2String(SITTER_POSES, i))
+                        if (llList2String(SITTER_POSES, i) != "")
                         {
                             string type = "SYNC";
                             string temp_pose_name = llList2String(SITTER_POSES, i);
@@ -622,7 +622,7 @@ default
         {
             if (OLD_HELPER_METHOD)
             {
-                if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())))
+                if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) != ZERO_VECTOR)
                 {
                     end_helper_mode();
                 }

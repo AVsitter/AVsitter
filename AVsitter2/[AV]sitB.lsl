@@ -86,18 +86,18 @@ integer animation_menu(integer animation_menu_function)
     else
     {
         string menu = product + version;
-        if (BRAND)
+        if (BRAND != "")
             menu = BRAND;
         if (CONTROLLER != MY_SITTER || has_RLV)
         {
             menu += "\n\nMenu for " + llKey2Name(MY_SITTER);
         }
         menu += "\n\n";
-        if (CUSTOM_TEXT)
+        if (CUSTOM_TEXT != "")
         {
             menu += CUSTOM_TEXT + "\n";
         }
-        if (SITTER_INFO)
+        if (SITTER_INFO != "")
         {
             menu += "[" + llList2String(llParseStringKeepNulls(SITTER_INFO, ["�"], []), 0) + "]";
         }
@@ -149,7 +149,7 @@ integer animation_menu(integer animation_menu_function)
         if (helper_mode)
         {
             menu_items2 += "[NEW]";
-            if (CURRENT_POSE_NAME)
+            if (CURRENT_POSE_NAME != "")
             {
                 menu_items2 += "[DUMP]";
                 menu_items2 += "[SAVE]";
@@ -189,7 +189,7 @@ integer animation_menu(integer animation_menu_function)
             items_per_page -= 2;
         }
         list menu_items1;
-        integer page_start = i = current_menu + 1 + menu_page * items_per_page;
+        integer page_start = (i = current_menu + 1 + menu_page * items_per_page);
         do
         {
             if (i < llGetListLength(MENU_LIST))
@@ -281,7 +281,7 @@ default
         if (index != -1)
         {
             list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, index), ["�"], []);
-            if (llList2String(button_data, 1))
+            if (llList2String(button_data, 1) != "")
             {
                 msg = llList2String(button_data, 1);
             }
@@ -398,7 +398,7 @@ default
             {
                 doit = TRUE;
             }
-            else if (id)
+            else if (id) // OSS::else if (osIsUUID(id) && id != NULL_KEY)
             {
                 if (id == MY_SITTER)
                 {
@@ -608,7 +608,7 @@ default
                 i = -1;
                 while (++i < llGetListLength(MENU_LIST))
                 {
-                    if (llList2Vector(POS_ROT_LIST, i * 2))
+                    if (llList2Vector(POS_ROT_LIST, i * 2) != ZERO_VECTOR)
                     {
                         llSleep(0.2);
                         Readout_Say("{" + llList2String(MENU_LIST, i) + "}" + llList2String(POS_ROT_LIST, i * 2) + llList2String(POS_ROT_LIST, i * 2 + 1));

@@ -323,7 +323,7 @@ default
 
     listen(integer listen_channel, string name, key id, string msg)
     {
-        if (choice)
+        if (choice != "")
         {
             if (msg == "")
             {
@@ -376,11 +376,11 @@ default
         if (mindex_test != -1)
         {
             list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, mindex_test), ["�"], []);
-            if (llList2String(button_data, 1))
+            if (llList2String(button_data, 1) != "")
             {
                 msg = llList2String(button_data, 1);
             }
-            if (llList2String(button_data, 2))
+            if (llList2String(button_data, 2) != "")
             {
                 id = llList2String(button_data, 2);
             }
@@ -447,7 +447,7 @@ default
             Readout_Say("");
             Readout_Say("--✄--COPY BELOW INTO \"AVpos\" NOTECARD--✄--");
             Readout_Say("");
-            if (custom_text)
+            if (custom_text != "")
             {
                 Readout_Say("TEXT " + strReplace(custom_text, "\n", "\\n"));
             }
