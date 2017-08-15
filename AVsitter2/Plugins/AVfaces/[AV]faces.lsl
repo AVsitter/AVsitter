@@ -39,7 +39,8 @@ integer IsInteger(string data)
 {
     return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
 }
-string version = "2.1";
+
+string version = "2.2";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
 key key_request;
@@ -371,12 +372,16 @@ default
                 init_sitters();
             }
         }
-        else if (change & CHANGED_LINK)
+        /*
+        // If you uncomment this, don't make this an 'else if', as
+        // changed events may come several at a time.
+        if (change & CHANGED_LINK)
         {
             if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) == ZERO_VECTOR)
             {
             }
         }
+        */
     }
 
     dataserver(key query_id, string data)
