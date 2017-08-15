@@ -433,9 +433,11 @@ state running
 
     changed(integer change)
     {
+        /*
         if (change & CHANGED_LINK)
         {
         }
+        */
         if (change & CHANGED_INVENTORY)
         {
             if (llGetInventoryKey(notecard_name) != notecard_key || get_number_of_scripts() != llGetListLength(SITTERS))
