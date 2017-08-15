@@ -285,7 +285,7 @@ integer prop_menu(integer return_pages, key av)
         menu_items1 = ["[BACK]"] + menu_items1;
         menu_items2 = llDeleteSubList(menu_items2, 0, 0);
     }
-    menu_channel = ((integer)llFrand(2147483646) + 1) * -1;
+    menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
     llListenRemove(listen_handle);
     listen_handle = llListen(menu_channel, "", av, "");
     dialog(av, custom_text, menu_items1 + menu_items2);

@@ -91,7 +91,7 @@ default
 {
     state_entry()
     {
-        menu_channel = ((integer)llFrand(2147483646) + 1) * -1;
+        menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
         menu_handle = llListen(menu_channel, "", "", "");
         llListenControl(menu_handle, FALSE);
         integer i;
