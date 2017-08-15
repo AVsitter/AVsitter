@@ -125,9 +125,9 @@ default
                     {
                         if (DEBUG)
                         {
-                            Out(0, "Setting " + name + "'s tilt to " + (string)llList2Integer(XCITE_TILT, index));
+                            Out(0, "Setting " + name + "'s tilt to " + llList2String(XCITE_TILT, index));
                         }
-                        llMessageLinked(LINK_SET, 20020, name + "|" + (string)llList2Integer(XCITE_TILT, index), "");
+                        llMessageLinked(LINK_SET, 20020, name + "|" + llList2String(XCITE_TILT, index), "");
                     }
                     else
                     {

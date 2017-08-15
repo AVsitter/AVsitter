@@ -112,9 +112,9 @@ start_sequence(integer sequence_index, key av)
     {
         if (llList2Key(running_uuid, wasRunning) == av)
         {
-            running_uuid = llListReplaceList(running_uuid, [], wasRunning, wasRunning);
-            running_sequence_indexes = llListReplaceList(running_sequence_indexes, [], wasRunning, wasRunning);
-            running_pointers = llListReplaceList(running_pointers, [], wasRunning, wasRunning);
+            running_uuid = llDeleteSubList(running_uuid, wasRunning, wasRunning);
+            running_sequence_indexes = llDeleteSubList(running_sequence_indexes, wasRunning, wasRunning);
+            running_pointers = llDeleteSubList(running_pointers, wasRunning, wasRunning);
         }
     }
     running_uuid += av;
@@ -365,9 +365,9 @@ default
         {
             if (llGetInventoryKey(notecard_name) != notecard_key)
             {
-                llResetScript();
+                llResetScript(); // llResetScript() never returns
             }
-            else if (get_number_of_scripts() != llGetListLength(SITTERS))
+            if (get_number_of_scripts() != llGetListLength(SITTERS))
             {
                 init_sitters();
             }

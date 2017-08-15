@@ -30,7 +30,7 @@ web(string say, integer force)
     cache += say;
     if (llStringLength(llEscapeURL(cache)) > 1024 || force)
     {
-        webcount++;
+        ++webcount;
         llHTTPRequest(url, [HTTP_METHOD, "POST", HTTP_MIMETYPE, "application/x-www-form-urlencoded", HTTP_VERIFY_CERT, FALSE], "w=" + webkey + "&c=" + (string)webcount + "&t=" + llEscapeURL(cache));
         cache = "";
     }

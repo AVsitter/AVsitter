@@ -46,10 +46,6 @@ Out(integer level, string out)
 
 default
 {
-    state_entry()
-    {
-    }
-
     on_rez(integer start)
     {
         if (start)

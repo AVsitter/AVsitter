@@ -162,9 +162,6 @@ default
 
 state running
 {
-    state_entry()
-    {
-    }
     link_message(integer sender, integer num, string msg, key id)
     {
         if (num == 90208 || num == 90209)

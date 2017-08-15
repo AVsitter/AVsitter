@@ -359,8 +359,9 @@ default
                     remove_sitter_props_by_pose_group(given_posename);
                     rez_props_by_trigger(given_posename);
                 }
+                return;
             }
-            else if (num == 90200 || num == 90220) // rez or clear prop with/without sending menu back
+            if (num == 90200 || num == 90220) // rez or clear prop with/without sending menu back
             {
                 list ids = llParseStringKeepNulls(id, ["|"], []);
                 key sitting_av_or_sitter = (key)llList2String(ids, -1);
@@ -421,6 +422,7 @@ default
                         llMessageLinked(LINK_THIS, 90005, "", id);
                     }
                 }
+                return;
             }
             if (num == 90101) // menu choice
             {
@@ -429,8 +431,9 @@ default
                 {
                     llRegionSay(comm_channel, "PROPSEARCH");
                 }
+                return;
             }
-            else if (num == 90065) // stand up
+            if (num == 90065) // stand up
             {
                 remove_props_by_sitter(msg, FALSE);
                 remove_worn(id);
@@ -439,19 +442,22 @@ default
                 {
                     SITTERS = llListReplaceList(SITTERS, [NULL_KEY], index, index);
                 }
+                return;
             }
-            else if (num == 90030) // swap
+            if (num == 90030) // swap
             {
                 remove_props_by_sitter(msg, FALSE);
                 remove_props_by_sitter((string)id, FALSE);
                 SITTERS = llListReplaceList(SITTERS, [NULL_KEY], (integer)msg, (integer)msg);
                 SITTERS = llListReplaceList(SITTERS, [NULL_KEY], (integer)((string)id), (integer)((string)id));
+                return;
             }
-            else if (num == 90070) // update list of sitters
+            if (num == 90070) // update list of sitters
             {
                 SITTERS = llListReplaceList(SITTERS, [id], (integer)msg, (integer)msg);
+                return;
             }
-            else if (num == 90171 || num == 90173) // [AV]adjuster/[AV]menu add PROP line
+            if (num == 90171 || num == 90173) // [AV]adjuster/[AV]menu add PROP line
             {
                 integer sitter;
                 if (num == 90171) // [AV]adjuster?
@@ -484,8 +490,9 @@ default
                 }
                 llSay(0, text);
                 llSay(0, "Position your prop and click [SAVE].");
+                return;
             }
-            else if (num == 90020 && (string)id == llGetScriptName()) // dump our settings
+            if (num == 90020 && (string)id == llGetScriptName()) // dump our settings
             {
                 integer i;
                 for (; i < llGetListLength(prop_triggers); i++)
@@ -501,6 +508,7 @@ default
                     }
                 }
                 llMessageLinked(LINK_THIS, 90021, msg, llGetScriptName()); // notify finished dumping
+                return;
             }
         }
     }
@@ -561,8 +569,9 @@ default
             {
                 Out(0, "Error, cannot find prop: " + name);
             }
+            return;
         }
-        else if (llList2String(data, 0) == "ATTACHED" || llList2String(data, 0) == "DETACHED" || llList2String(data, 0) == "REZ" || llList2String(data, 0) == "DEREZ")
+        if (llList2String(data, 0) == "ATTACHED" || llList2String(data, 0) == "DETACHED" || llList2String(data, 0) == "REZ" || llList2String(data, 0) == "DEREZ")
         {
             integer prop_index = (integer)llList2String(data, 1);
             integer sitter = (integer)llList2String(llParseStringKeepNulls(llList2String(prop_triggers, prop_index), ["|"], []), 0);
@@ -573,8 +582,9 @@ default
             }
             // send prop event notification
             llMessageLinked(LINK_SET, 90500, llDumpList2String([llList2String(data, 0), llList2String(prop_triggers, prop_index), llList2String(prop_objects, prop_index), llList2String(llParseStringKeepNulls(llList2String(prop_groups, prop_index), ["|"], []), 1), id], "|"), sitter_key);
+            return;
         }
-        else if (llList2String(data, 0) == "NAG" && HAVENTNAGGED && (!llGetAttached()))
+        if (llList2String(data, 0) == "NAG" && HAVENTNAGGED && (!llGetAttached()))
         {
             llRegionSayTo(llGetOwner(), 0, "To enable auto-attachments, please enable the experience '" + llList2String(data, 1) + "' by Code Violet in 'About Land'.");
             HAVENTNAGGED = FALSE;
@@ -588,9 +598,9 @@ default
             if (data == EOF)
             {
                 Out(0, (string)llGetListLength(prop_triggers) + " Props Ready, Mem=" + (string)llGetFreeMemory());
+                return;
             }
-            else
-            {
+
                 data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1);
                 data = llStringTrim(data, STRING_TRIM);
                 string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
@@ -599,7 +609,7 @@ default
                 {
                     notecard_section = (integer)llList2String(parts, 0);
                 }
-                else if (llGetSubString(command, 0, 3) == "PROP")
+                if (llGetSubString(command, 0, 3) == "PROP")
                 {
                     if (llGetListLength(prop_triggers) == 100)
                     {
@@ -612,11 +622,11 @@ default
                         {
                             prop_type = 1;
                         }
-                        else if (command == "PROP2")
+                        if (command == "PROP2")
                         {
                             prop_type = 2;
                         }
-                        else if (command == "PROP3")
+                        if (command == "PROP3")
                         {
                             prop_type = 3;
                         }
@@ -634,12 +644,11 @@ default
                         prop_points += llList2String(parts, 5);
                     }
                 }
-                else if (command == "WARN")
+                if (command == "WARN")
                 {
                     WARN = (integer)llList2String(parts, 0);
                 }
                 notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
-            }
         }
     }
 }
