@@ -297,14 +297,14 @@ state running
                 integer i;
                 for (i = 0; i < llGetListLength(CLOTHING_LAYERS); i++)
                 {
-                    if (llList2String(CLOTHING_LAYERS, i))
+                    if (llList2String(CLOTHING_LAYERS, i) != "")
                     {
                         relay(SLAVE, "@remoutfit:" + llList2String(CLOTHING_LAYERS, i) + "=force");
                     }
                 }
                 for (i = 0; i < llGetListLength(ATTACHMENT_POINTS); i++)
                 {
-                    if (llList2String(ATTACHMENT_POINTS, i))
+                    if (llList2String(ATTACHMENT_POINTS, i) != "")
                     {
                         if (i != 2)
                         {

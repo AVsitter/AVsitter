@@ -27,7 +27,7 @@ key give_prop_warning_request;
 unsit_all()
 {
     integer i = llGetNumberOfPrims();
-    while (llGetAgentSize(llGetLinkKey(i)))
+    while (llGetAgentSize(llGetLinkKey(i)) != ZERO_VECTOR)
     {
         llUnSit(llGetLinkKey(i));
         i--;
@@ -83,7 +83,7 @@ state prop
         {
             if (llGetInventoryType("[AV]sitA") == INVENTORY_NONE)
             {
-                llSetClickAction(-1);
+                llSetClickAction(-1); // OSS::llSetClickAction(CLICK_ACTION_DEFAULT);
             }
         }
         else
@@ -231,7 +231,7 @@ state prop
                 }
                 else
                 {
-                    if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())))
+                    if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) != ZERO_VECTOR)
                     {
                         unsit_all();
                         llSleep(1);
