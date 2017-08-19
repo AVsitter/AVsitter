@@ -11,8 +11,8 @@ def main(argc, argv):
         prterr(u'Need exactly 1 argument (input filename)')
         return 1
 
-    # Regex that replaces a line by its OSS version when one's specified.
-    os_re = re.compile(r'^( *)(.*?) // OSS::(.*)$', re.MULTILINE)
+    # Regex that replaces a line with its OSS version when one's specified.
+    os_re = re.compile(r'^( *)(.*?)// OSS::(.*)$', re.MULTILINE)
 
     f = open(argv[1], "r");
     s = f.read()

@@ -262,9 +262,8 @@ integer get_number_of_scripts()
 
 string convert_to_world_positions(integer num)
 {
-    list details = llGetObjectDetails(llGetLinkKey(llGetLinkNumber()), [OBJECT_POS, OBJECT_ROT]);
-    rotation target_rot = llEuler2Rot(llList2Vector(ROT_LIST, num) * DEG_TO_RAD) * llList2Rot(details, 1);
-    vector target_pos = llList2Vector(POS_LIST, num) * llList2Rot(details, 1) + llList2Vector(details, 0);
+    rotation target_rot = llEuler2Rot(llList2Vector(ROT_LIST, num) * DEG_TO_RAD) * llGetRot();
+    vector target_pos = llList2Vector(POS_LIST, num) * llGetRot() + llGetPos();
     return (string)target_pos + "|" + (string)target_rot;
 }
 
@@ -881,10 +880,9 @@ default
             }
             else if (llList2String(data, 0) == "MOVED")
             {
-                list myprim = llGetObjectDetails(llGetLinkKey(llGetLinkNumber()), [OBJECT_POS, OBJECT_ROT]);
-                rotation f = llList2Rot(myprim, 1);
+                rotation f = llGetRot();
                 vector target_rot = llRot2Euler((rotation)llList2String(data, 3) / f) * RAD_TO_DEG;
-                vector target_pos = ((vector)llList2String(data, 2) - llList2Vector(myprim, 0)) / f;
+                vector target_pos = ((vector)llList2String(data, 2) - llGetPos()) / f;
                 if ((string)target_pos != (string)llList2Vector(POS_LIST, num) || (string)target_rot != (string)llList2Vector(ROT_LIST, num))
                 {
                     POS_LIST = llListReplaceList(POS_LIST, [target_pos], num, num);
