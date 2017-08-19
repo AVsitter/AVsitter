@@ -62,7 +62,7 @@ set_text()
         text += "\n \n ";
     }
     text = t + " " + (string)helper_index + "\n" + text;
-    llSetLinkPrimitiveParamsFast(llGetLinkNumber(), [PRIM_TEXT, text, llList2Vector(colors, helper_index % llGetListLength(colors)), 1]);
+    llSetText(text, llList2Vector(colors, helper_index % llGetListLength(colors)), 1);
 }
 
 setup()
@@ -123,7 +123,7 @@ default
         {
             llSetTimerEvent(0);
             llSetText("", <1,1,1>, 1);
-            if (llList2Key(llGetObjectDetails(llGetKey(), [OBJECT_CREATOR]), 0) == llGetInventoryCreator(llGetScriptName()))
+            if (llGetCreator() == llGetInventoryCreator(llGetScriptName()))
             {
                 llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_SIZE, ball_size]);
             }

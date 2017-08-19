@@ -159,7 +159,8 @@ adjust_pose_menu()
 
 integer IsInteger(string data)
 {
-    return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
+    // This should allow for leading zeros, thus the "1"
+    return data != "" && (string)((integer)("1" + data)) == "1" + data;
 }
 
 wipe_sit_targets()
@@ -216,10 +217,10 @@ sittargets()
                 list data = llParseStringKeepNulls(desc, ["-"], []);
                 if (llGetListLength(data) == 2 && IsInteger(llList2String(data, 0)) && IsInteger(llList2String(data, 1)))
                 {
-                    if ((integer)llList2String(data, 0) == SET)
+                    if (llList2Integer(data, 0) == SET)
                     {
-                        SITTERS_SITTARGETS = llListReplaceList(SITTERS_SITTARGETS, [i], (integer)llList2String(data, 1), (integer)llList2String(data, 1));
-                        ASSIGNED_SITTARGETS = llListReplaceList(ASSIGNED_SITTARGETS, [TRUE], (integer)llList2String(data, 1), (integer)llList2String(data, 1));
+                        SITTERS_SITTARGETS = llListReplaceList(SITTERS_SITTARGETS, [i], llList2Integer(data, 1), llList2Integer(data, 1));
+                        ASSIGNED_SITTARGETS = llListReplaceList(ASSIGNED_SITTARGETS, [TRUE], llList2Integer(data, 1), llList2Integer(data, 1));
                         if (llListFindList(ASSIGNED_SITTARGETS, [FALSE]) == -1)
                         {
                             jump end;
