@@ -167,8 +167,7 @@ wipe_sit_targets()
     integer i;
     for (i = 0; i <= llGetNumberOfPrims(); i++)
     {
-        string desc = llList2String(llGetObjectDetails(llGetLinkKey(i), [OBJECT_DESC]), 0);
-        if (desc != "-1")
+        if ((string)llGetLinkPrimitiveParams(i, [PRIM_DESC]) != "-1")
         {
             llLinkSitTarget(i, ZERO_VECTOR, ZERO_ROTATION);
         }
@@ -207,15 +206,11 @@ sittargets()
             SITTERS_SITTARGETS += 1000;
             ASSIGNED_SITTARGETS += FALSE;
         }
-        for (i = 1; i <= prims; i++)
+        for (i = 1; i <= prims; i++) // FIXME: will this work for single prim in OpenSim?
         {
             integer next = llListFindList(SITTERS_SITTARGETS, [1000]);
-            string desc = llList2String(llGetObjectDetails(llGetLinkKey(i), [OBJECT_DESC]), 0);
-            integer index = llSubStringIndex(desc, "#");
-            if (index)
-            {
-                desc = llGetSubString(desc, index + 1, -1);
-            }
+            string desc = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
+            desc = llGetSubString(desc, llSubStringIndex(desc, "#") + 1, -1);
             if (desc != "-1")
             {
                 list data = llParseStringKeepNulls(desc, ["-"], []);
@@ -303,7 +298,7 @@ set_sittarget()
     {
         target = 0;
     }
-    if (llList2String(llGetObjectDetails(llGetLinkKey(target), [OBJECT_DESC]), 0) != "-1")
+    if ((string)llGetLinkPrimitiveParams(target, [PRIM_DESC]) != "-1")
     {
         llLinkSitTarget(target, target_pos - <0.,0.,0.4> + llRot2Up(target_rot) * 0.05, target_rot);
     }
