@@ -112,7 +112,7 @@ list order_buttons(list buttons)
 
 string strReplace(string str, string search, string replace)
 {
-    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace); // OSS::return osReplaceString(str, search, replace, -1, 0);
+    return llDumpList2String(llParseStringKeepNulls(str, [search], []), replace);
 }
 
 preview_anim(string anim, key id)
