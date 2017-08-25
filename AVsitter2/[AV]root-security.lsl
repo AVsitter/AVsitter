@@ -58,7 +58,7 @@ check_sitters()
         if (pass_security(av, "SIT") == FALSE)
         {
             llUnSit(av);
-            llDialog(av, product + "\n\nSorry, Sit access is set to: " + llList2String(SIT_TYPES, SIT_INDEX), [], -164289491);
+            llDialog(av, product + "\n\nSorry, Sit access is set to: " + llList2String(SIT_TYPES, SIT_INDEX), ["OK"], -164289491);
         }
         i--;
     }
@@ -96,7 +96,7 @@ register_touch(key id, integer animation_menu_function, integer active_prim, int
     }
     else if (giveFailedMessage)
     {
-        llDialog(id, product + "\n\nSorry, Menu access is set to: " + llList2String(MENU_TYPES, MENU_INDEX), [], -164289491);
+        llDialog(id, product + "\n\nSorry, Menu access is set to: " + llList2String(MENU_TYPES, MENU_INDEX), ["OK"], -164289491);
     }
 }
 

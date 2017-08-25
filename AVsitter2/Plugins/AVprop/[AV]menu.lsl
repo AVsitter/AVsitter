@@ -130,12 +130,12 @@ menu_check(string name, key id)
         }
         else
         {
-            llDialog(id, product + " " + version + "\n\n" + llList2String(llParseString2List(last_menu_avatar, [" "], []), 0) + " is already using the menu.\nPlease wait a moment.", [], -585868);
+            llDialog(id, product + " " + version + "\n\n" + llList2String(llParseString2List(last_menu_avatar, [" "], []), 0) + " is already using the menu.\nPlease wait a moment.", ["OK"], -585868);
         }
     }
     else
     {
-        llDialog(id, product + " " + version + "\n\n" + "Sorry, the owner has set this menu to: " + llList2String(MENUCONTROL_TYPES, MENUCONTROL_INDEX), [], -585868);
+        llDialog(id, product + " " + version + "\n\n" + "Sorry, the owner has set this menu to: " + llList2String(MENUCONTROL_TYPES, MENUCONTROL_INDEX), ["OK"], -585868);
     }
 }
 

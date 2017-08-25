@@ -177,7 +177,7 @@ wipe_sit_targets()
 
 primcount_error()
 {
-    llDialog(llGetOwner(), "\nThere aren't enough prims for required SitTargets.\nYou must have one prim for each avatar to sit!", [], 23658);
+    llDialog(llGetOwner(), "\nThere aren't enough prims for required SitTargets.\nYou must have one prim for each avatar to sit!", ["OK"], 23658);
 }
 
 sittargets()
