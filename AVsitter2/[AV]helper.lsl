@@ -1,6 +1,6 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
@@ -8,7 +8,7 @@
  * https://avsitter.github.io/TRADEMARK.mediawiki
  * 
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
  
@@ -259,7 +259,7 @@ default
     {
         if (llGetStartParameter() != 0)
         {
-            llRegionSay(comm_channel, "MENU|" + (string)llDetectedKey(0));
+            llRegionSay(comm_channel, "MENU|" + (string)sitter_number + "|" + (string)llDetectedKey(0));
         }
     }
     run_time_permissions(integer perm)
