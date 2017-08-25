@@ -493,7 +493,7 @@ find_seat(key id, integer index, string msg, integer captureSub)
 
 info_dialog(key id, string text)
 {
-    llDialog(id, product + " " + version + "\n\nSorry, " + text + ".\n", [], -7947386);
+    llDialog(id, product + " " + version + "\n\nSorry, " + text + ".\n", ["OK"], -7947386);
 }
 
 hovertext()

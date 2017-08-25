@@ -275,7 +275,7 @@ string sitter_text(integer sitter)
 remove_script(string reason)
 {
     string message = "\n" + llGetScriptName() + " ==Script Removed==\n\n" + reason;
-    llDialog(llGetOwner(), message, [], -3675);
+    llDialog(llGetOwner(), message, ["OK"], -3675);
     llInstantMessage(llGetOwner(), message);
     llRemoveInventory(llGetScriptName());
 }
