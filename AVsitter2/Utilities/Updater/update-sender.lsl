@@ -25,6 +25,7 @@ list objects_to_update;
 list objects_files;
 integer menu_handle;
 key av;
+integer listenhandle;
 particles_on(key target)
 {
      llParticleSystem([
@@ -56,7 +57,7 @@ default
     state_entry()
     {
         llParticleSystem([]);
-        llListen(pin, "", "", "");
+        listenhandle=llListen(pin, "", "", "");
     }
     on_rez(integer x)
     {
@@ -64,6 +65,8 @@ default
     }
     timer()
     {
+    	llSetTimerEvent(0);
+    	llListenRemove(listenhandle);
         llRegionSayTo(av, 0, "Found " + (string)llGetListLength(objects_to_update) + " objects...");
         integer i;
         for (i = 0; i < llGetListLength(objects_to_update); i++)
