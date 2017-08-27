@@ -21,6 +21,11 @@ def main(argc, argv):
     # Replace it with U+001F (Unit Separator) which works fine.
     s = s.replace(b'\xEF\xBF\xBD', b'\x1F')
 
+    # UUIDs in OpenSim
+    s = s.replace('f2e0ed5e-6592-4199-901d-a659c324ca94', '206fcbe2-47b3-41e8-98e6-8909595b8605')
+    s = s.replace('b30c9262-9abf-4cd1-9476-adcf5723c029', 'b88526b7-3966-43fd-ae76-1e39881c86aa')
+    # TODO: Replace LockGuard texture UUIDs
+
     s = os_re.sub(r'\1\3', s)
     sys.stdout.write(s)
     return 0
