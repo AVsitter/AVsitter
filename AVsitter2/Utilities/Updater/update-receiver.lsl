@@ -1,6 +1,6 @@
 /*
- * This Source Code Form is subject to the terms of the Mozilla Public 
- * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
  * Copyright (c) the AVsitter Contributors (http://avsitter.github.io)
@@ -8,14 +8,14 @@
  * https://avsitter.github.io/TRADEMARK.mediawiki
  * 
  * Please consider supporting continued development of AVsitter and
- * receive automatic updates and other benefits! All details and user 
+ * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
  
 /*
  * Simple script used for updating a large number of furniture items at once
  * This script goes in each furniture prim that expects an update from the sender
- * will auto-delete if a non-admin avatar rezzes the furniture 
+ * will auto-delete if a non-admin avatar rezzes the furniture
  */
  
 integer pin = -29752;
@@ -53,10 +53,11 @@ default
     {
         if (start)
         {
-            if (~llListFindList(admin_avatars, [llGetOwner()]))
+            if (~llListFindList(admin_avatars, [(string)llGetOwner()]))
             {
                 llRegionSayTo(llGetOwner(), 0, "Removing :" + llGetScriptName());
             }
+            llSetRemoteScriptAccessPin(0);
             llRemoveInventory(llGetScriptName());
         }
     }
@@ -87,8 +88,9 @@ default
     {
         if (change & CHANGED_OWNER)
         {
-            if (!llListFindList(admin_avatars, [llGetOwner()]))
+            if (llListFindList(admin_avatars, [(string)llGetOwner()]) == -1)
             {
+                llSetRemoteScriptAccessPin(0);
                 llRemoveInventory(llGetScriptName());
             }
         }
