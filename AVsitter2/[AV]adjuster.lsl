@@ -54,7 +54,7 @@ string FormatFloat(float f, integer num_decimals)
         f -= rounding;
     else
         f += rounding;
-    string ret = llGetSubString((string)f, 0, num_decimals - !num_decimals - 7);
+    string ret = llGetSubString((string)f, 0, num_decimals - (!num_decimals) - 7);
     if (llSubStringIndex(ret, ".") != -1)
     {
         while (llGetSubString(ret, -1, -1) == "0")
@@ -784,7 +784,7 @@ default
                 if (adding == "[PROP]")
                 {
                     integer perms = llGetInventoryPermMask(choice, MASK_NEXT);
-                    if (!(perms & PERM_COPY))
+                    if ((perms & PERM_COPY) == 0)
                     {
                         llSay(0, "Could not add prop '" + choice + "'. Props and their content must be COPY-OK for NEXT owner.");
                     }

@@ -128,7 +128,7 @@ state prop
 
     touch_start(integer touched)
     {
-        if (!llGetAttached() && (prop_type == 2 || prop_type == 1))
+        if ((!llGetAttached()) && (prop_type == 2 || prop_type == 1))
         {
             llRequestExperiencePermissions(llDetectedKey(0), "");
         }

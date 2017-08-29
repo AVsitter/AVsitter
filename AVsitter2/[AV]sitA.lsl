@@ -498,7 +498,7 @@ default
 
     touch_end(integer touched)
     {
-        if (!SCRIPT_CHANNEL && !has_security && MTYPE < 3)
+        if (SCRIPT_CHANNEL == 0 && (!has_security) && MTYPE < 3)
         {
             llMessageLinked(LINK_SET, 90005, "", llDetectedKey(0)); // 90005=send menu to user
         }

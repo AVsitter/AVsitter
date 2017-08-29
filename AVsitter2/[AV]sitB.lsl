@@ -79,7 +79,7 @@ memory()
 
 integer animation_menu(integer animation_menu_function)
 {
-    if ((animation_menu_function == -1 || llGetListLength(MENU_LIST) < 2) && !helper_mode && llGetInventoryType(select_script) == INVENTORY_SCRIPT)
+    if ((animation_menu_function == -1 || llGetListLength(MENU_LIST) < 2) && (!helper_mode) && llGetInventoryType(select_script) == INVENTORY_SCRIPT)
     {
         llMessageLinked(LINK_SET, 90009, CONTROLLER, MY_SITTER);
     }
@@ -214,7 +214,7 @@ integer animation_menu(integer animation_menu_function)
         if (animation_menu_function == 1)
         {
             integer pages = total_items / (12 - llGetListLength(menu_items2) - llGetListLength(menu_items0));
-            if (!(total_items % (12 - llGetListLength(menu_items2) - llGetListLength(menu_items0))))
+            if ((total_items % (12 - llGetListLength(menu_items2) - llGetListLength(menu_items0))) == 0)
             {
                 pages--;
             }
