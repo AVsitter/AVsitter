@@ -124,7 +124,7 @@ else if(isset($_REQUEST['w'])){ // write to a record
 				}
 			}
 			else{ // an existing webkey
-				if(!isAllowedIP($_SERVER['REMOTE_HOST'])){
+				if(!isAllowedIP($ip_address)){
 					$response = "BAD IP";
 				}
 				else{
