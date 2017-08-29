@@ -107,7 +107,7 @@ default
             llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, "5748decc-f629-461c-9a36-a35a221fe21f", <1,1,0>, <0,0,0>, 0, PRIM_FULLBRIGHT, ALL_SIDES, TRUE]);
         }
         integer everyonePerms = llGetObjectPermMask(MASK_EVERYONE);
-        if (!(everyonePerms & PERM_MOVE) && llGetOwner() == llGetInventoryCreator(llGetScriptName()))
+        if ((everyonePerms & PERM_MOVE) == 0 && llGetOwner() == llGetInventoryCreator(llGetScriptName()))
         {
             llOwnerSay("WARNING! AVhelper should be set to 'Anyone Can Move'");
         }

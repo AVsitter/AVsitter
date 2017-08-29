@@ -60,7 +60,7 @@ menu(key av)
         for (i = 0; i < llGetListLength(BUTTONS); i++)
         {
             string avname = llKey2Name(llList2Key(SITTERS, i));
-            if ((!select_type && llList2Integer(SYNCS, i) == FALSE || select_type == 2) && avname != "" && av != llList2Key(SITTERS, i))
+            if ((select_type == 0 && llList2Integer(SYNCS, i) == FALSE || select_type == 2) && avname != "" && av != llList2Key(SITTERS, i))
             {
                 menu_buttons += "⊘" + llGetSubString(strReplace(avname, " Resident", " "), 0, 11);
             }
@@ -115,7 +115,7 @@ default
             {
                 llMessageLinked(LINK_SET, 90101, llDumpList2String(["X", message, id], "|"), id);
             }
-            else if (llGetSubString(message, 0, 0) == "⊘" || (!select_type && llList2Integer(SYNCS, button_index) == FALSE && llList2Key(SITTERS, button_index) != NULL_KEY && llList2Key(SITTERS, button_index) != id))
+            else if (llGetSubString(message, 0, 0) == "⊘" || (select_type == 0 && llList2Integer(SYNCS, button_index) == FALSE && llList2Key(SITTERS, button_index) != NULL_KEY && llList2Key(SITTERS, button_index) != id))
             {
                 menu(id);
             }

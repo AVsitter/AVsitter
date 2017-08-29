@@ -206,7 +206,7 @@ remove_sequences(key id)
         running_pointers = llDeleteSubList(running_pointers, index, index);
         while (sequence != [])
         {
-            if (!IsInteger(llList2String(sequence, 0)) && llList2String(sequence, 0) != "none")
+            if ((!IsInteger(llList2String(sequence, 0))) && llList2String(sequence, 0) != "none")
             {
                 llMessageLinked(LINK_THIS, 90002, llList2String(sequence, 0), id);
             }
@@ -253,7 +253,7 @@ default
                 llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2String(data, 2));
                 if (id == llGetOwner())
                 {
-                    is_running = (!is_running);
+                    is_running = !is_running;
                     if (sender == llGetLinkNumber())
                     {
                         llRegionSayTo(id, 0, "Facial Expressions " + llList2String(["OFF", "ON"], is_running));
