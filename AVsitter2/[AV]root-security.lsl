@@ -109,7 +109,7 @@ main_menu()
 dialog(string text, list menu_items)
 {
     llListenRemove(menu_handle);
-    menu_handle = llListen(menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1, "", llGetOwner(), ""); // 7FFFFF80 = max float < 2^31
+    menu_handle = llListen((menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1), "", llGetOwner(), ""); // 7FFFFF80 = max float < 2^31
     llDialog(llGetOwner(), product + "\n\n" + text, order_buttons(menu_items), menu_channel);
     llSetTimerEvent(600);
 }
