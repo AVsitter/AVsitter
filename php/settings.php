@@ -76,7 +76,7 @@ else if(isset($_REQUEST['w'])){ // write to a record
 	$given_webkey = mysqli_real_escape_string($link, $_REQUEST['w']);
 	
 	$ip_address = $_SERVER['REMOTE_ADDR'];
-	$ip_packed = inet_pton($ip_address);
+	$ip_packed = mysqli_real_escape_string($link, inet_pton($ip_address));
 	
 	if(!isValidGuid($given_webkey)){
 		echo "INVALID WEBKEY";
@@ -124,7 +124,7 @@ else if(isset($_REQUEST['w'])){ // write to a record
 				}
 			}
 			else{ // an existing webkey
-				if(!isAllowedIP($_SERVER['REMOTE_HOST'])){
+				if(!isAllowedIP($ip_address)){
 					$response = "BAD IP";
 				}
 				else{
