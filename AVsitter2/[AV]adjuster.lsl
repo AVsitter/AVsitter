@@ -819,7 +819,7 @@ default
         else if (llGetOwnerKey(id) == llGetOwner())
         {
             list data = llParseString2List(msg, ["|"], []);
-            integer num = (integer)llList2String(data, 1);
+            integer num = llList2Integer(data, 1);
             if (llList2String(data, 0) == "REG")
             {
                 HELPER_KEY_LIST = llListReplaceList(HELPER_KEY_LIST, [id], num, num);
@@ -827,7 +827,7 @@ default
             }
             else if (llList2String(data, 0) == "MENU")
             {
-                if (llList2String(data, 1) == controller)
+                if (llList2Key(data, 2) == controller)
                 {
                     llMessageLinked(LINK_SET, 90005, "", llDumpList2String([controller, llList2String(SITTERS, num)], "|"));
                 }
