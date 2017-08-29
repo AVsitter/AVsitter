@@ -35,12 +35,12 @@ Same as 90000 but ignored by [AV]sequence script to prevent from stopping sequen
 Same as 90005 but returns to top level of the menu (used by [AV]root-RLV when press [MENU]).
 
 ### 90005
-Give the menu. Optionally set controller avatar and submenu.
+Give the menu. Optionally set controller avatar and/or submenu.
 
 	llMessageLinked(LINK_SET,90005,"",<AVATAR_UUID>);
-	llMessageLinked(LINK_SET,90005,<TOMENU>,[<AVATAR_UUID>|<CONTROLLER_UUID>]);
+	llMessageLinked(LINK_SET,90005,<TOMENU>,[<CONTROLLER_UUID>|<AVATAR_UUID>]);
 	
-    TOMENU=-1 ensures when sitters first sit they will get [AV]select menu if the [AV]seclect] script is present
+    TOMENU=-1 ensures when sitters first sit they will get [AV]select menu if the [AV]select script is present
 
 ### 90006
 Register touch or sit to [AV]root-security script from [AV]sitA after permissions granted.
@@ -48,7 +48,7 @@ Register touch or sit to [AV]root-security script from [AV]sitA after permission
 	llMessageLinked(LINK_SET,90006,"",<AVATAR_UUID>);
 	llMessageLinked(LINK_SET,90006,<FUNCTION>,<AVATAR_UUID>); // for AVselect!
     
-    FUNCTION=-1 ensures when sitters first sit they will get [AV]select menu if the [AV]seclect] script is present
+    FUNCTION=-1 ensures when sitters first sit they will get [AV]select menu if the [AV]select script is present
 
 ### 90007
 [AV]root-security passes touch to [AV]root-control.
