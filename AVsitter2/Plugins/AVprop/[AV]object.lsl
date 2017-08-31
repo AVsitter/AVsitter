@@ -20,6 +20,7 @@ integer prop_type;
 integer prop_id;
 integer prop_point;
 integer experience_denied_reason;
+integer pending_permissions;
 key originalowner;
 key parentkey;
 key give_prop_warning_request;
@@ -102,17 +103,19 @@ state prop
     {
         if (comm_channel)
         {
-            if (llGetAttached())
+            if (id) // OSS::if (id != NULL_KEY)
             {
+                llSetTimerEvent(0);
+                pending_permissions = FALSE;
                 llListen(local_attach_channel, "", "", "");
                 llSay(comm_channel, "ATTACHED|" + (string)prop_id);
                 llSay(local_attach_channel, "LOCAT|" + (string)llGetAttached());
-                if (experience_denied_reason == 17)
+                if (experience_denied_reason == XP_ERROR_NOT_PERMITTED_LAND)
                 {
                     if (llGetOwner() == originalowner)
                     {
                         list details = llGetExperienceDetails("");
-                        if (llList2String(details, 3) == "17")
+                        if (llList2Integer(details, 3) == XP_ERROR_NOT_PERMITTED_LAND)
                         {
                             llSay(comm_channel, "NAG|" + llList2String(details, 0));
                         }
@@ -171,6 +174,7 @@ state prop
         originalowner = llGetOwner();
         experience_denied_reason = reason;
         llRequestPermissions(agent_id, PERMISSION_ATTACH);
+        llSetTimerEvent(120); // give them 2 minutes to reply
     }
 
     on_rez(integer start)
@@ -199,6 +203,8 @@ state prop
             else
             {
                 llRequestExperiencePermissions((key)llList2String(data, 1), "");
+                llSetTimerEvent(120); // give them 2 minutes to reply
+                pending_permissions = TRUE;
             }
         }
         else if (llGetSubString(command, 0, 3) == "REM_")
@@ -245,10 +251,13 @@ state prop
 
     timer()
     {
-        if(llGetObjectMass(parentkey) == 0)
+        llSetTimerEvent(10); // retry timer - shouldn't be necessary
+
+        if (pending_permissions || llGetObjectMass(parentkey) == 0)
         {
-            if(!llGetAttached())
+            if (!llGetAttached())
             {
+                llSay(comm_channel, "DEREZ|" + (string)prop_id);
                 llDie();
             }
             else
