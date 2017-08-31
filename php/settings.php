@@ -29,18 +29,7 @@ header("Content-Type: text/plain; charset=utf-8");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ini_set('display_errors', '1');
 
-$dbhost = 'localhost'; // database host
-$dbuser = '?'; // database user
-$dbpass = '?'; // database password
-$dbname = '?'; // database name
-$avpos_table='avpos';
-
-$email_to="you@yourmail.com"; // your email (for error reporting)
-$email_from="you@yourhost.com"; // your server's sending email (for error reporting)
-
-$allow_install = false; // enable to allow action=install (clear/format database)
-
-$check_ip = false; // enable to check the sim ip submitting the data is in the allowed range
+require_once("settings-config.inc.php");
 
 $link = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die("Error " . mysqli_error($link));
 
