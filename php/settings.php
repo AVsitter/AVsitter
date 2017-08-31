@@ -281,5 +281,3 @@ function ip_in_range( $ip, $range ) {
     $netmask_decimal = ~ $wildcard_decimal;
     return ( ( $ip_decimal & $netmask_decimal ) == ( $range_decimal & $netmask_decimal ) );
 }
-
-?>
