@@ -15,6 +15,10 @@ PREPROC_KIND=mcpp
 # If the preprocessor is mcpp and it is in your path, you can leave it as is.
 PREPROC_PATH=mcpp
 
+# Full path to the zip program (zip.exe for Windows). Depends on where you
+# have downloaded it. If it is in your path you don't need to change it.
+ZIP=zip
+
 # Name of the zipped file to generate for SL
 SLZIP=AVsitter2.zip
 
@@ -73,14 +77,14 @@ opensim: $(OPENSIM)
 
 $(SLZIP): $(OPTIMIZED) $(UNOPTIMIZED)
 	$(PYTHON) build-aux.py rm $@
-	zip $@ $(OPTIMIZED) $(UNOPTIMIZED)
+	$(ZIP) $@ $(OPTIMIZED) $(UNOPTIMIZED)
 
 %.lslo: %.lsl
 	$(PYTHON) $(OPTIMIZER) -H -O addstrings,shrinknames,-extendedglobalexpr -p $(PREPROC_KIND) --precmd=$(PREPROC_PATH) $< -o $@
 
 $(OSZIP): $(OPENSIM)
 	$(PYTHON) build-aux.py rm $@
-	zip $@ $(OPENSIM)
+	$(ZIP) $@ $(OPENSIM)
 
 %.oss: %.lsl
 	$(PYTHON) build-aux.py oss-process $< > $@
