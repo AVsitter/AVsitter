@@ -22,6 +22,10 @@ Support guidelines are found at [https://avsitter.github.io/support.html](https:
 
 Contributor guidelines are found at [https://avsitter.github.io/contribute.html](https://avsitter.github.io/contribute.html).
 
+## Editing the AVsitter2 code
+
+You can edit any scripts, as long as you stay in compliance with the license (see below); however, in order to benefit from the extra memory that the SL Marketplace version provides, you're advised to optimize the scripts following the same method used for packaging the releases. There's a guide on how to do it here: [Release Building Guide](AVsitter2/BUILD_GUIDE.md)
+
 ## License
 
 AVsitter LSL scripts are licensed under the [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
