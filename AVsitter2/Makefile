@@ -15,9 +15,6 @@ PREPROC_KIND=mcpp
 # If the preprocessor is mcpp and it is in your path, you can leave it as is.
 PREPROC_PATH=mcpp
 
-# Command to remove files in your system. Use 'del' for Windows.
-RM=rm -f
-
 # Name of the zipped file to generate for SL
 SLZIP=AVsitter2.zip
 
@@ -67,24 +64,24 @@ OPENSIM=[AV]sitA.oss\
 all: $(SLZIP) $(OSZIP)
 
 clean:
-	$(RM) $(SLZIP) $(OSZIP) $(OPTIMIZED) $(OPENSIM)
+	$(PYTHON) build-aux.py rm $(SLZIP) $(OSZIP) $(OPTIMIZED) $(OPENSIM)
 
 optimized: $(OPTIMIZED)
 
 opensim: $(OPENSIM)
 
 $(SLZIP): $(OPTIMIZED) $(UNOPTIMIZED)
-	$(RM) $@
+	$(PYTHON) build-aux.py rm $@
 	zip $@ $(OPTIMIZED) $(UNOPTIMIZED)
 
 %.lslo: %.lsl
 	$(PYTHON) $(OPTIMIZER) -H -O addstrings,shrinknames,-extendedglobalexpr -p $(PREPROC_KIND) --precmd=$(PREPROC_PATH) $< -o $@
 
 $(OSZIP): $(OPENSIM)
-	$(RM) $@
+	$(PYTHON) build-aux.py rm $@
 	zip $@ $(OPENSIM)
 
 %.oss: %.lsl
-	$(PYTHON) prepare-for-oss.py $< > $@
+	$(PYTHON) build-aux.py oss-process $< > $@
 
 .PHONY : all clean optimized
