@@ -1,16 +1,26 @@
 # [AVsitter](https://avsitter.github.io)™
 
-## About
+Repository for [AVsitter](https://avsitter.github.io)&trade; - a furniture pose system for [Second Life](https://www.secondlife.com)&reg; and [Opensim](https://en.wikipedia.org/wiki/OpenSimulator), written in [LSL](https://wiki.secondlife.com/wiki/LSL_Portal).
 
-Repository for [AVsitter](https://avsitter.github.io)&trade; - a furniture pose system for [Second Life](https://www.secondlife.com)&reg; and [Opensim](https://en.wikipedia.org/wiki/OpenSimulator).
+## Getting the AVsitter2 scripts in Second Life/Opensim
 
-* Scripts are written in LSL ([Linden Scripting Language](https://wiki.secondlife.com/wiki/LSL_Portal)).
-* User instructions are found at [https://avsitter.github.io](https://avsitter.github.io).
-* Contributor guidelines are found [https://avsitter.github.io/contribute.html](https://avsitter.github.io/contribute.html).
+1. You can manually import the AVsitter scripts into Second Life / Opensim by following our [AVsitter2 Import Guide](AVsitter2/IMPORT_GUIDE.md).
 
-The AVsitter scripts can be freely obtained from this GitHub repository, however if you would like a packaged version of the latest release, and to receive packaged [in-world updates](https://avsitter.github.io/updates.html) of future releases, visit the [SL Marketplace](https://marketplace.secondlife.com/stores/79645).
+    *or*
 
-Proceeds are shared with open-source contributors and will help support continued development of AVsitter. Those who purchased AVsitter in the past will continue to receive [in-world updates](https://avsitter.github.io/updates.html) without needing to purchase it again.
+2. If you would prefer a pre-packaged version of the latest release, and to receive packaged [in-world updates](https://avsitter.github.io/updates.html) of future releases, then visit the [SL Marketplace](https://marketplace.secondlife.com/stores/79645). Proceeds from marketplace sales are shared with open-source contributors and will help support continued development of AVsitter.
+
+## User instructions
+
+User instructions are found at [https://avsitter.github.io](https://avsitter.github.io).
+
+## Support guide
+
+Support guidelines are found at [https://avsitter.github.io/support.html](https://avsitter.github.io/support.html).
+
+## Contributor guidelines
+
+Contributor guidelines are found at [https://avsitter.github.io/contribute.html](https://avsitter.github.io/contribute.html).
 
 ## License
 
