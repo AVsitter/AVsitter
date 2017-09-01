@@ -8,15 +8,15 @@ If you would prefer a packaged version of the latest release, and to receive pac
 
 1. Visit the [AVsitter project releases page](https://github.com/AVsitter/AVsitter/releases) and download the ```.zip``` file for the latest AVsitter2 release to your computer.
 
-- Unpack the file you downloaded to a folder where you plan on keeping your AVsitter distributions.
+2. Unpack the file you downloaded to a folder where you plan on keeping your AVsitter distributions.
 
-- In your Second Life inventory, locate a suitable place and create a folder named AVsitter, where you'll save all the scripts and needed objects. 
+3. In your Second Life inventory, locate a suitable place and create a folder named AVsitter, where you'll save all the scripts and needed objects. 
 
-- For each ```.lslo``` file that you unpacked from the ```.zip``` file, create a new script in your Second Life inventory and rename it to match exactly the same name as the file you unpacked, but without the ```.lslo``` at the end of the name.
+4. For each ```.lslo``` file that you unpacked from the ```.zip``` file, create a new script in your Second Life inventory and rename it to match exactly the same name as the file you unpacked, but without the ```.lslo``` at the end of the name.
 
     For example, if the script you unpacked was called **[AV]sitA.lslo** then the script you create in Second Life should be named simply **[AV]sitA**. The name of the script is important! Do not add ```.lslo``` at the end of the name.
 
-- For each script you just created in Second Life:
+5. For each script you just created in Second Life:
     - Open the script in Second Life by double-clicking it.
     - Open the corresponding ```.lslo``` file on your computer with a plain text editor (e.g. Notepad).
     - Select All text in the file (CTRL-A) and Copy (CTRL-C).
@@ -26,7 +26,7 @@ If you would prefer a packaged version of the latest release, and to receive pac
 
     When you have finished this process you should have created one script for each ```.lslo``` file that was in the ```.zip``` file, copied the file's contents from your computer and saved it in the corresponding Second Life script.
 
-- There's still one thing to do to have the distribution working:
+6. There's still one thing to do to have the distribution working:
 
     - In Second Life, rez a box and name it **[AV]helper**.
  
