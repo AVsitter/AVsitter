@@ -59,7 +59,7 @@ if($_REQUEST['action']=="install" && $allow_install==true){
     `text` TEXT default NULL,
     `keep` tinyint(1) default 0,
     `count` int(5) default NULL,
-    `ip` varbinary(16) defult NULL,
+    `ip` varbinary(16) default NULL,
     `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     PRIMARY KEY  (`id`),
     UNIQUE (`webkey`)
