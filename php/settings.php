@@ -36,6 +36,8 @@ $link = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die("Error " . mys
 if (mysqli_connect_errno()) {
     die ("Connect failed: " . mysqli_connect_error());
 }
+// Set the character set for communication with the database
+mysqli_set_charset($link, 'utf8');
 
 if($_REQUEST['action']=="install" && $allow_install==true){
     $sql = "DROP TABLE IF EXISTS $avpos_table;";
@@ -45,11 +47,11 @@ if($_REQUEST['action']=="install" && $allow_install==true){
     `webkey` varchar(36) default NULL,
     `owner_uuid` varchar(36) default NULL,
     `owner_name` varchar(63) default NULL,
-    `text` TEXT default NULL,
+    `text` TEXT CHARSET utf8 default NULL,
     `keep` tinyint(1) default 0,
     `count` int(5) default NULL,
     `ip` varbinary(16) default NULL,
-    `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    `timestamp` datetime NOT NULL,
     PRIMARY KEY  (`id`),
     UNIQUE (`webkey`)
     ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;";
