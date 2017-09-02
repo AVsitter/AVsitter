@@ -130,7 +130,7 @@ default
         {
             list data = llParseStringKeepNulls(msg, ["|"], []);
             integer SITTER_NUMBER = (integer)llList2String(data, 1);
-            if (SITTER_NUMBER == SITTER)
+            if (SITTER_NUMBER == SITTER || !~SITTER)
             {
                 avatar = id;
                 string EVENT = llList2String(data, 0);
@@ -159,7 +159,7 @@ default
         {//animation played
             list data = llParseString2List(msg, ["|"], []);
             string SITTER_NUMBER = llList2String(data, 0);
-            if ((integer)SITTER_NUMBER == SITTER)
+            if ((integer)SITTER_NUMBER == SITTER || !~SITTER)
             {
                 if (id != avatar)
                 {
