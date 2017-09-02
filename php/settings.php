@@ -39,6 +39,13 @@ if (mysqli_connect_errno()) {
 // Set the character set for communication with the database
 mysqli_set_charset($link, 'utf8');
 
+// Pre-escape $avpos_table for convenience. That's the only variable
+// that should go directly into a query. All others should go through
+// IntSQL or StrSQL as appropriate.
+$avpos_table = IdentSQL($avpos_table);
+
+undo_magic_quotes($_REQUEST);
+
 if($_REQUEST['action']=="install" && $allow_install==true){
     $sql = "DROP TABLE IF EXISTS $avpos_table;";
     $result = mysqli_query($link,$sql) or die("Error creating table: ".mysqli_error($link));
@@ -64,21 +71,21 @@ if($_REQUEST['action']=="install" && $allow_install==true){
     }
 }
 else if(isset($_REQUEST['w'])){ // write to a record
-    $given_webkey = mysqli_real_escape_string($link, $_REQUEST['w']);
+    $given_webkey = $_REQUEST['w'];
 
     $ip_address = $_SERVER['REMOTE_ADDR'];
-    $ip_packed = mysqli_real_escape_string($link, inet_pton($ip_address));
+    $ip_packed = inet_pton($ip_address);
 
     if(!isValidGuid($given_webkey)){
         echo "INVALID WEBKEY";
     }
     else{
         $headers = parse_llHTTPRequest_headers();
-        $owner_key = mysqli_real_escape_string($link, $headers['X-SecondLife-Owner-Key']);
-        $object_name = mysqli_real_escape_string($link, $headers['X-SecondLife-Object-Name']);
-        $owner_name = mysqli_real_escape_string($link, $headers['X-SecondLife-Owner-Name']);
-        $object_key = mysqli_real_escape_string($link, $headers['X-SecondLife-Object-Key']);
-        $region = mysqli_real_escape_string($link, trim(substr($headers['X-SecondLife-Region'],0,strrpos($headers['X-SecondLife-Region'],'('))));
+        $owner_key = $headers['X-SecondLife-Owner-Key'];
+        $object_name = $headers['X-SecondLife-Object-Name'];
+        $owner_name = $headers['X-SecondLife-Owner-Name'];
+        $object_key = $headers['X-SecondLife-Object-Key'];
+        $region = trim(substr($headers['X-SecondLife-Region'],0,strrpos($headers['X-SecondLife-Region'],'(')));
         $position_array = explode(', ',substr($_SERVER['HTTP_X_SECONDLIFE_LOCAL_POSITION'],1,-1));
         $slurl = $region . "/" . round($position_array[0]) . "/" . round($position_array[1]) . "/" . round($position_array[2]);
 
@@ -87,17 +94,27 @@ else if(isset($_REQUEST['w'])){ // write to a record
         }
         else{
             $given_count = intval($_REQUEST['c']);
-            $given_text = mysqli_real_escape_string($link, $_REQUEST['t']);
+            $given_text = $_REQUEST['t'];
 
-            $sql = "SELECT * FROM $avpos_table WHERE webkey = '$given_webkey'";
+            $sql = "SELECT * FROM $avpos_table"
+                . " WHERE webkey = " . StrSQL($given_webkey);
 
             $result = mysqli_query($link,$sql) or email_death("ERR01: " . mysqli_error($link));
             if(mysqli_num_rows($result) == 0){ // a new webkey
                 if($given_count == 1){
                     if(!isAllowedIP($ip_address)){
                         $response = "BAD IP";
-                        $sql = "INSERT INTO $avpos_table (owner_uuid,owner_name,webkey,text,count,ip,timestamp)
-                        VALUES ('$owner_key','$owner_name','$given_webkey','The IP address of the sim ($ip_address) was not in the allowed range. Please report the problem if you think this is in error.','10001','$ip_packed',NOW())";
+                        $sql = "INSERT INTO $avpos_table"
+                            . ' (owner_uuid,owner_name,webkey,text,count,ip,timestamp)'
+                            . ' VALUES'
+                            . '(' . StrSQL($owner_key)
+                            . ',' . StrSQL($owner_name)
+                            . ',' . StrSQL($given_webkey)
+                            . ',' . StrSQL("The IP address of the sim ($ip_address) was not in the allowed range. Please report the problem if you think this is in error")
+                            . ',10001'
+                            . ',' . StrSQL($ip_packed)
+                            . ',NOW()'
+                            . ')';
                     }
                     else{
                         $response = "ADDED NEW";
@@ -105,8 +122,17 @@ else if(isset($_REQUEST['w'])){ // write to a record
                             $given_count+=10000;
                             $response = "FINISHING";
                         }
-                        $sql = "INSERT INTO $avpos_table (owner_uuid,owner_name,webkey,text,count,ip,timestamp)
-                        VALUES ('$owner_key','$owner_name','$given_webkey','$given_text','$given_count','$ip_packed',NOW())";
+                        $sql = "INSERT INTO $avpos_table"
+                            . ' (owner_uuid,owner_name,webkey,text,count,ip,timestamp)'
+                            . ' VALUES'
+                            . '(' . StrSQL($owner_key)
+                            . ',' . StrSQL($owner_name)
+                            . ',' . StrSQL($given_webkey)
+                            . ',' . StrSQL($given_text)
+                            . ',' . IntSQL($given_count)
+                            . ',' . StrSQL($ip_packed)
+                            . ',NOW()'
+                            . ')';
                     }
                     $result = mysqli_query($link,$sql) or email_death("ERR02: " . mysqli_error($link));
                 }
@@ -120,7 +146,7 @@ else if(isset($_REQUEST['w'])){ // write to a record
                 }
                 else{
                     $row = mysqli_fetch_assoc($result);
-                    $newtext = mysqli_real_escape_string($link,$row['text']) . $given_text;
+                    $newtext = $row['text'] . $given_text;
                     if($row['count']+1 == $given_count){
                         $response = "ADDING";
 
@@ -129,11 +155,11 @@ else if(isset($_REQUEST['w'])){ // write to a record
                             $response = "FINISHING";
                         }
 
-                        $sql = "UPDATE $avpos_table SET
-                        text = '$newtext',
-                        count = '$given_count',
-                        timestamp = NOW()
-                        WHERE webkey = '$given_webkey'";
+                        $sql = "UPDATE $avpos_table"
+                        . ' SET text = ' . StrSQL($newtext)
+                        .    ', count = ' . IntSQL($given_count)
+                        .    ', timestamp = NOW()'
+                        . ' WHERE webkey = ' . StrSQL($given_webkey);
                         $result = mysqli_query($link,$sql) or email_death("ERR03: " . mysqli_error($link));
 
                     }
@@ -148,8 +174,9 @@ else if(isset($_REQUEST['w'])){ // write to a record
 }
 else if(isset($_REQUEST['q'])){ // read a record
 
-    $given_webkey = mysqli_real_escape_string($link, $_REQUEST['q']);
-    $sql = "SELECT * FROM $avpos_table WHERE webkey = '$given_webkey'";
+    $given_webkey = $_REQUEST['q'];
+    $sql = "SELECT * FROM $avpos_table"
+        . ' WHERE webkey = ' . StrSQL($given_webkey);
 
     $result = mysqli_query($link,$sql) or email_death("ERR04: " . mysqli_error($link));
     if(mysqli_num_rows($result) == 0){
@@ -161,14 +188,16 @@ else if(isset($_REQUEST['q'])){ // read a record
             $out.= $row['text'];
 
             if(1==2){ // switch on to 'keep' any record that ever was accessed
-                $sql = "UPDATE $avpos_table SET
-                keep = '1'
-                WHERE webkey = '$given_webkey'";
+                $sql = "UPDATE $avpos_table"
+                    . ' SET keep = 1'
+                    . ' WHERE webkey = ' . StrSQL($given_webkey);
                 $result = mysqli_query($link,$sql) or email_death("ERR05: " . mysqli_error($link));
             }
 
             // delete all entries older than 10 minutes that are not flagged keep
-            $sql = "DELETE FROM $avpos_table WHERE timestamp < DATE_SUB(NOW(), INTERVAL 10 MINUTE) AND keep = '0'";
+            $sql = "DELETE FROM $avpos_table"
+                . ' WHERE timestamp < DATE_SUB(NOW(), INTERVAL 10 MINUTE)'
+                .   ' AND keep = 0';
             $result = mysqli_query($link,$sql) or email_death("ERR06: " . mysqli_error($link));
 
         }
@@ -181,6 +210,36 @@ else if(isset($_REQUEST['q'])){ // read a record
 else{
     header('HTTP/1.0 400 Bad Request');
     die("400 Bad Request: No valid action specified.");
+}
+
+function undo_magic_quotes(&$var)
+{
+    // Does anyone still use these? Probably not but just in case.
+    if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc())
+    {
+        // This doesn't remove the slashes in the keys, but that doesn't matter for us.
+        foreach ($var as $k => &$v)
+        {
+            if (is_array($v))
+                undo_magic_quotes($v);
+            else
+                $v = stripslashes($v);
+        }
+    }
+}
+
+function IdentSQL($str){
+    return '`' . str_replace('`', '``', $str) . '`';
+}
+
+function StrSQL($str){
+    if ($str === null)
+        return "NULL";
+    return "'" . mysqli_real_escape_string($GLOBALS['link'], strval($str)) . "'";
+}
+
+function IntSQL($int){
+    return strval(intval($int));
 }
 
 function parse_llHTTPRequest_headers(){
