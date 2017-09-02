@@ -176,6 +176,10 @@ else if(isset($_REQUEST['q'])){ // read a record
     }
     echo $out;
 }
+else{
+    header('HTTP/1.0 400 Bad Request');
+    die("400 Bad Request: No valid action specified.");
+}
 
 function parse_llHTTPRequest_headers(){
     $position_array = explode(', ',substr($_SERVER['HTTP_X_SECONDLIFE_LOCAL_POSITION'],1,-1));
