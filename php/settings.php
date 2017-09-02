@@ -212,7 +212,7 @@ function parse_llHTTPRequest_headers(){
 }
 
 function isValidGuid($guid){
-    return !empty($guid) && preg_match('/^\{?[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}\}?$/', $guid);
+    return !empty($guid) && preg_match('/^\{?[a-zA-Z0-9]{8}(?:-[a-zA-Z0-9]{4}){4}[a-zA-Z0-9]{8}\}?$/', $guid);
 }
 
 function email_death($error){
