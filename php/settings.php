@@ -246,7 +246,7 @@ function isValidGuid($guid){
 }
 
 function email_death($error){
-    $body.="\n";
+    $body="\n";
     $body.="\n\$_SERVER\n";
     foreach($_SERVER as $key_name => $key_value) {
         $body.= $key_name . " = " . $key_value . "\n";
