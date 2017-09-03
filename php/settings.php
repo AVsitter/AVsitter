@@ -80,14 +80,13 @@ else if(isset($_REQUEST['w'])){ // write to a record
         echo "INVALID WEBKEY";
     }
     else{
-        $headers = parse_llHTTPRequest_headers();
-        $owner_key = $headers['X-SecondLife-Owner-Key'];
-        $object_name = $headers['X-SecondLife-Object-Name'];
-        $owner_name = $headers['X-SecondLife-Owner-Name'];
-        $object_key = $headers['X-SecondLife-Object-Key'];
-        $region = trim(substr($headers['X-SecondLife-Region'],0,strrpos($headers['X-SecondLife-Region'],'(')));
-        $position_array = explode(', ',substr($_SERVER['HTTP_X_SECONDLIFE_LOCAL_POSITION'],1,-1));
-        $slurl = $region . "/" . round($position_array[0]) . "/" . round($position_array[1]) . "/" . round($position_array[2]);
+        $owner_key = $_SERVER['HTTP_X_SECONDLIFE_OWNER_KEY'];
+        //$object_name = $_SERVER['HTTP_X_SECONDLIFE_OBJECT_NAME'];
+        $owner_name = $_SERVER['HTTP_X_SECONDLIFE_OWNER_NAME'];
+        //$object_key = $_SERVER['HTTP_X_SECONDLIFE_OBJECT_KEY'];
+        //$region = trim(substr($_SERVER['HTTP_X_SECONDLIFE_REGION'],0,strrpos($_SERVER['HTTP_X_SECONDLIFE_REGION'],'(')));
+        //$position_array = explode(', ',substr($_SERVER['HTTP_X_SECONDLIFE_LOCAL_POSITION'],1,-1));
+        //$slurl = rawurlencode($region) . "/" . round($position_array[0]) . "/" . round($position_array[1]) . "/" . round($position_array[2]);
 
         if(!isValidGuid($owner_key)){
             echo "INVALID USER";
@@ -97,7 +96,7 @@ else if(isset($_REQUEST['w'])){ // write to a record
             $given_text = $_REQUEST['t'];
 
             $sql = "SELECT * FROM $avpos_table"
-                . " WHERE webkey = " . StrSQL($given_webkey);
+                . ' WHERE webkey = ' . StrSQL($given_webkey);
 
             $result = mysqli_query($link,$sql) or email_death("ERR01: " . mysqli_error($link));
             if(mysqli_num_rows($result) == 0){ // a new webkey
@@ -106,7 +105,7 @@ else if(isset($_REQUEST['w'])){ // write to a record
                         $response = "BAD IP";
                         $sql = "INSERT INTO $avpos_table"
                             . ' (owner_uuid,owner_name,webkey,text,count,ip,timestamp)'
-                            . ' VALUES'
+                            . ' VALUES '
                             . '(' . StrSQL($owner_key)
                             . ',' . StrSQL($owner_name)
                             . ',' . StrSQL($given_webkey)
@@ -124,7 +123,7 @@ else if(isset($_REQUEST['w'])){ // write to a record
                         }
                         $sql = "INSERT INTO $avpos_table"
                             . ' (owner_uuid,owner_name,webkey,text,count,ip,timestamp)'
-                            . ' VALUES'
+                            . ' VALUES '
                             . '(' . StrSQL($owner_key)
                             . ',' . StrSQL($owner_name)
                             . ',' . StrSQL($given_webkey)
@@ -240,36 +239,6 @@ function StrSQL($str){
 
 function IntSQL($int){
     return strval(intval($int));
-}
-
-function parse_llHTTPRequest_headers(){
-    $position_array = explode(', ',substr($_SERVER['HTTP_X_SECONDLIFE_LOCAL_POSITION'],1,-1));
-    $rotation_array = explode(', ',substr($_SERVER['HTTP_X_SECONDLIFE_LOCAL_ROTATION'],1,-1));
-    $velocity_array = explode(', ',substr($_SERVER['HTTP_X_SECONDLIFE_LOCAL_VELOCITY'],1,-1));
-    list($global_x,$global_y) = explode(',',trim(substr($_SERVER['HTTP_X_SECONDLIFE_REGION'],$position_of_left_bracket + 1,-1)));
-    $region_array = array($region_name,(integer)$global_x,(integer)$global_y);
-    $headers = array('Accept'=>$_SERVER['HTTP_ACCEPT'],
-            'User-Agent'=>$_SERVER['HTTP_USER_AGENT'],
-            'X-SecondLife-Shard'=>$_SERVER['HTTP_X_SECONDLIFE_SHARD'],
-            'X-SecondLife-Object-Name'=>$_SERVER['HTTP_X_SECONDLIFE_OBJECT_NAME'],
-            'X-SecondLife-Object-Key'=>$_SERVER['HTTP_X_SECONDLIFE_OBJECT_KEY'],
-            'X-SecondLife-Region'=>$_SERVER['HTTP_X_SECONDLIFE_REGION'],
-            'X-SecondLife-Region-Array'=> $region_array,
-            'X-SecondLife-Local-Position'=>array(   'x'=>(float)$position_array[0],'y'=>(float)$position_array[1],'z'=>(float)$position_array[2]),
-            'X-SecondLife-Local-Rotation'=>array(   'x'=>(float)$rotation_array[0],'y'=>(float)$rotation_array[1],'z'=>(float)$rotation_array[2],'w'=>(float)$rotation_array[3]),
-            'X-SecondLife-Local-Velocity'=>array(   'x'=>(float)$velocity_array[0],'y'=>(float)$velocity_array[1],'z'=>(float)$velocity_array[2]),
-            'X-SecondLife-Owner-Name'=>$_SERVER['HTTP_X_SECONDLIFE_OWNER_NAME'],
-            'X-SecondLife-Owner-Key'=>$_SERVER['HTTP_X_SECONDLIFE_OWNER_KEY']
-    );
-    if(!strstr($headers['X-SecondLife-Owner-Name'],' ') && $_POST['X-SecondLife-Owner-Name']){
-        $headers['X-SecondLife-Owner-Name'] == $_POST['X-SecondLife-Owner-Name'];
-    }
-    if(is_array($headers)){
-        return $headers;
-    }
-    else{
-        return FALSE;
-    }
 }
 
 function isValidGuid($guid){
