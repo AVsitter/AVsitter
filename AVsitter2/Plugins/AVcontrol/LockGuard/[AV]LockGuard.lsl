@@ -80,8 +80,7 @@ goChain(list new_links)
 //  unlink unused links
     for (; index < llGetListLength(links); index += 2)
     {
-        integer found = llListFindList(new_links, [llList2String(links, index)]);
-        if (~found)
+        if (llListFindList(new_links, [llList2String(links, index)]) == -1)
         {
             llWhisper(LOCKGUARD_CHANNEL, "lockguard " + (string)avatar + " " + llList2String(links, index) + " unlink");
         }
