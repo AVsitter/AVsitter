@@ -199,9 +199,9 @@ state do_update
         
         i++;
 
-		if(i==llGetListLength(objects_to_update)){        
-        	llRegionSayTo(av, 0, "Updates complete!");
-        	llResetScript();
-		}
+        if(i==llGetListLength(objects_to_update)){        
+            llRegionSayTo(av, 0, "Updates complete!");
+            llResetScript();
+        }
     }
 }
