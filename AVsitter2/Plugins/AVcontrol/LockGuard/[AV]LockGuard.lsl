@@ -17,7 +17,10 @@
 //  Inspiration and function (not code) from the Bright CISS system by Shan Bright & Innula Zenovka.
 
 //  SITTER:
-//      The AVsitter SITTER # the cuff settings are for.
+//      The AVsitter SITTER # the chain settings are for.
+//      -> You can use -1 to mean all sitters, but that will mean that the very same
+//         chain settings and pose list will be applied to all at the same time. If
+//         you don't want that, then you need to  add one script per sitter.
 
 integer SITTER = 0;
 
@@ -47,6 +50,7 @@ integer USES_PROPS = FALSE;
 //        for a list of LockGuard V2 Standard ID Tags and more information. The LockGuard package
 //        (with full instructions for the protocol) can be obtained in-world from Lillani Lowell's
 //        inworld location.
+//      - A pose name of "*" provides a default for all poses, should that be necessary.
 
 list POSES = [
         "Pose1", "leftwrist,ring1,rightwrist,ring2,leftankle,ring3,rightankle,ring4",
@@ -72,6 +76,7 @@ integer comm_handle;
 key avatar;
 list links;
 list ring_prims;
+integer all_poses = -2; // cache the position of the "*" if it exists, for performance
 
 goChain(list new_links)
 {
@@ -128,7 +133,7 @@ default
         {
             list data = llParseStringKeepNulls(msg, ["|"], []);
             integer SITTER_NUMBER = (integer)llList2String(data, 1);
-            if (SITTER_NUMBER == SITTER)
+            if (SITTER_NUMBER == SITTER || !~SITTER)
             {
                 avatar = id;
                 string EVENT = llList2String(data, 0);
@@ -157,7 +162,7 @@ default
         {//animation played
             list data = llParseString2List(msg, ["|"], []);
             string SITTER_NUMBER = llList2String(data, 0);
-            if ((integer)SITTER_NUMBER == SITTER)
+            if ((integer)SITTER_NUMBER == SITTER || !~SITTER)
             {
                 if (id != avatar)
                 {
@@ -169,6 +174,12 @@ default
                 list new_links;
 
                 integer pose_index = llListFindList(POSES, [POSE_NAME]);
+                if (!~pose_index)
+                {
+                    if (all_poses == -2)
+                        all_poses = llListFindList(POSES, (list)"*");
+                    pose_index = all_poses;
+                }
                 if (~pose_index)
                 {
                     new_links = llCSV2List(llList2String(POSES, pose_index + 1));
