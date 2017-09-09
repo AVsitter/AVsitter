@@ -26,6 +26,7 @@ list objects_files;
 integer menu_handle;
 key av;
 integer listenhandle;
+integer i;
 
 particles_on(key target)
 {
@@ -71,84 +72,7 @@ default
     {
         llSetTimerEvent(0);
         llListenRemove(listenhandle);
-        llRegionSayTo(av, 0, "Found " + (string)llGetListLength(objects_to_update) + " objects...");
-        integer i;
-        for (i = 0; i < llGetListLength(objects_to_update); i++)
-        {
-            key object = llList2Key(objects_to_update, i);
-            list items = llParseStringKeepNulls(llList2String(objects_files, i), ["|"], []);
-            if (1 == 1)
-            {
-                list scripts_to_update;
-                list other_to_update;
-                list surplus_to_update;
-                integer j;
-                for (j = 0; j < llGetListLength(items); j = j + 2)
-                {
-                    string item = llList2String(items, j);
-                    key item_key = (key)llList2String(items, j + 1);
-                    if (item_key != llGetInventoryKey(item) || item_key == NULL_KEY)
-                    {
-                        if (llGetInventoryType(item) == INVENTORY_SCRIPT)
-                        {
-                            scripts_to_update += item;
-                        }
-                        else
-                        {
-                            other_to_update += item;
-                        }
-                    }
-                    else if (llGetInventoryType(item) == INVENTORY_OBJECT)
-                    {
-                        surplus_to_update += item;
-                    }
-                }
-                if (llGetListLength(scripts_to_update) == 0 && llGetListLength(other_to_update) == 0)
-                {
-                }
-                else
-                {
-                    particles_on(object);
-                    if (llGetListLength(other_to_update) > 0)
-                    {
-                        if (llListFindList(scripts_to_update, [receiver_script]) == -1)
-                        {
-                            scripts_to_update += receiver_script;
-                        }
-                    }
-                    if (llListFindList(scripts_to_update, [receiver_script]) != -1)
-                    {
-                        other_to_update += surplus_to_update;
-                    }
-                    for (j = 0; j < llGetListLength(scripts_to_update); j++)
-                    {
-                        llRegionSayTo(av, 0, "Sending: " + llList2String(scripts_to_update, j) + " to " + llKey2Name(object));
-                        integer running = TRUE;
-                        if (llSubStringIndex(llKey2Name(object), "[BOX]") != -1 && llList2String(scripts_to_update, j) != receiver_script)
-                        {
-                            running = FALSE; // set scripts not running if the target name contains [BOX]
-                        }
-                        integer remove_objects = -1;
-                        if (llGetListLength(surplus_to_update))
-                        {
-                            remove_objects = -1;
-                        }
-                        llRemoteLoadScriptPin(object, llList2String(scripts_to_update, j), pin, running, remove_objects);
-                    }
-                    for (j = 0; j < llGetListLength(other_to_update); j++)
-                    {
-                        llRegionSayTo(av, 0, "Sending: " + llList2String(other_to_update, j) + " to " + llKey2Name(object));
-                        llGiveInventory(object, llList2String(other_to_update, j));
-                    }
-                }
-            }
-            else
-            {
-                llRemoteLoadScriptPin(object, receiver_script, pin, TRUE, -1);
-            }
-        }
-        llRegionSayTo(av, 0, "Updating Complete!");
-        llResetScript();
+        state do_update;        
     }
 
     touch_start(integer touched)
@@ -189,5 +113,95 @@ default
                 }
             }
         }
+    }
+}
+
+state do_update
+{
+    state_entry()
+    {
+        llRegionSayTo(av, 0, "Found " + (string)llGetListLength(objects_to_update) + " prims...");
+        i = 0;
+        llSetTimerEvent(0.1);
+    }
+    
+    timer(){
+
+        llRegionSayTo(av, 0, "Processing prim " + (string)(i+1) + "/" + (string)llGetListLength(objects_to_update));
+       	
+        key object = llList2Key(objects_to_update, i);
+        list items = llParseStringKeepNulls(llList2String(objects_files, i), ["|"], []);
+        if (1 == 1)
+        {
+            list scripts_to_update;
+            list other_to_update;
+            list surplus_to_update;
+            integer j;
+            for (j = 0; j < llGetListLength(items); j = j + 2)
+            {
+                string item = llList2String(items, j);
+                key item_key = (key)llList2String(items, j + 1);
+                if (item_key != llGetInventoryKey(item) || item_key == NULL_KEY)
+                {
+                    if (llGetInventoryType(item) == INVENTORY_SCRIPT)
+                    {
+                        scripts_to_update += item;
+                    }
+                    else
+                    {
+                        other_to_update += item;
+                    }
+                }
+                else if (llGetInventoryType(item) == INVENTORY_OBJECT)
+                {
+                    surplus_to_update += item;
+                }
+            }
+            if (llGetListLength(scripts_to_update) == 0 && llGetListLength(other_to_update) == 0)
+            {
+            }
+            else
+            {
+                particles_on(object);
+                if (llGetListLength(other_to_update) > 0)
+                {
+                    if (llListFindList(scripts_to_update, [receiver_script]) == -1)
+                    {
+                        scripts_to_update += receiver_script;
+                    }
+                }
+                if (llListFindList(scripts_to_update, [receiver_script]) != -1)
+                {
+                    other_to_update += surplus_to_update;
+                }
+                for (j = 0; j < llGetListLength(scripts_to_update); j++)
+                {
+                    llRegionSayTo(av, 0, "Sending: " + llList2String(scripts_to_update, j) + " to " + llKey2Name(object));
+                    integer running = TRUE;
+                    if (llSubStringIndex(llKey2Name(object), "[BOX]") != -1 && llList2String(scripts_to_update, j) != receiver_script)
+                    {
+                        running = FALSE; // set scripts not running if the target name contains [BOX]
+                    }
+                    integer remove_objects = -1;
+                    if (llGetListLength(surplus_to_update))
+                    {
+                        remove_objects = -1;
+                    }
+                    llRemoteLoadScriptPin(object, llList2String(scripts_to_update, j), pin, running, remove_objects);
+                }
+                for (j = 0; j < llGetListLength(other_to_update); j++)
+                {
+                    llRegionSayTo(av, 0, "Sending: " + llList2String(other_to_update, j) + " to " + llKey2Name(object));
+                    llGiveInventory(object, llList2String(other_to_update, j));
+                }
+            }
+        }
+        
+        i++;
+
+		if(i==llGetListLength(objects_to_update)){        
+        	llRegionSayTo(av, 0, "Updates complete!");
+        	llResetScript();
+		}
     }
 }
