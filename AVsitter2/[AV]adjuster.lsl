@@ -46,6 +46,7 @@ list chosen_animations;
 string cache;
 string webkey;
 integer webcount;
+string SEP = "�"; // OSS::string SEP;
 
 string FormatFloat(float f, integer num_decimals)
 {
@@ -358,6 +359,7 @@ default
         {
             remove_script("Use only one of this script!");
         }
+        // OSS::SEP = llUnescapeURL("%7F");
         llListen(chat_channel, "", llGetOwner(), "");
         comm_channel = ((integer)llFrand(99999) + 1) * 1000 * -1;
         integer i;
@@ -476,7 +478,7 @@ default
                         }
                         if (llList2String(data, 7) != "")
                         {
-                            Readout_Say("ADJUST " + strReplace(llList2String(data, 7), "�", "|"));
+                            Readout_Say("ADJUST " + strReplace(llList2String(data, 7), SEP, "|"));
                         }
                         if ((integer)llList2String(data, 8))
                         {
@@ -497,7 +499,7 @@ default
                         string SITTER_TEXT;
                         if (llList2String(data, 5) != "")
                         {
-                            SITTER_TEXT = "|" + strReplace(llList2String(data, 5), "�", "|");
+                            SITTER_TEXT = "|" + strReplace(llList2String(data, 5), SEP, "|");
                         }
                         Readout_Say("SITTER " + (string)id + SITTER_TEXT);
                         Readout_Say("");
@@ -529,13 +531,13 @@ default
                     else
                     {
                         msg = strReplace(msg, "S:B:", "BUTTON ");
-                        if (llSubStringIndex(msg, "�") == -1)
+                        if (llSubStringIndex(msg, SEP) == -1)
                         {
                             msg = strReplace(msg, "|90200", "");
                         }
                     }
                     msg = strReplace(msg, "S:", "SYNC ");
-                    msg = strReplace(msg, "�", "|");
+                    msg = strReplace(msg, SEP, "|");
                 }
                 if (llGetSubString(msg, -1, -1) == "*")
                 {

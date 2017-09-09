@@ -39,6 +39,7 @@ integer listen_handle;
 integer number_per_page = 9;
 integer menu_pages;
 string last_text;
+string SEP = "�"; // OSS::string SEP;
 
 integer pass_security(key id)
 {
@@ -310,6 +311,7 @@ default
         {
             remove_script("Use only one copy of this script!");
         }
+        // OSS::SEP = llUnescapeURL("%7F");
         check_avsit();
         notecard_key = llGetInventoryKey(notecard_name);
         Out(0, "Loading...");
@@ -375,7 +377,7 @@ default
         mindex_test = llListFindList(MENU_LIST, ["B:" + msg]);
         if (mindex_test != -1)
         {
-            list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, mindex_test), ["�"], []);
+            list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, mindex_test), [SEP], []);
             if (llList2String(button_data, 1) != "")
             {
                 msg = llList2String(button_data, 1);
@@ -467,7 +469,7 @@ default
                     }
                     else if (llList2String(change_me, 0) == "B")
                     {
-                        list l = [llList2String(change_me, 1), strReplace(strReplace(llList2String(DATA_LIST, i), "90200", ""), "�", "|")];
+                        list l = [llList2String(change_me, 1), strReplace(strReplace(llList2String(DATA_LIST, i), "90200", ""), SEP, "|")];
                         if (llList2String(l, 1) == "")
                         {
                             l = llList2List(l, 0, 0);
@@ -594,7 +596,7 @@ default
                 string part1 = llList2String(parts, 1);
                 if (llGetListLength(parts) > 1)
                 {
-                    part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, -1), "�"), STRING_TRIM);
+                    part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, -1), SEP), STRING_TRIM);
                 }
                 if (command == "TEXT")
                 {
