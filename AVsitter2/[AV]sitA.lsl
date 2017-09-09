@@ -82,6 +82,7 @@ string BRAND;
 string onSit;
 integer speed_index;
 integer verbose = 0;
+string SEP = "�"; // OSS::string SEP;
 
 Out(integer level, string out)
 {
@@ -307,7 +308,7 @@ set_sittarget()
 
 update_current_anim_name()
 {
-    list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
+    list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, [SEP], []);
     CURRENT_ANIMATION_FILENAME = llList2String(SEQUENCE, SEQUENCE_POINTER);
     string speed_text = llList2String(["", "+", "-"], speed_index);
     if (llGetInventoryType(CURRENT_ANIMATION_FILENAME + speed_text) == INVENTORY_ANIMATION)
@@ -438,6 +439,7 @@ default
 {
     state_entry()
     {
+        // OSS::SEP = llUnescapeURL("%7F");
         SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), -1);
         while (llGetInventoryType(memoryscript) != INVENTORY_SCRIPT)
         {
@@ -472,7 +474,7 @@ default
     timer()
     {
         SEQUENCE_POINTER += 2;
-        list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, ["�"], []);
+        list SEQUENCE = llParseStringKeepNulls(CURRENT_ANIMATION_SEQUENCE, [SEP], []);
         if (SEQUENCE_POINTER >= llGetListLength(SEQUENCE) || llListFindList(["M", "F"], llList2List(SEQUENCE, SEQUENCE_POINTER, SEQUENCE_POINTER)) != -1)
         {
             SEQUENCE_POINTER = 0;
@@ -1059,7 +1061,7 @@ default
                     llSetText("", <1,1,1>, 1);
                     llMessageLinked(LINK_SET, 90150, "", ""); // 90150=ask other AVsitA scripts to place their sittargets again
                 }
-                llMessageLinked(LINK_THIS, 90302, (string)SCRIPT_CHANNEL, llDumpList2String([llGetListLength(SITTERS), llDumpList2String(SITTER_INFO, "�"), SET, MTYPE, ETYPE, SWAP, FIRST_POSENAME, BRAND, CUSTOM_TEXT, llDumpList2String(ADJUST_MENU, "�"), SELECT, AMENU, OLD_HELPER_METHOD, RLVDesignations, onSit], "|")); // 90302=send notecard settings to AVsitB
+                llMessageLinked(LINK_THIS, 90302, (string)SCRIPT_CHANNEL, llDumpList2String([llGetListLength(SITTERS), llDumpList2String(SITTER_INFO, SEP), SET, MTYPE, ETYPE, SWAP, FIRST_POSENAME, BRAND, CUSTOM_TEXT, llDumpList2String(ADJUST_MENU, SEP), SELECT, AMENU, OLD_HELPER_METHOD, RLVDesignations, onSit], "|")); // 90302=send notecard settings to AVsitB
                 reused_variable = (llGetFreeMemory() - 5000) / 100;
                 return;
             }
@@ -1079,7 +1081,7 @@ default
             string part1;
             if (llGetListLength(parts) > 1)
             {
-                part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, -1), "�"), STRING_TRIM);
+                part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, -1), SEP), STRING_TRIM);
             }
             if (command == "SITTER")
             {

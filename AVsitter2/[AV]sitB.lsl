@@ -48,6 +48,7 @@ string RLVDesignations;
 string onSit;
 integer speed_index;
 integer verbose = 0;
+string SEP = "�"; // OSS::string SEP;
 
 Out(integer level, string out)
 {
@@ -99,14 +100,14 @@ integer animation_menu(integer animation_menu_function)
         }
         if (SITTER_INFO != "")
         {
-            menu += "[" + llList2String(llParseStringKeepNulls(SITTER_INFO, ["�"], []), 0) + "]";
+            menu += "[" + llList2String(llParseStringKeepNulls(SITTER_INFO, [SEP], []), 0) + "]";
         }
         else if (number_of_sitters > 1)
         {
             menu += "[Sitter " + (string)SCRIPT_CHANNEL + "]";
         }
         integer anim_has_speeds;
-        string animation_file = llList2String(llParseStringKeepNulls(llList2String(DATA_LIST, ANIM_INDEX), ["�"], []), 0);
+        string animation_file = llList2String(llParseStringKeepNulls(llList2String(DATA_LIST, ANIM_INDEX), [SEP], []), 0);
         if (llGetInventoryType(animation_file + "+") == INVENTORY_ANIMATION)
         {
             anim_has_speeds = TRUE;
@@ -239,6 +240,7 @@ default
     state_entry()
     {
         memory();
+        // OSS::SEP = llUnescapeURL("%7F");
         SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), -1);
         if (SCRIPT_CHANNEL)
             main_script += " " + (string)SCRIPT_CHANNEL;
@@ -280,7 +282,7 @@ default
         index = llListFindList(MENU_LIST, ["B:" + msg]);
         if (index != -1)
         {
-            list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, index), ["�"], []);
+            list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, index), [SEP], []);
             if (llList2String(button_data, 1) != "")
             {
                 msg = llList2String(button_data, 1);
