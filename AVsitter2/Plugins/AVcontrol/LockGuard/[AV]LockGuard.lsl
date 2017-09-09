@@ -17,7 +17,10 @@
 //  Inspiration and function (not code) from the Bright CISS system by Shan Bright & Innula Zenovka.
 
 //  SITTER:
-//      The AVsitter SITTER # the cuff settings are for.
+//      The AVsitter SITTER # the chain settings are for.
+//      -> You can use -1 to mean all sitters, but that will mean that the very same
+//         chain settings and pose list will be applied to all at the same time. If
+//         you don't want that, then you need to  add one script per sitter.
 
 integer SITTER = 0;
 
