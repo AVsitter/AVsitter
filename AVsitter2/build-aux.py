@@ -48,10 +48,6 @@ def oss_process(filename):
         if filename is not None:
             f.close()
 
-    # The U+FFFD character that AVsitter uses causes problems in OpenSim.
-    # Replace it with U+001F (Unit Separator) which works fine.
-    s = s.replace(b'\xEF\xBF\xBD', b'\x1F')
-
     # UUIDs in OpenSim
     s = s.replace('f2e0ed5e-6592-4199-901d-a659c324ca94',
                   '206fcbe2-47b3-41e8-98e6-8909595b8605')
