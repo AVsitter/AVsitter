@@ -102,7 +102,12 @@ register_touch(key id, integer animation_menu_function, integer active_prim, int
 
 main_menu()
 {
-    dialog("Sit access: " + llList2String(SIT_TYPES, SIT_INDEX) + "\nMenu access: " + llList2String(MENU_TYPES, MENU_INDEX) + "\n\nChange security settings:", ["[BACK]", "Sit", "Menu"]);
+    list buttons = (list)"Sit" + "Menu";
+    if (active_sitter) // OSS::if (osIsUUID(active_sitter) && active_sitter != NULL_KEY)
+    {
+        buttons = "[BACK]" + buttons;
+    }
+    dialog("Sit access: " + llList2String(SIT_TYPES, SIT_INDEX) + "\nMenu access: " + llList2String(MENU_TYPES, MENU_INDEX) + "\n\nChange security settings:", buttons);
     lastmenu = "";
 }
 
