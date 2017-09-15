@@ -37,7 +37,9 @@ if (mysqli_connect_errno()) {
     die ("Connect failed: " . mysqli_connect_error());
 }
 // Set the character set for communication with the database
-mysqli_set_charset($link, 'utf8');
+if (!mysqli_set_charset($link, 'utf8mb4')) {
+    die('Invalid charset: utf8mb4');
+}
 
 // Pre-escape $avpos_table for convenience. That's the only variable
 // that should go directly into a query. All others should go through
@@ -54,7 +56,7 @@ if($_REQUEST['action']=="install" && $allow_install==true){
     `webkey` varchar(36) default NULL,
     `owner_uuid` varchar(36) default NULL,
     `owner_name` varchar(63) default NULL,
-    `text` TEXT CHARSET utf8 default NULL,
+    `text` TEXT CHARSET utf8mb4 default NULL,
     `keep` tinyint(1) default 0,
     `count` int(5) default NULL,
     `ip` varbinary(16) default NULL,
