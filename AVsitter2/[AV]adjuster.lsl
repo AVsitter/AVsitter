@@ -50,22 +50,21 @@ string SEP = "�"; // OSS::string SEP = "\u007F";
 
 string FormatFloat(float f, integer num_decimals)
 {
-    float rounding = (float)(".5e-" + (string)num_decimals) - .5e-6;
-    if (f < 0.)
-        f -= rounding;
-    else
-        f += rounding;
+    f += ((integer)(f > 0) - (integer)(f < 0)) * ((float)(".5e-" + (string)num_decimals) - .5e-6);
     string ret = llGetSubString((string)f, 0, num_decimals - (!num_decimals) - 7);
-    if (llSubStringIndex(ret, ".") != -1)
+    if (num_decimals)
     {
-        while (llGetSubString(ret, -1, -1) == "0")
+        num_decimals = -1;
+        while (llGetSubString(ret, num_decimals, num_decimals) == "0")
         {
-            ret = llGetSubString(ret, 0, -2);
+            --num_decimals;
         }
-    }
-    if (llGetSubString(ret, -1, -1) == ".")
-    {
-        ret = llGetSubString(ret, 0, -2);
+        if (llGetSubString(ret, num_decimals, num_decimals) == ".")
+        {
+            --num_decimals;
+        }
+
+        return llGetSubString(ret, 0, num_decimals);
     }
     return ret;
 }
@@ -78,9 +77,8 @@ web(integer force)
         {
             cache += "\n\nend";
         }
-        cache = llEscapeURL(cache);
         webcount++;
-        llHTTPRequest(url, [HTTP_METHOD, "POST", HTTP_MIMETYPE, "application/x-www-form-urlencoded", HTTP_VERIFY_CERT, FALSE], "w=" + webkey + "&c=" + (string)webcount + "&t=" + cache);
+        llHTTPRequest(url, [HTTP_METHOD, "POST", HTTP_MIMETYPE, "application/x-www-form-urlencoded", HTTP_VERIFY_CERT, FALSE], "w=" + webkey + "&c=" + (string)webcount + "&t=" + llEscapeURL(cache));
         cache = "";
     }
 }
@@ -226,7 +224,14 @@ choice_menu(list options, string menu_text)
         }
         menu_items += ["[BACK]", "[<<]", "[>>]"];
     }
-    llDialog(controller, menu_text, order_buttons(menu_items), comm_channel);
+    llDialog(controller
+            , menu_text
+            , llList2List(menu_items, -3, -1)
+            + llList2List(menu_items, -6, -4)
+            + llList2List(menu_items, -9, -7)
+            + llList2List(menu_items, -12, -10)
+            , comm_channel
+            );
 }
 
 new_menu()
@@ -239,7 +244,14 @@ new_menu()
     }
     menu_items += "[CAMERA]";
     string menu_text = "\nWhat would you like to create?\n";
-    llDialog(controller, menu_text, order_buttons(menu_items), comm_channel);
+    llDialog(controller
+            , menu_text
+            , llList2List(menu_items, -3, -1)
+            + llList2List(menu_items, -6, -4)
+            + llList2List(menu_items, -9, -7)
+            + llList2List(menu_items, -12, -10)
+            , comm_channel
+            );
 }
 
 end_helper_mode()
@@ -380,49 +392,53 @@ default
     {
         integer one = (integer)msg;
         integer two = (integer)((string)id);
+        integer i;
         if (sender == llGetLinkNumber())
         {
             list data = llParseStringKeepNulls(msg, ["|"], []);
             if (num == 90065)
             {
-                integer index = llListFindList(SITTERS, [id]);
-                if (index != -1)
+                i = llListFindList(SITTERS, [id]);
+                if (i != -1)
                 {
-                    SITTERS = llListReplaceList(SITTERS, [NULL_KEY], index, index);
+                    SITTERS = llListReplaceList(SITTERS, [NULL_KEY], i, i);
                 }
+                return;
             }
-            else if (num == 90030)
+            if (num == 90030)
             {
                 SITTERS = llListReplaceList(SITTERS, [NULL_KEY], (integer)msg, (integer)msg);
                 SITTERS = llListReplaceList(SITTERS, [NULL_KEY], (integer)((string)id), (integer)((string)id));
                 if (OLD_HELPER_METHOD && helper_mode)
                 {
-                    integer i = llList2Integer(HELPER_KEY_LIST, (integer)msg);
+                    i = llList2Integer(HELPER_KEY_LIST, (integer)msg);
                     HELPER_KEY_LIST = llListReplaceList(HELPER_KEY_LIST, [llList2Integer(HELPER_KEY_LIST, (integer)((string)id))], (integer)msg, (integer)msg);
                     HELPER_KEY_LIST = llListReplaceList(HELPER_KEY_LIST, [i], (integer)((string)id), (integer)((string)id));
                     llRegionSay(comm_channel, "SWAP|" + (string)msg + "|" + (string)id);
                 }
+                return;
             }
-            else if (num == 90070)
+            if (num == 90070)
             {
                 SITTERS = llListReplaceList(SITTERS, [id], (integer)msg, (integer)msg);
+                return;
             }
-            else if (num == 90021)
+            if (num == 90021)
             {
                 integer script_channel = (integer)msg;
                 list scripts = [prop_script, expression_script, camera_script];
-                integer index = llListFindList(scripts, [(string)id]);
-                while (index < llGetListLength(scripts))
+                i = llListFindList(scripts, [(string)id]);
+                while (i < llGetListLength(scripts))
                 {
-                    index++;
-                    string lookfor = llList2String(scripts, index);
+                    i++;
+                    string lookfor = llList2String(scripts, i);
                     if (lookfor == camera_script && script_channel > 0)
                     {
                         lookfor = lookfor + " " + (string)script_channel;
                     }
                     if (llGetInventoryType(lookfor) == INVENTORY_SCRIPT)
                     {
-                        llMessageLinked(LINK_THIS, 90020, (string)script_channel, llList2String(scripts, index));
+                        llMessageLinked(LINK_THIS, 90020, (string)script_channel, llList2String(scripts, i));
                         return;
                     }
                 }
@@ -438,8 +454,9 @@ default
                     web(TRUE);
                     llRegionSayTo(llGetOwner(), 0, "Settings copy: " + url + "?q=" + webkey);
                 }
+                return;
             }
-            else if (num == 90022)
+            if (num == 90022)
             {
                 if (llGetSubString(msg, 0, 3) == "S:M:" || llGetSubString(msg, 0, 3) == "S:T:")
                 {
@@ -455,19 +472,19 @@ default
                         Readout_Say("--✄--COPY BELOW INTO \"AVpos\" NOTECARD--✄--");
                         Readout_Say("");
                         Readout_Say("\"" + llToUpper(llGetObjectName()) + "\" " + strReplace(llList2String(data, 0), "V:", "AVsitter "));
-                        if ((integer)llList2String(data, 1))
+                        if (llList2Integer(data, 1))
                         {
                             Readout_Say("MTYPE " + llList2String(data, 1));
                         }
-                        if ((integer)llList2String(data, 2) != 1)
+                        if (llList2Integer(data, 2) != 1)
                         {
                             Readout_Say("ETYPE " + llList2String(data, 2));
                         }
-                        if ((integer)llList2String(data, 3) > -1)
+                        if (llList2Integer(data, 3) > -1)
                         {
                             Readout_Say("SET " + llList2String(data, 3));
                         }
-                        if ((integer)llList2String(data, 4) != 2)
+                        if (llList2Integer(data, 4) != 2)
                         {
                             Readout_Say("SWAP " + llList2String(data, 4));
                         }
@@ -479,15 +496,15 @@ default
                         {
                             Readout_Say("ADJUST " + strReplace(llList2String(data, 7), SEP, "|"));
                         }
-                        if ((integer)llList2String(data, 8))
+                        if (llList2Integer(data, 8))
                         {
                             Readout_Say("SELECT " + llList2String(data, 8));
                         }
-                        if ((integer)llList2String(data, 9) != 2)
+                        if (llList2Integer(data, 9) != 2)
                         {
                             Readout_Say("AMENU " + llList2String(data, 9));
                         }
-                        if ((integer)llList2String(data, 10))
+                        if (llList2Integer(data, 10))
                         {
                             Readout_Say("HELPER " + llList2String(data, 10));
                         }
@@ -509,10 +526,8 @@ default
                 {
                     msg = strReplace(msg, "{P:", "{");
                     list parts = llParseStringKeepNulls(llDumpList2String(llParseString2List(llGetSubString(msg, llSubStringIndex(msg, "}") + 1, -1), [" "], [""]), ""), ["<"], []);
-                    string pos = "<" + llList2String(parts, 1);
-                    string rot = "<" + llList2String(parts, 2);
-                    vector pos2 = (vector)pos;
-                    vector rot2 = (vector)rot;
+                    vector pos2 = (vector)("<" + llList2String(parts, 1));
+                    vector rot2 = (vector)("<" + llList2String(parts, 2));
                     string result = "<" + FormatFloat(pos2.x, 3) + "," + FormatFloat(pos2.y, 3) + "," + FormatFloat(pos2.z, 3) + ">";
                     result += "<" + FormatFloat(rot2.x, 1) + "," + FormatFloat(rot2.y, 1) + "," + FormatFloat(rot2.z, 1) + ">";
                     msg = llGetSubString(msg, 0, llSubStringIndex(msg, "}")) + result;
@@ -552,9 +567,9 @@ default
                 }
                 Readout_Say(msg);
             }
-            else if (num == 90100 || num == 90101)
+            if (num == 90100 || num == 90101)
             {
-                if (llList2String(data, 1) == "[DUMP]")
+                if ((msg = llList2String(data, 1)) == "[DUMP]")
                 {
                     if (id != llGetOwner())
                     {
@@ -562,16 +577,15 @@ default
                     }
                     llMessageLinked(LINK_THIS, 90020, "0", "");
                 }
-                else if (llList2String(data, 1) == "[NEW]")
+                if (msg == "[NEW]")
                 {
-                    controller = (key)llList2String(data, 2);
-                    active_sitter = (integer)llList2String(data, 0);
+                    controller = llList2Key(data, 2);
+                    active_sitter = llList2Integer(data, 0);
                     adding = "";
                     new_menu();
                 }
-                else if (llList2String(data, 1) == "[SAVE]")
+                if (msg == "[SAVE]")
                 {
-                    integer i;
                     for (i = 0; i < llGetListLength(SITTERS); i++)
                     {
                         if (llList2String(SITTER_POSES, i) != "")
@@ -591,18 +605,19 @@ default
                     }
                     llMessageLinked(LINK_THIS, 90005, "", llDumpList2String([llList2String(data, 2), id], "|"));
                 }
-                else if (llList2String(data, 1) == "[HELPER]")
+                if (msg == "[HELPER]")
                 {
                     controller = id;
                     OLD_HELPER_METHOD = (integer)llList2String(data, 3);
                     toggle_helper_mode();
                 }
-                else if (llList2String(data, 1) == "[ADJUST]")
+                if (msg == "[ADJUST]")
                 {
                     end_helper_mode();
                 }
+                return;
             }
-            else if (num == 90055 || num == 90056)
+            if (num == 90055 || num == 90056)
             {
                 data = llParseStringKeepNulls(id, ["|"], []);
                 SITTER_POSES = llListReplaceList(SITTER_POSES, [llList2String(data, 0)], one, one);

@@ -178,17 +178,17 @@ default
                 list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
                 if (command == "TIMER")
                 {
-                    TIMER_DEFAULT = (integer)llList2String(parts, 0);
+                    TIMER_DEFAULT = llList2Integer(parts, 0);
                 }
-                else if (command == "DEBUG")
+                if (command == "DEBUG")
                 {
-                    DEBUG = (integer)llList2String(parts, 0);
+                    DEBUG = llList2Integer(parts, 0);
                 }
-                else if (command == "XCITE")
+                if (command == "XCITE")
                 {
                     POSE_AND_SITTER += [llStringTrim(llList2String(parts, 0), STRING_TRIM) + "|" + llList2String(parts, 1)];
                     XCITE_COMMANDS += [llList2String(parts, 2) + "|" + llList2String(parts, 3) + "|" + llList2String(parts, 4) + "|" + llList2String(parts, 5)];
-                    XCITE_TILT += (integer)llList2String(parts, 6);
+                    XCITE_TILT += llList2Integer(parts, 6);
                 }
                 notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }
