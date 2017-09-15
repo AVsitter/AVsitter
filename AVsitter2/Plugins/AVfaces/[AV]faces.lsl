@@ -37,7 +37,8 @@ list facial_anim_list =
 
 integer IsInteger(string data)
 {
-    return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
+    // This should allow for leading zeros, hence the "1"
+    return data != "" && (string)((integer)("1" + data)) == "1" + data;
 }
 
 string version = "2.2";
@@ -227,7 +228,8 @@ default
         notecard_key = llGetInventoryKey(notecard_name);
         if (llGetInventoryType(notecard_name) == INVENTORY_NOTECARD)
         {
-            Out(0, "Loading...");
+            // Out() inlined here:
+            llOwnerSay(llGetScriptName() + "[" + version + "] " + "Loading...");
             notecard_query = llGetNotecardLine(notecard_name, 0);
         }
     }
@@ -245,9 +247,13 @@ default
 
     link_message(integer sender, integer num, string msg, key id)
     {
+        list data;
+        integer i;
+        integer sitter;
+        integer x;
         if (num == 90100)
         {
-            list data = llParseString2List(msg, ["|"], []);
+            data = llParseString2List(msg, ["|"], []);
             if (llList2String(data, 1) == "[FACES]")
             {
                 llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2String(data, 2));
@@ -264,59 +270,63 @@ default
                     llRegionSayTo(id, 0, "Sorry, only the owner can change this.");
                 }
             }
+            return;
         }
-        else if (sender == llGetLinkNumber())
+        if (sender == llGetLinkNumber())
         {
             if (num == 90045)
             {
-                list data = llParseStringKeepNulls(msg, ["|"], []);
-                integer sitter = (integer)llList2String(data, 0);
+                data = llParseStringKeepNulls(msg, ["|"], []);
+                sitter = (integer)llList2String(data, 0);
                 if (id == llList2Key(SITTERS, sitter))
                 {
                     string given_posename = llList2String(data, 1);
                     SITTER_POSES = llListReplaceList(SITTER_POSES, [given_posename], sitter, sitter);
                     given_posename = (string)sitter + "|" + given_posename;
                     remove_sequences(id);
-                    integer i;
                     while (i < llGetListLength(anim_triggers))
                     {
                         if (llList2String(anim_triggers, i) == given_posename)
                         {
-                            integer reference = llListFindList(anim_triggers, [(string)sitter + "|" + llList2String(anim_animsequences, i)]);
-                            if (reference == -1)
+                            x = llListFindList(anim_triggers, [(string)sitter + "|" + llList2String(anim_animsequences, i)]);
+                            if (x == -1)
                             {
-                                reference = i;
+                                x = i;
                             }
-                            start_sequence(reference, id);
+                            start_sequence(x, id);
                         }
                         i++;
                     }
                 }
+                return;
             }
-            else if (num == 90065)
+            if (num == 90065)
             {
                 remove_sequences(id);
-                integer index = llListFindList(SITTERS, [id]);
-                if (index != -1)
+                i = llListFindList(SITTERS, [id]);
+                if (i != -1)
                 {
-                    SITTERS = llListReplaceList(SITTERS, [NULL_KEY], index, index);
+                    SITTERS = llListReplaceList(SITTERS, [NULL_KEY], i, i);
                 }
+                return;
             }
-            else if (num == 90030)
+            if (num == 90030)
             {
                 SITTERS = llListReplaceList(SITTERS, [NULL_KEY], (integer)msg, (integer)msg);
                 SITTERS = llListReplaceList(SITTERS, [NULL_KEY], (integer)((string)id), (integer)((string)id));
+                return;
             }
-            else if (num == 90070)
+            if (num == 90070)
             {
                 SITTERS = llListReplaceList(SITTERS, [id], (integer)msg, (integer)msg);
+                return;
             }
-            else if (num == 90172)
+            if (num == 90172)
             {
                 is_running = TRUE;
-                integer sitter = (integer)msg;
+                sitter = (integer)msg;
                 remove_sequences(llList2Key(SITTERS, sitter));
-                integer i = llGetListLength(anim_triggers);
+                i = llGetListLength(anim_triggers);
                 while (i > 0)
                 {
                     i--;
@@ -329,32 +339,39 @@ default
                 if (id != "none")
                 {
                     anim_triggers += [msg + "|" + llList2String(SITTER_POSES, sitter)];
-                    anim_animsequences += (string)id + "|1";
+
+                    msg = (string)id + "|1";
+                    // Reuse existing entries to save data memory when possible
+                    i = llListFindList(anim_animsequences, [msg]);
+                    if (~i)
+                        msg = llList2String(anim_animsequences, i);
+                    anim_animsequences += msg;
+
                     start_sequence(llGetListLength(anim_animsequences) - 1, llList2Key(SITTERS, sitter));
                     llSay(0, "FACE added: '" + (string)id + "' to '" + llList2String(SITTER_POSES, sitter) + "' for SITTER " + (string)sitter + ".");
                 }
+                return;
             }
-            else if (num == 90020 && (string)id == llGetScriptName())
+            if (num == 90020 && (string)id == llGetScriptName())
             {
-                integer i;
                 for (i = 0; i < llGetListLength(anim_triggers); i++)
                 {
                     if (llSubStringIndex(llList2String(anim_triggers, i), msg + "|") == 0)
                     {
-                        list trigger = llParseString2List(llList2String(anim_triggers, i), ["|"], []);
+                        data = llParseString2List(llList2String(anim_triggers, i), ["|"], []);
                         list sequence = llParseString2List(llList2String(anim_animsequences, i), ["|"], []);
-                        integer x;
                         for (x = 0; x < llGetListLength(sequence); x += 2)
                         {
                             if (IsInteger(llList2String(sequence, x)))
                             {
-                                sequence = llListReplaceList(sequence, [llList2String(facial_anim_list, (integer)llList2String(sequence, x))], x, x);
+                                sequence = llListReplaceList(sequence, [llList2String(facial_anim_list, llList2Integer(sequence, x))], x, x);
                             }
                         }
-                        Readout_Say("ANIM " + llList2String(trigger, 1) + "|" + llDumpList2String(sequence, "|"), msg);
+                        Readout_Say("ANIM " + llList2String(data, 1) + "|" + llDumpList2String(sequence, "|"), msg);
                     }
                 }
                 llMessageLinked(LINK_THIS, 90021, msg, llGetScriptName());
+                return;
             }
         }
     }
@@ -390,7 +407,8 @@ default
         {
             if (data == EOF)
             {
-                Out(0, (string)llGetListLength(anim_triggers) + " Expressions Ready, Mem=" + (string)llGetFreeMemory());
+                // Out() inlined here:
+                llOwnerSay(llGetScriptName() + "[" + version + "] " + (string)llGetListLength(anim_triggers) + " Expressions Ready, Mem=" + (string)llGetFreeMemory());
             }
             else
             {
@@ -398,17 +416,16 @@ default
                 data = llStringTrim(data, STRING_TRIM);
                 string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
                 list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
-                string part0 = llStringTrim(llList2String(parts, 0), STRING_TRIM);
                 if (command == "SITTER")
                 {
-                    notecard_section = (integer)part0;
+                    notecard_section = llList2Integer(parts, 0);
                 }
-                else if (command == "ANIM")
+                if (command == "ANIM")
                 {
-                    string part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, -1), "|"), STRING_TRIM);
+                    string part1 = llStringTrim(llDumpList2String(llDeleteSubList(parts, 0, 0), "|"), STRING_TRIM);
                     list sequence = llParseString2List(part1, ["|"], []);
                     integer x;
-                    for (x = 0; x < llGetListLength(sequence); x += 2)
+                    for (; x < llGetListLength(sequence); x += 2)
                     {
                         integer index = llListFindList(facial_anim_list, [llList2String(sequence, x)]);
                         if (~index)
@@ -416,8 +433,13 @@ default
                             sequence = llListReplaceList(sequence, [index], x, x);
                         }
                     }
-                    anim_triggers += [(string)notecard_section + "|" + part0];
-                    anim_animsequences += llDumpList2String(sequence, "|");
+                    anim_triggers += [(string)notecard_section + "|" + llStringTrim(llList2String(parts, 0), STRING_TRIM)];
+                    part1 = llDumpList2String(sequence, "|");
+                    // Reuse existing entries to save data memory when possible
+                    x = llListFindList(anim_animsequences, [part1]);
+                    if (~x)
+                        part1 = llList2String(anim_animsequences, x);
+                    anim_animsequences += part1;
                 }
                 notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
             }

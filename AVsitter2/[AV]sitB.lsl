@@ -63,18 +63,6 @@ send_anim_info(integer broadcast)
     llMessageLinked(LINK_THIS, 90055, (string)SCRIPT_CHANNEL, llDumpList2String([llList2String(MENU_LIST, ANIM_INDEX), llList2String(DATA_LIST, ANIM_INDEX), llList2String(POS_ROT_LIST, ANIM_INDEX * 2), llList2String(POS_ROT_LIST, ANIM_INDEX * 2 + 1), broadcast, speed_index], "|"));
 }
 
-// LSL::
-Readout_Say(string say)
-{
-    llMessageLinked(LINK_THIS, 90022, say, (string)SCRIPT_CHANNEL);
-}
-// ::LSL
-
-list order_buttons(list buttons)
-{
-    return llList2List(buttons, -3, -1) + llList2List(buttons, -6, -4) + llList2List(buttons, -9, -7) + llList2List(buttons, -12, -10);
-}
-
 memory()
 {
     llOwnerSay(llGetScriptName() + "[" + version + "] " + (string)llGetListLength(MENU_LIST) + " Items Ready, Mem=" + (string)(65536 - llGetUsedMemory()));
@@ -102,24 +90,20 @@ integer animation_menu(integer animation_menu_function)
         }
         if (SITTER_INFO != "")
         {
-            menu += "[" + llList2String(llParseStringKeepNulls(SITTER_INFO, [SEP], []), 0) + "]";
+            menu += "[" + llList2String(llParseStringKeepNulls(SITTER_INFO, [SEP], []), 0);
+            menu += "]";
         }
         else if (number_of_sitters > 1)
         {
             menu += "[Sitter " + (string)SCRIPT_CHANNEL + "]";
         }
-        integer anim_has_speeds;
         string animation_file = llList2String(llParseStringKeepNulls(llList2String(DATA_LIST, ANIM_INDEX), [SEP], []), 0);
-        if (llGetInventoryType(animation_file + "+") == INVENTORY_ANIMATION)
-        {
-            anim_has_speeds = TRUE;
-        }
         string CURRENT_POSE_NAME;
         if (FIRST_INDEX != -1)
         {
             CURRENT_POSE_NAME = llList2String(MENU_LIST, ANIM_INDEX);
             menu += " [" + llList2String(llParseString2List(CURRENT_POSE_NAME, ["P:"], []), 0);
-            if (anim_has_speeds)
+            if (llGetInventoryType(animation_file + "+") == INVENTORY_ANIMATION)
             {
                 if (speed_index < 0)
                 {
@@ -134,9 +118,10 @@ integer animation_menu(integer animation_menu_function)
         }
         integer total_items;
         integer i = current_menu + 1;
-        while (i++ < llGetListLength(MENU_LIST) && llSubStringIndex(llList2String(MENU_LIST, i), "M:"))
+        while (i < llGetListLength(MENU_LIST) && llSubStringIndex(llList2String(MENU_LIST, i), "M:"))
         {
             ++total_items;
+            ++i;
         }
         list menu_items0;
         list menu_items2;
@@ -154,14 +139,12 @@ integer animation_menu(integer animation_menu_function)
             menu_items2 += "[NEW]";
             if (CURRENT_POSE_NAME != "")
             {
-                menu_items2 += "[DUMP]";
-                menu_items2 += "[SAVE]";
+                menu_items2 = menu_items2 + "[DUMP]" + "[SAVE]";
             }
         }
         else if (llSubStringIndex(submenu_info, "V") != -1)
         {
-            menu_items0 += "<< Softer";
-            menu_items0 += "Harder >>";
+            menu_items0 = menu_items0 + "<< Softer" + "Harder >>";
         }
         if (AMENU == 2 || (AMENU == 1 && current_menu == -1) || llSubStringIndex(submenu_info, "A") != -1)
         {
@@ -181,14 +164,14 @@ integer animation_menu(integer animation_menu_function)
                 menu_items2 += "[STOP]";
                 if (!helper_mode)
                 {
-                    menu_items2 += ["Control..."];
+                    menu_items2 += "Control...";
                 }
             }
         }
         integer items_per_page = 12 - llGetListLength(menu_items2) - llGetListLength(menu_items0);
         if (items_per_page < total_items)
         {
-            menu_items2 += ["[<<]", "[>>]"];
+            menu_items2 = menu_items2 + "[<<]" + "[>>]";
             items_per_page -= 2;
         }
         list menu_items1;
@@ -216,12 +199,7 @@ integer animation_menu(integer animation_menu_function)
         @end;
         if (animation_menu_function == 1)
         {
-            integer pages = total_items / (12 - llGetListLength(menu_items2) - llGetListLength(menu_items0));
-            if ((total_items % (12 - llGetListLength(menu_items2) - llGetListLength(menu_items0))) == 0)
-            {
-                pages--;
-            }
-            return pages;
+            return (total_items + items_per_page - 1) / items_per_page - 1;
         }
         if (submenu_info == "V")
         {
@@ -232,7 +210,12 @@ integer animation_menu(integer animation_menu_function)
         }
         llListenRemove(menu_handle);
         menu_handle = llListen(menu_channel, "", CONTROLLER, "");
-        llDialog(CONTROLLER, menu, order_buttons(menu_items0 + menu_items1 + menu_items2), menu_channel);
+        menu_items0 = menu_items0 + menu_items1 + menu_items2;
+        menu_items1 = llList2List(menu_items0, -3, -1);
+        menu_items1 += llList2List(menu_items0, -6 ,-4);
+        menu_items1 += llList2List(menu_items0, -9 ,-7);
+        menu_items1 += llList2List(menu_items0, -12 ,-10);
+        llDialog(CONTROLLER, menu, menu_items1, menu_channel);
     }
     return 0;
 }
@@ -390,30 +373,25 @@ default
     {
         integer one = (integer)msg;
         integer two = (integer)((string)id);
+        integer index;
+        list data;
         if (num == 90000 || num == 90010 || num == 90003)
         {
-            integer index = llListFindList(MENU_LIST, [msg]);
+            index = llListFindList(MENU_LIST, [msg]);
             if (index == -1)
             {
                 index = llListFindList(MENU_LIST, ["P:" + msg]);
             }
-            integer doit;
-            if (id == "")
+            if (id) // OSS::if (osIsUUID(id) && id != NULL_KEY)
             {
-                doit = TRUE;
+                // do nothing
             }
-            else if (id) // OSS::else if (osIsUUID(id) && id != NULL_KEY)
+            else if (id != "")
             {
-                if (id == MY_SITTER)
-                {
-                    doit = TRUE;
-                }
+                // assumed numeric - replace it with a "*" so we can test for it
+                id = "*";
             }
-            else if (two == SCRIPT_CHANNEL)
-            {
-                doit = TRUE;
-            }
-            if (doit && (index != -1 || msg == ""))
+            if ((id == "" || id == MY_SITTER || (id == "*" && two == SCRIPT_CHANNEL)) && (index != -1 || msg == ""))
             {
                 ANIM_INDEX = index;
                 integer broadcast = TRUE;
@@ -430,29 +408,31 @@ default
                     }
                 }
             }
+            return;
         }
-        else if (num == 90045 && sender == llGetLinkNumber() && (ETYPE == 1 || ETYPE == 2))
+        if (num == 90045 && sender == llGetLinkNumber() && (ETYPE == 1 || ETYPE == 2))
         {
-            list data = llParseStringKeepNulls(msg, ["|"], []);
-            string OLD_SYNC = llList2String(data, 5);
+            string OLD_SYNC = llList2String(llParseStringKeepNulls(msg, ["|"], data), 5);
             if (OLD_SYNC != "" && llList2String(MENU_LIST, ANIM_INDEX) == OLD_SYNC)
             {
                 ANIM_INDEX = FIRST_INDEX;
                 send_anim_info(TRUE);
             }
+            return;
         }
-        else if (num == 90033)
+        if (num == 90033)
         {
             llListenRemove(menu_handle);
+            return;
         }
-        else if (num == 90004 || num == 90005)
+        if (num == 90004 || num == 90005)
         {
-            list data = llParseStringKeepNulls(id, ["|"], []);
-            if ((key)llList2String(data, -1) == MY_SITTER)
+            data = llParseStringKeepNulls(id, ["|"], data);
+            if (llList2Key(data, -1) == MY_SITTER)
             {
                 key lastController = CONTROLLER;
-                CONTROLLER = (key)llList2String(data, 0);
-                integer index = llListFindList(MENU_LIST, ["M:" + msg + "*"]);
+                CONTROLLER = llList2Key(data, 0);
+                index = llListFindList(MENU_LIST, ["M:" + msg + "*"]);
                 if (num == 90004)
                 {
                     current_menu = -1;
@@ -466,55 +446,61 @@ default
                 }
                 animation_menu((integer)msg);
             }
+            return;
         }
-        else if (num == 90030 && (one == SCRIPT_CHANNEL || two == SCRIPT_CHANNEL))
+        if (num == 90030 && (one == SCRIPT_CHANNEL || two == SCRIPT_CHANNEL))
         {
             CONTROLLER = MY_SITTER = "";
+            return;
         }
-        else if (num == 90100 || num == 90101)
+        if (num == 90100 || num == 90101)
         {
-            list data = llParseStringKeepNulls(msg, ["|"], []);
-            if (llList2String(data, 1) == "[HELPER]")
+            // reuse msg to save a local
+            msg = llList2String((data = llParseStringKeepNulls(msg, ["|"], data)), 1);
+            if (msg == "[HELPER]")
             {
                 menu_page = 0;
                 helper_mode = !helper_mode;
-                if ((key)llList2String(data, 2) == MY_SITTER && !OLD_HELPER_METHOD)
+                if (llList2Key(data, 2) == MY_SITTER && !OLD_HELPER_METHOD)
                 {
                     animation_menu(0);
                 }
             }
-            else if (llList2String(data, 1) == "[ADJUST]")
+            if (msg == "[ADJUST]")
             {
                 helper_mode = FALSE;
                 menu_page = 0;
             }
-            else if (llList2String(data, 1) == "Harder >>")
+            if (msg == "Harder >>")
             {
                 ++speed_index;
                 if (speed_index > 1)
                     speed_index = 1;
                 send_anim_info(FALSE);
             }
-            else if (llList2String(data, 1) == "<< Softer")
+            if (msg == "<< Softer")
             {
                 --speed_index;
                 if (speed_index < -1)
                     speed_index = -1;
                 send_anim_info(FALSE);
             }
+            return;
         }
-        else if (num == 90201)
+        if (num == 90201)
         {
             has_RLV = FALSE;
+            return;
         }
-        else if (num == 90202)
+        if (num == 90202)
         {
             has_RLV = (integer)msg;
+            return;
         }
-        else if (one == SCRIPT_CHANNEL)
+        if (one == SCRIPT_CHANNEL)
         {
-            list data = llParseStringKeepNulls(id, ["|"], []);
-            integer index = llListFindList(MENU_LIST, [llList2String(data, 0)]);
+            data = llParseStringKeepNulls(id, ["|"], data);
+            index = llListFindList(MENU_LIST, [llList2String(data, 0)]);
             if (index == -1)
             {
                 index = llListFindList(MENU_LIST, ["P:" + llList2String(data, 0)]);
@@ -522,21 +508,24 @@ default
             if (num == 90299)
             {
                 MENU_LIST = DATA_LIST = POS_ROT_LIST = [];
+                return;
             }
-            else if (num == 90070)
+            if (num == 90070)
             {
                 CONTROLLER = MY_SITTER = id;
                 menu_page = 0;
                 current_menu = -1;
                 menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
                 llListenRemove(menu_handle);
+                return;
             }
-            else if (num == 90065 && sender == llGetLinkNumber())
+            if (num == 90065 && sender == llGetLinkNumber())
             {
                 CONTROLLER = MY_SITTER = "";
                 llListenRemove(menu_handle);
+                return;
             }
-            else if (num == 90300)
+            if (num == 90300)
             {
                 integer place_to_add = llGetListLength(MENU_LIST);
                 if (llGetListLength(data) > 2)
@@ -569,8 +558,9 @@ default
                     send_anim_info(TRUE);
                     memory();
                 }
+                return;
             }
-            else if (num == 90301)
+            if (num == 90301)
             {
                 if (index != -1)
                 {
@@ -580,35 +570,47 @@ default
                         send_anim_info(FALSE);
                     }
                 }
+                return;
             }
-            else if (num == 90302)
+            if (num == 90302)
             {
-                number_of_sitters = (integer)llList2String(data, 0);
+                number_of_sitters = llList2Integer(data, 0);
                 SITTER_INFO = llList2String(data, 1);
-                SET = (integer)llList2String(data, 2);
-                MTYPE = (integer)llList2String(data, 3);
-                ETYPE = (integer)llList2String(data, 4);
-                SWAP = (integer)llList2String(data, 5);
+                SET = llList2Integer(data, 2);
+                MTYPE = llList2Integer(data, 3);
+                ETYPE = llList2Integer(data, 4);
+                SWAP = llList2Integer(data, 5);
                 FIRST_INDEX = ANIM_INDEX = llListFindList(MENU_LIST, [llList2String(data, 6)]);
                 BRAND = llList2String(data, 7);
                 CUSTOM_TEXT = llList2String(data, 8);
                 ADJUST_MENU = llList2String(data, 9);
-                SELECT = (integer)llList2String(data, 10);
-                AMENU = (integer)llList2String(data, 11);
-                OLD_HELPER_METHOD = (integer)llList2String(data, 12);
+                SELECT = llList2Integer(data, 10);
+                AMENU = llList2Integer(data, 11);
+                OLD_HELPER_METHOD = llList2Integer(data, 12);
                 RLVDesignations = llList2String(data, 13);
                 onSit = llList2String(data, 14);
                 memory();
+                return;
             }
             // LSL::
-            else if (num == 90020 && llList2String(data, 0) == "")
+            if (num == 90020 && llList2String(data, 0) == "")
             {
-                Readout_Say("V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"));
+                llMessageLinked(LINK_THIS, 90022
+                               , "V:" + llDumpList2String(
+                                    [version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO,
+                                    CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU,
+                                    OLD_HELPER_METHOD], "|")
+                               , (string)SCRIPT_CHANNEL
+                               );
                 integer i = -1;
                 while (++i < llGetListLength(MENU_LIST))
                 {
                     llSleep(0.5);
-                    Readout_Say("S:" + llList2String(MENU_LIST, i) + "|" + llList2String(DATA_LIST, i));
+                    llMessageLinked(LINK_THIS, 90022
+                                   ,   "S:" + llList2String(MENU_LIST, i)
+                                     + "|" + llList2String(DATA_LIST, i)
+                                   , (string)SCRIPT_CHANNEL
+                                   );
                 }
                 i = -1;
                 while (++i < llGetListLength(MENU_LIST))
@@ -616,19 +618,29 @@ default
                     if (llList2Vector(POS_ROT_LIST, i * 2) != ZERO_VECTOR)
                     {
                         llSleep(0.2);
-                        Readout_Say("{" + llList2String(MENU_LIST, i) + "}" + llList2String(POS_ROT_LIST, i * 2) + llList2String(POS_ROT_LIST, i * 2 + 1));
+                        llMessageLinked(LINK_THIS, 90022
+                                       , "{" + llList2String(MENU_LIST, i) + "}"
+                                             + llList2String(POS_ROT_LIST, i * 2)
+                                             + llList2String(POS_ROT_LIST, i * 2 + 1)
+                                       , (string)SCRIPT_CHANNEL
+                                       );
                     }
                 }
                 llMessageLinked(LINK_THIS, 90021, (string)SCRIPT_CHANNEL, "");
+                return;
             }
             // ::LSL
             /* OSS::
-            else if (num == 90020 && llList2String(data, 0) == "")
+            if (num == 90020)
             {
-                llMessageLinked(LINK_THIS, 90022, "V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"), (string)SCRIPT_CHANNEL);
-                llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, "-1|D");
+                if (llList2String(data, 0) == "")
+                {
+                    llMessageLinked(LINK_THIS, 90022, "V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"), (string)SCRIPT_CHANNEL);
+                    llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, "-1|D");
+                }
+                return;
             }
-            else if (num == 90024) // self-sent message to dump the next line
+            if (num == 90024) // self-sent message to dump the next line
             {
                 if (llList2String(data, 1) == "D")
                 {

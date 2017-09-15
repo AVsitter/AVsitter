@@ -66,7 +66,7 @@ check_sitters()
 
 back_to_adjust(integer SCRIPT_CHANNEL, key sitter)
 {
-    llMessageLinked(LINK_SET, 90101, (string)SCRIPT_CHANNEL + "|[ADJUST]", sitter);
+    llMessageLinked(LINK_SET, 90101, (string)SCRIPT_CHANNEL + "|[ADJUST]|", sitter);
 }
 
 list order_buttons(list menu_items)
@@ -157,14 +157,14 @@ default
                 if (id == llGetOwner())
                 {
                     active_prim = sender;
-                    active_script_channel = (integer)llList2String(data, 0);
-                    active_sitter = (key)llList2String(data, 2);
+                    active_script_channel = llList2Integer(data, 0);
+                    active_sitter = llList2Key(data, 2);
                     main_menu();
                 }
                 else
                 {
                     llRegionSayTo(id, 0, "Sorry, only the owner can change security settings.");
-                    llMessageLinked(sender, 90101, llDumpList2String([llList2String(data, 0), "[ADJUST]", id], "|"), llList2String(data, 2));
+                    llMessageLinked(sender, 90101, llList2String(data, 0) + "|[ADJUST]|" + (string)id, llList2Key(data, 2));
                 }
             }
         }
@@ -192,7 +192,7 @@ default
         {
             if (msg == "[BACK]")
             {
-                llMessageLinked(LINK_SET, 90101, llDumpList2String([active_script_channel, "[ADJUST]", id], "|"), active_sitter);
+                llMessageLinked(LINK_SET, 90101, (string)active_script_channel + "|[ADJUST]|" + (string)id, active_sitter);
             }
             else if (lastmenu == "Sit")
             {
