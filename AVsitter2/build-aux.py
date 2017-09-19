@@ -36,7 +36,13 @@ def oss_process(filename):
     import re
 
     # Regex that replaces a line with its OSS version when one's specified.
-    os_re = re.compile(r'^( *)(.*?)// ?OSS::(.*)$', re.MULTILINE)
+    os_line_re = re.compile(r'^( *).*?// ?OSS::(.*)$', re.MULTILINE)
+
+    # Regex that removes lines between //LSL:: and //::LSL (can't begin on first line)
+    sl_block_re = re.compile(r'\n\s*// ?LSL::(?:[^\n]|\n(?![ \t]*// ?::LSL[^\n]*?(?=\n)))*\n[ \t]*// ?::LSL[^\n]*(?=\n)')
+
+    # Regex that removes /*OSS:: and its matching */ (can't begin on first line)
+    os_block_re = re.compile(r'\n\s*/\* ?OSS::[^\n]*(\n(?:[^\n]|\n(?![ \t]*\*/))*)\n[ \t]*\*/[^\n]*(?=\n)')
 
     if filename is not None:
         f = open(filename, "r");
@@ -55,7 +61,9 @@ def oss_process(filename):
                   'b88526b7-3966-43fd-ae76-1e39881c86aa')
     # TODO: Replace LockGuard texture UUIDs
 
-    s = os_re.sub(r'\1\3', s)
+    s = os_line_re.sub(r'\1\2', s)
+    s = sl_block_re.sub('', s)
+    s = os_block_re.sub(r'\1', s)
     sys.stdout.write(s)
     return 0
 
