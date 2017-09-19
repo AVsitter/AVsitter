@@ -63,10 +63,12 @@ send_anim_info(integer broadcast)
     llMessageLinked(LINK_THIS, 90055, (string)SCRIPT_CHANNEL, llDumpList2String([llList2String(MENU_LIST, ANIM_INDEX), llList2String(DATA_LIST, ANIM_INDEX), llList2String(POS_ROT_LIST, ANIM_INDEX * 2), llList2String(POS_ROT_LIST, ANIM_INDEX * 2 + 1), broadcast, speed_index], "|"));
 }
 
+// LSL::
 Readout_Say(string say)
 {
     llMessageLinked(LINK_THIS, 90022, say, (string)SCRIPT_CHANNEL);
 }
+// ::LSL
 
 list order_buttons(list buttons)
 {
@@ -598,6 +600,7 @@ default
                 onSit = llList2String(data, 14);
                 memory();
             }
+            // LSL::
             else if (num == 90020 && llList2String(data, 0) == "")
             {
                 Readout_Say("V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"));
@@ -618,6 +621,41 @@ default
                 }
                 llMessageLinked(LINK_THIS, 90021, (string)SCRIPT_CHANNEL, "");
             }
+            // ::LSL
+            /* OSS::
+            else if (num == 90020 && llList2String(data, 0) == "")
+            {
+                llMessageLinked(LINK_THIS, 90022, "V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"), (string)SCRIPT_CHANNEL);
+                llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, "-1|D");
+            }
+            else if (num == 90024) // self-sent message to dump the next line
+            {
+                if (llList2String(data, 1) == "D")
+                {
+                    if (++two < llGetListLength(MENU_LIST))
+                    {
+                        llSleep(0.5);
+                        llMessageLinked(LINK_THIS, 90022, "S:" + llList2String(MENU_LIST, two) + "|" + llList2String(DATA_LIST, two), (string)SCRIPT_CHANNEL);
+                        llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, (string)two + "|D");
+                        return;
+                    }
+                    llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, "-1|P");
+                    return;
+                }
+                if (++two < llGetListLength(MENU_LIST))
+                {
+                    if (llList2Vector(POS_ROT_LIST, two * 2) != ZERO_VECTOR)
+                    {
+                        llSleep(0.2);
+                        llMessageLinked(LINK_THIS, 90022, "{" + llList2String(MENU_LIST, two) + "}" + llList2String(POS_ROT_LIST, two * 2) + llList2String(POS_ROT_LIST, two * 2 + 1), (string)SCRIPT_CHANNEL);
+                    }
+                    llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, (string)two + "|P");
+                    return;
+                }
+                llMessageLinked(LINK_THIS, 90021, (string)SCRIPT_CHANNEL, "");
+                return;
+            }
+            */
         }
     }
 }
