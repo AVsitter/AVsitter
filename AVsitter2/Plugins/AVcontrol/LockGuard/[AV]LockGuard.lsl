@@ -53,10 +53,10 @@ integer USES_PROPS = FALSE;
 //      - A pose name of "*" provides a default for all poses, should that be necessary.
 
 list POSES = [
-        "Pose1", "leftwrist,ring1,rightwrist,ring2,leftankle,ring3,rightankle,ring4",
-        "Pose2", "leftwrist,ring1,rightwrist,ring2",
-        "Pose3", "leftwrist,ring5,rightwrist,ring6,leftankle,ring7,rightankle,ring8",
-        "Pose4", "leftwrist,ring5,rightwrist,ring6"
+        "cross", "rightwrist,ring1,leftwrist,ring2,rightankle,ring3,leftankle,ring4",
+        "reverse", "rightwrist,ring2,leftwrist,ring1,rightankle,ring4,leftankle,ring3",
+        "arms", "rightwrist,ring1,leftwrist,ring2",
+        "upside", "rightwrist,ring2,leftwrist,ring1,leftankle,ring1,rightankle,ring2"
 ];
 
 //  CHAIN_PARAMETERS:
