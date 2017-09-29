@@ -190,6 +190,8 @@ else if(isset($_REQUEST['w'])){ // write to a record
 }
 else if(isset($_REQUEST['q'])){ // read a record
 
+    $out = "";
+
     $given_webkey = $_REQUEST['q'];
     $sql = "SELECT * FROM $avpos_table"
         . ' WHERE webkey = ' . StrSQL($given_webkey);
