@@ -148,7 +148,22 @@ else if(isset($_REQUEST['w'])){ // write to a record
                 else{
                     $row = mysqli_fetch_assoc($result);
                     $newtext = $row['text'] . $given_text;
-                    if($row['count']+1 == $given_count){
+                    if (strlen($newtext) > 65535) {
+                        $sql = "UPDATE $avpos_table"
+                        . ' SET text = ' . StrSQL("64K limit exceeded.\n"
+                                                . "The text that was generated can't"
+                                                . " be saved as a notecard because it's"
+                                                . " too long.")
+                        .    ', count = ' . IntSQL(10000+$given_count)
+                        .    ', timestamp = NOW()'
+                        . ' WHERE webkey = ' . StrSQL($given_webkey);
+                        mysqli_query($link,$sql) or email_death("ERR03: " . mysqli_error($link));
+                        $response = "NOTECARD TOO LONG";
+                    }
+                    else if (startsWith($newtext, '64K limit exceeded')) {
+                        $response = "NOTECARD TOO LONG";
+                    }
+                    else if($row['count']+1 == $given_count){
                         $response = "ADDING";
 
                         if(endsWith($_REQUEST['t'],"\n\nend")){
@@ -174,6 +189,8 @@ else if(isset($_REQUEST['w'])){ // write to a record
     }
 }
 else if(isset($_REQUEST['q'])){ // read a record
+
+    $out = "";
 
     $given_webkey = $_REQUEST['q'];
     $sql = "SELECT * FROM $avpos_table"
