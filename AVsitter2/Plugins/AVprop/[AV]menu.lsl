@@ -39,7 +39,7 @@ integer listen_handle;
 integer number_per_page = 9;
 integer menu_pages;
 string last_text;
-string SEP = "�"; // OSS::string SEP;
+string SEP = "�"; // OSS::string SEP = "\u007F";
 
 integer pass_security(key id)
 {
@@ -311,7 +311,6 @@ default
         {
             remove_script("Use only one copy of this script!");
         }
-        // OSS::SEP = llUnescapeURL("%7F");
         check_avsit();
         notecard_key = llGetInventoryKey(notecard_name);
         Out(0, "Loading...");
