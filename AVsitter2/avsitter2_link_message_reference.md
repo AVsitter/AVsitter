@@ -20,13 +20,13 @@ Play an animation defined in AVpos notecard.
 
 ### 90001
 Play an overlay animation ([AV]adjuster, [AV]faces).
-	
+
     llMessageLinked(LINK_THIS,90001,<ANIMATION_FILE>,<AVATAR_UUID>);
-	
+
 ### 90002
 Stop an additional animation ([AV]adjuster, [AV]faces).
 
-	llMessageLinked(LINK_THIS,90002,<ANIMATION_FILE>,<AVATAR_UUID>);
+    llMessageLinked(LINK_THIS,90002,<ANIMATION_FILE>,<AVATAR_UUID>);
 
 ### 90003
 Same as 90000 but ignored by [AV]sequence script to prevent from stopping sequences when [AV]sequence itself plays poses.
@@ -37,16 +37,16 @@ Same as 90005 but returns to top level of the menu (used by [AV]root-RLV when pr
 ### 90005
 Give the menu. Optionally set controller avatar and/or submenu.
 
-	llMessageLinked(LINK_SET,90005,"",<AVATAR_UUID>);
-	llMessageLinked(LINK_SET,90005,<TOMENU>,[<CONTROLLER_UUID>|<AVATAR_UUID>]);
-	
+    llMessageLinked(LINK_SET,90005,"",<AVATAR_UUID>);
+    llMessageLinked(LINK_SET,90005,<TOMENU>,[<CONTROLLER_UUID>|<AVATAR_UUID>]);
+    
     TOMENU=-1 ensures when sitters first sit they will get [AV]select menu if the [AV]select script is present
 
 ### 90006
 Register touch or sit to [AV]root-security script from [AV]sitA after permissions granted.
 
-	llMessageLinked(LINK_SET,90006,"",<AVATAR_UUID>);
-	llMessageLinked(LINK_SET,90006,<FUNCTION>,<AVATAR_UUID>); // for AVselect!
+    llMessageLinked(LINK_SET,90006,"",<AVATAR_UUID>);
+    llMessageLinked(LINK_SET,90006,<FUNCTION>,<AVATAR_UUID>); // for AVselect!
     
     FUNCTION=-1 ensures when sitters first sit they will get [AV]select menu if the [AV]select script is present
 
@@ -73,34 +73,34 @@ Same as 90000 but ignores ETYPE.
 
 ### 90014
 [AV]root-RLV notifies user scripts of the controlling avatar & captive avatars.
-	
-	llMessageLinked(LINK_SET,90014,llDumpList2String([CONTROLLER_UUID,llDumpList2String(CAPTIVES,",")],"|"),"");	
+
+    llMessageLinked(LINK_SET,90014,llDumpList2String([CONTROLLER_UUID,llDumpList2String(CAPTIVES,",")],"|"),"");    
 
 ### 90020
 Tells a script to [DUMP] settings.
 
-	llMessageLinked(LINK_THIS,90020,<SITTER>,<SCRIPT_NAME>);
+    llMessageLinked(LINK_THIS,90020,<SITTER>,<SCRIPT_NAME>);
 
 ### 90021
 Tells [AV]adjuster to ask the next script to [DUMP] settings.
 
-	llMessageLinked(LINK_THIS,90021,<SITTER#>,<SCRIPT_NAME>);
+    llMessageLinked(LINK_THIS,90021,<SITTER#>,<SCRIPT_NAME>);
 
 ### 90022
 Tell [AV]adjuster a read out settings [DUMP] line.
 
-	llMessageLinked(LINK_THIS,90022,<TEXT>,<SITTER#>);
+    llMessageLinked(LINK_THIS,90022,<TEXT>,<SITTER#>);
 
 ### 90030
 Tell [AV]sit scripts and [AV]adjuster to [SWAP] between two sitters.
 
-	llMessageLinked(LINK_THIS,90030,<SITTER#>,<SITTER#>);
+    llMessageLinked(LINK_THIS,90030,<SITTER#>,<SITTER#>);
 
 ### 90033
 [AV]control tells listeners in [AV]sit & [AV]root-security scripts to reset after capture to prevent captive using an open menu, and when someone "takes control of menu".
 
-	llMessageLinked(LINK_SET,90033,"","");
-	
+    llMessageLinked(LINK_SET,90033,"","");
+
 ### 90045
 [AV]sitA gives info about the pose just played. Received by many scripts.
 
@@ -153,14 +153,13 @@ A pose is selected from the menu
         }
     }
 
-
 ### 90051
 Same as 90050 but when a TOMENU is selected from the menu.
 
 ### 90055
 [AV]sitB sends anim info to other scripts.
 
-	llMessageLinked(LINK_THIS,90055,<SITTER#>,<POSE_NAME,ANIMATION_FILE,POSITION,ROTATION,BROADCAST>);
+    llMessageLinked(LINK_THIS,90055,<SITTER#>,<POSE_NAME,ANIMATION_FILE,POSITION,ROTATION,BROADCAST>);
     
     Where <BROADCAST> is if we want to send a 90045 in response.
 
@@ -170,7 +169,7 @@ Same as 90055 but sent from [AV]sitA when an avatar sits (so helper sticks know 
 ### 90057
 Sent by [AV]adjuster when helper moves, so [AV]sitA can update position.
 
-	llMessageLinked(LINK_THIS,90057,<SITTER#>,<POSITION,ROTATION>);
+    llMessageLinked(LINK_THIS,90057,<SITTER#>,<POSITION,ROTATION>);
 
 ### 90060
 Welcome new sitter!
@@ -180,12 +179,12 @@ Welcome new sitter!
 ### 90065
 Goodbye Sitter! Received by several scripts.
 
-	llMessageLinked(LINK_SET,90065,<SITTER#>,<AVATAR_UUID>);
+    llMessageLinked(LINK_SET,90065,<SITTER#>,<AVATAR_UUID>);
 
 ### 90070
 Update list of SITTERS in various scripts after permissions granted. Received by several scripts.
 
-	llMessageLinked(LINK_THIS,90070,<SITTER#>,<AVATAR_UUID>);
+    llMessageLinked(LINK_THIS,90070,<SITTER#>,<AVATAR_UUID>);
 
 ### 90075
 Used by oldschool HELPER 1 method - ask to animate.
@@ -199,7 +198,7 @@ Menu choice from [AV]sitA. Also sent by [AV]sitB for [RLV] button and by [AV]roo
 ### 90101
 Menu choice. Sent and received by several scripts.
 
-	llMessageLinked(LINK_SET,90101,<SITTER#,MSG,CONTROLLER_UUID>,<AVATAR_UUID>);
+    llMessageLinked(LINK_SET,90101,<SITTER#,MSG,CONTROLLER_UUID>,<AVATAR_UUID>);
 
 ### 90150
 [AV]sitA for SITTER 0 requests all [AV]sitA scripts re-place their sittarget.
@@ -255,12 +254,12 @@ Default integer for a SEQUENCE line in the AVpos notecard. Used by [AV]sequence.
 ### 90211
 [AV]control sends [CAPTURE] message to [AV]root-RLV.
 
-	llMessageLinked(LINK_THIS,90211,"",<CONTROLLER_UUID>);
+    llMessageLinked(LINK_THIS,90211,"",<CONTROLLER_UUID>);
 
 ### 90230
 Control [AV]camera with BUTTON or link message.
 
-	llMessageLinked(LINK_THIS,90230,<CAMERA_NAME>,<AVATAR_UUID>);
+    llMessageLinked(LINK_THIS,90230,<CAMERA_NAME>,<AVATAR_UUID>);
 
 ### 90298
 [AV]djuster tells [AV]sitA to show SitTargets (/5 targets).
@@ -275,7 +274,7 @@ Control [AV]camera with BUTTON or link message.
 
 ### 90301
 More [AV]sitA, [AV]adjuster updates to [AV]sitB.
-				
+
 ### 90302
 [AV]sitA sends initial notecard settings data to [AV]sitB.
 
