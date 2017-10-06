@@ -48,7 +48,7 @@ string RLVDesignations;
 string onSit;
 integer speed_index;
 integer verbose = 0;
-string SEP = "�"; // OSS::string SEP;
+string SEP = "�"; // OSS::string SEP = "\u007F";
 
 Out(integer level, string out)
 {
@@ -242,7 +242,6 @@ default
     state_entry()
     {
         memory();
-        // OSS::SEP = llUnescapeURL("%7F");
         SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), -1);
         if (SCRIPT_CHANNEL)
             main_script += " " + (string)SCRIPT_CHANNEL;

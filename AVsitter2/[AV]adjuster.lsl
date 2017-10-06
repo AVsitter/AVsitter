@@ -46,7 +46,7 @@ list chosen_animations;
 string cache;
 string webkey;
 integer webcount;
-string SEP = "�"; // OSS::string SEP;
+string SEP = "�"; // OSS::string SEP = "\u007F";
 
 string FormatFloat(float f, integer num_decimals)
 {
@@ -359,7 +359,6 @@ default
         {
             remove_script("Use only one of this script!");
         }
-        // OSS::SEP = llUnescapeURL("%7F");
         llListen(chat_channel, "", llGetOwner(), "");
         comm_channel = ((integer)llFrand(99999) + 1) * 1000 * -1;
         integer i;
