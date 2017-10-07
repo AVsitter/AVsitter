@@ -599,7 +599,7 @@ default
                 }
                 if (command == "TEXT")
                 {
-                    custom_text = llDumpList2String(llParseStringKeepNulls(part0, ["\\n"], []), "\n");
+                    custom_text = strReplace(part0, "\\n", "\n");
                 }
                 part0 = llGetSubString(part0, 0, 22);
                 if (command == "MENU")

@@ -199,7 +199,7 @@ default
                 string part0 = llList2String(parts, 0);
                 if (command == "TEXT")
                 {
-                    CUSTOM_TEXT = llDumpList2String(llParseStringKeepNulls(part0, ["\\n"], []), "\n") + "\n";
+                    CUSTOM_TEXT = strReplace(part0, "\\n", "\n") + "\n";
                 }
                 else if (command == "SITTER")
                 {
