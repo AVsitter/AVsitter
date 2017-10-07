@@ -20,7 +20,7 @@ string helper_name = "[AV]helper";
 string prop_script = "[AV]prop";
 string expression_script = "[AV]faces";
 string camera_script = "[AV]camera";
-string mainscript = "[AV]sitA";
+string main_script = "[AV]sitA";
 string notecard_name = "AVpos";
 list POS_LIST;
 list ROT_LIST;
@@ -256,7 +256,7 @@ Out(string out)
 integer get_number_of_scripts()
 {
     integer i;
-    while (llGetInventoryType(mainscript + " " + (string)(++i)) == INVENTORY_SCRIPT)
+    while (llGetInventoryType(main_script + " " + (string)(++i)) == INVENTORY_SCRIPT)
         ;
     return i;
 }
