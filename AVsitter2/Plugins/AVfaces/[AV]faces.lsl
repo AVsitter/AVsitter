@@ -241,6 +241,9 @@ default
     on_rez(integer start)
     {
         is_running = TRUE;
+        // cancel all sequences as there can't be anyone sitting
+        while (running_uuid != [])
+            remove_sequences(llList2Key(running_uuid, 0));
     }
 
     link_message(integer sender, integer num, string msg, key id)
