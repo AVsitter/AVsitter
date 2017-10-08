@@ -37,7 +37,8 @@ list facial_anim_list =
 
 integer IsInteger(string data)
 {
-    return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
+    // This should allow for leading zeros, hence the "1"
+    return data != "" && (string)((integer)("1" + data)) == "1" + data;
 }
 
 string version = "2.2";
@@ -197,9 +198,8 @@ sequence()
 remove_sequences(key id)
 {
     integer index;
-    while (~llListFindList(running_uuid, [id]))
+    while (~(index = llListFindList(running_uuid, [id])))
     {
-        index = llListFindList(running_uuid, [id]);
         running_uuid = llDeleteSubList(running_uuid, index, index);
         list sequence = llParseStringKeepNulls(llList2String(anim_animsequences, llList2Integer(running_sequence_indexes, index)), ["|"], []);
         running_sequence_indexes = llDeleteSubList(running_sequence_indexes, index, index);
@@ -413,7 +413,10 @@ default
                         integer index = llListFindList(facial_anim_list, [llList2String(sequence, x)]);
                         if (~index)
                         {
-                            sequence = llListReplaceList(sequence, [index], x, x);
+                            // Reuse the string in facial_anim_list to save memory
+                            sequence = llListReplaceList(sequence,
+                                llList2List(facial_anim_list, index, index), // OSS::[index],
+                                x, x);
                         }
                     }
                     anim_triggers += [(string)notecard_section + "|" + part0];
