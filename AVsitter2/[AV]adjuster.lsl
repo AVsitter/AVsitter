@@ -21,6 +21,7 @@ string prop_script = "[AV]prop";
 string expression_script = "[AV]faces";
 string camera_script = "[AV]camera";
 string main_script = "[AV]sitA";
+string dump_script = "[AV]dump";
 string notecard_name = "AVpos";
 list POS_LIST;
 list ROT_LIST;
@@ -409,148 +410,10 @@ default
             }
             else if (num == 90021)
             {
-                integer script_channel = (integer)msg;
-                list scripts = [prop_script, expression_script, camera_script];
-                integer index = llListFindList(scripts, [(string)id]);
-                while (index < llGetListLength(scripts))
+                if (llGetInventoryType(dump_script) != INVENTORY_SCRIPT)
                 {
-                    index++;
-                    string lookfor = llList2String(scripts, index);
-                    if (lookfor == camera_script && script_channel > 0)
-                    {
-                        lookfor = lookfor + " " + (string)script_channel;
-                    }
-                    if (llGetInventoryType(lookfor) == INVENTORY_SCRIPT)
-                    {
-                        llMessageLinked(LINK_THIS, 90020, (string)script_channel, llList2String(scripts, index));
-                        return;
-                    }
+                    // TODO: Warn if dump script is not present
                 }
-                if (llGetInventoryType(mainscript + " " + (string)(script_channel + 1)) == INVENTORY_SCRIPT)
-                {
-                    llMessageLinked(LINK_THIS, 90020, (string)(script_channel + 1), "");
-                }
-                else
-                {
-                    Readout_Say("");
-                    Readout_Say("--✄--COPY ABOVE INTO \"AVpos\" NOTECARD--✄--");
-                    Readout_Say("");
-                    web(TRUE);
-                    llRegionSayTo(llGetOwner(), 0, "Settings copy: " + url + "?q=" + webkey);
-                }
-            }
-            else if (num == 90022)
-            {
-                if (llGetSubString(msg, 0, 3) == "S:M:" || llGetSubString(msg, 0, 3) == "S:T:")
-                {
-                    msg = strReplace(msg, "*|", "|");
-                }
-                if (llGetSubString(msg, 0, 1) == "V:")
-                {
-                    if (!(integer)((string)id))
-                    {
-                        webkey = (string)llGenerateKey();
-                        webcount = 0;
-                        Readout_Say("");
-                        Readout_Say("--✄--COPY BELOW INTO \"AVpos\" NOTECARD--✄--");
-                        Readout_Say("");
-                        Readout_Say("\"" + llToUpper(llGetObjectName()) + "\" " + strReplace(llList2String(data, 0), "V:", "AVsitter "));
-                        if ((integer)llList2String(data, 1))
-                        {
-                            Readout_Say("MTYPE " + llList2String(data, 1));
-                        }
-                        if ((integer)llList2String(data, 2) != 1)
-                        {
-                            Readout_Say("ETYPE " + llList2String(data, 2));
-                        }
-                        if ((integer)llList2String(data, 3) > -1)
-                        {
-                            Readout_Say("SET " + llList2String(data, 3));
-                        }
-                        if ((integer)llList2String(data, 4) != 2)
-                        {
-                            Readout_Say("SWAP " + llList2String(data, 4));
-                        }
-                        if (llList2String(data, 6) != "")
-                        {
-                            Readout_Say("TEXT " + strReplace(llList2String(data, 6), "\n", "\\n"));
-                        }
-                        if (llList2String(data, 7) != "")
-                        {
-                            Readout_Say("ADJUST " + strReplace(llList2String(data, 7), SEP, "|"));
-                        }
-                        if ((integer)llList2String(data, 8))
-                        {
-                            Readout_Say("SELECT " + llList2String(data, 8));
-                        }
-                        if ((integer)llList2String(data, 9) != 2)
-                        {
-                            Readout_Say("AMENU " + llList2String(data, 9));
-                        }
-                        if ((integer)llList2String(data, 10))
-                        {
-                            Readout_Say("HELPER " + llList2String(data, 10));
-                        }
-                    }
-                    Readout_Say("");
-                    if (llGetListLength(SITTERS) > 1 || llList2String(data, 5) != "")
-                    {
-                        string SITTER_TEXT;
-                        if (llList2String(data, 5) != "")
-                        {
-                            SITTER_TEXT = "|" + strReplace(llList2String(data, 5), SEP, "|");
-                        }
-                        Readout_Say("SITTER " + (string)id + SITTER_TEXT);
-                        Readout_Say("");
-                    }
-                    return;
-                }
-                else if (llGetSubString(msg, 0, 0) == "{")
-                {
-                    msg = strReplace(msg, "{P:", "{");
-                    list parts = llParseStringKeepNulls(llDumpList2String(llParseString2List(llGetSubString(msg, llSubStringIndex(msg, "}") + 1, -1), [" "], [""]), ""), ["<"], []);
-                    string pos = "<" + llList2String(parts, 1);
-                    string rot = "<" + llList2String(parts, 2);
-                    vector pos2 = (vector)pos;
-                    vector rot2 = (vector)rot;
-                    string result = "<" + FormatFloat(pos2.x, 3) + "," + FormatFloat(pos2.y, 3) + "," + FormatFloat(pos2.z, 3) + ">";
-                    result += "<" + FormatFloat(rot2.x, 1) + "," + FormatFloat(rot2.y, 1) + "," + FormatFloat(rot2.z, 1) + ">";
-                    msg = llGetSubString(msg, 0, llSubStringIndex(msg, "}")) + result;
-                }
-                else if (llGetSubString(msg, 1, 1) == ":")
-                {
-                    msg = strReplace(msg, "S:P:", "POSE ");
-                    msg = strReplace(msg, "S:M:", "MENU ");
-                    msg = strReplace(msg, "S:T:", "TOMENU ");
-                    if (llGetSubString(msg, -6, -1) == "|90210")
-                    {
-                        msg = strReplace(msg, "S:B:", "SEQUENCE ");
-                        msg = strReplace(msg, "|90210", "");
-                    }
-                    else
-                    {
-                        msg = strReplace(msg, "S:B:", "BUTTON ");
-                        if (llSubStringIndex(msg, SEP) == -1)
-                        {
-                            msg = strReplace(msg, "|90200", "");
-                        }
-                    }
-                    msg = strReplace(msg, "S:", "SYNC ");
-                    msg = strReplace(msg, SEP, "|");
-                }
-                if (llGetSubString(msg, -1, -1) == "*")
-                {
-                    msg = llGetSubString(msg, 0, -2);
-                }
-                if (llGetSubString(msg, -1, -1) == "|")
-                {
-                    msg = llGetSubString(msg, 0, -2);
-                }
-                if (llGetSubString(msg, 0, 3) == "MENU")
-                {
-                    Readout_Say("");
-                }
-                Readout_Say(msg);
             }
             else if (num == 90100 || num == 90101)
             {
@@ -821,9 +684,7 @@ default
             }
             else
             {
-                msg = strReplace(msg, "\n", "");
-                msg = strReplace(msg, "|", "");
-                msg = llGetSubString(msg, 0, 22);
+                msg = llGetSubString((string)llParseString2List(msg, ["\n", "|"], []), 0, 22);
                 if (msg == "")
                 {
                     llMessageLinked(LINK_THIS, 90005, "", llDumpList2String([controller, llList2String(SITTERS, active_sitter)], "|"));

@@ -78,12 +78,6 @@ Out(integer level, string out)
     }
 }
 
-Readout_Say(string say, string SCRIPT_CHANNEL)
-{
-    llSleep(0.2);
-    llMessageLinked(LINK_THIS, 90022, say, SCRIPT_CHANNEL);
-}
-
 string Key2Number(key objKey)
 {
     return llGetSubString((string)llAbs((integer)("0x" + llGetSubString((string)objKey, -8, -1)) & 1073741823 ^ -1073741825), 6, -1);
@@ -248,6 +242,9 @@ default
 
     link_message(integer sender, integer num, string msg, key id)
     {
+        integer i;
+        integer sitter = (integer)msg;
+        string str;
         if (num == 90100)
         {
             list data = llParseString2List(msg, ["|"], []);
@@ -276,14 +273,14 @@ default
                 integer sitter = (integer)llList2String(data, 0);
                 if (id == llList2Key(SITTERS, sitter))
                 {
-                    string given_posename = llList2String(data, 1);
-                    SITTER_POSES = llListReplaceList(SITTER_POSES, [given_posename], sitter, sitter);
-                    given_posename = (string)sitter + "|" + given_posename;
+                    string str = llList2String(data, 1); // given pose name
+                    SITTER_POSES = llListReplaceList(SITTER_POSES, [str], sitter, sitter);
+                    str = (string)sitter + "|" + str;
                     remove_sequences(id);
                     integer i;
                     while (i < llGetListLength(anim_triggers))
                     {
-                        if (llList2String(anim_triggers, i) == given_posename)
+                        if (llList2String(anim_triggers, i) == str)
                         {
                             integer reference = llListFindList(anim_triggers, [(string)sitter + "|" + llList2String(anim_animsequences, i)]);
                             if (reference == -1)
@@ -299,10 +296,10 @@ default
             else if (num == 90065)
             {
                 remove_sequences(id);
-                integer index = llListFindList(SITTERS, [id]);
-                if (index != -1)
+                i = llListFindList(SITTERS, [id]);
+                if (i != -1)
                 {
-                    SITTERS = llListReplaceList(SITTERS, [NULL_KEY], index, index);
+                    SITTERS = llListReplaceList(SITTERS, [NULL_KEY], i, i);
                 }
             }
             else if (num == 90030)
@@ -317,9 +314,8 @@ default
             else if (num == 90172)
             {
                 is_running = TRUE;
-                integer sitter = (integer)msg;
                 remove_sequences(llList2Key(SITTERS, sitter));
-                integer i = llGetListLength(anim_triggers);
+                i = llGetListLength(anim_triggers);
                 while (i > 0)
                 {
                     i--;
@@ -337,27 +333,33 @@ default
                     llSay(0, "FACE added: '" + (string)id + "' to '" + llList2String(SITTER_POSES, sitter) + "' for SITTER " + (string)sitter + ".");
                 }
             }
-            else if (num == 90020 && (string)id == llGetScriptName())
+            if (num == 90020 && (string)id == llGetScriptName())
             {
-                integer i;
-                for (i = 0; i < llGetListLength(anim_triggers); i++)
+                // Set up to fall through and dump the first line
+                num = 90024;
+                msg += "|" + (string)id;
+                id = "-1";
+                // fall through
+            }
+            if (num == 90024)
+            {
+                if (msg == (string)sitter + "|" + llGetScriptName())
                 {
-                    if (llSubStringIndex(llList2String(anim_triggers, i), msg + "|") == 0)
+                    i = (integer)((string)id) + 1;
+                    while (i < llGetListLength(anim_triggers) && llSubStringIndex(llList2String(anim_triggers, i), (string)sitter + "|") != 0)
+                    {
+                        ++i;
+                    }
+                    if (i < llGetListLength(anim_triggers))
                     {
                         list trigger = llParseString2List(llList2String(anim_triggers, i), ["|"], []);
-                        list sequence = llParseString2List(llList2String(anim_animsequences, i), ["|"], []);
-                        integer x;
-                        for (x = 0; x < llGetListLength(sequence); x += 2)
-                        {
-                            if (IsInteger(llList2String(sequence, x)))
-                            {
-                                sequence = llListReplaceList(sequence, [llList2String(facial_anim_list, (integer)llList2String(sequence, x))], x, x);
-                            }
-                        }
-                        Readout_Say("ANIM " + llList2String(trigger, 1) + "|" + llDumpList2String(sequence, "|"), msg);
+                        str = "ANIM " + llList2String(trigger, 1);
+                        str += "|" + llList2String(anim_animsequences, i);
+                        llMessageLinked(LINK_THIS, 90022, str, msg + "|" + (string)i);
+                        return;
                     }
+                    llMessageLinked(LINK_THIS, 90021, msg, llGetScriptName());
                 }
-                llMessageLinked(LINK_THIS, 90021, msg, llGetScriptName());
             }
         }
     }

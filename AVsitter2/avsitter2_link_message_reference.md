@@ -77,19 +77,24 @@ Same as 90000 but ignores ETYPE.
     llMessageLinked(LINK_SET,90014,llDumpList2String([CONTROLLER_UUID,llDumpList2String(CAPTIVES,",")],"|"),"");    
 
 ### 90020
-Tells a script to [DUMP] settings.
+Tells a script to [DUMP] settings. Empty <SCRIPT_NAME> is caught by [AV]dump as a signal to start the dump cycle.
 
     llMessageLinked(LINK_THIS,90020,<SITTER>,<SCRIPT_NAME>);
 
 ### 90021
-Tells [AV]adjuster to ask the next script to [DUMP] settings.
+Tells [AV]dump that the given script has finished dumping settings.
 
     llMessageLinked(LINK_THIS,90021,<SITTER#>,<SCRIPT_NAME>);
 
 ### 90022
-Tell [AV]adjuster a read out settings [DUMP] line.
+Tell [AV]dump a read out settings [DUMP] line. DATA_LINE# is the number of the list entry dumped, internal to each script. EXTRA is used for [AV]sitB to dump menu data ("D") or position data ("P").
 
-    llMessageLinked(LINK_THIS,90022,<TEXT>,<SITTER#>);
+    llMessageLinked(LINK_THIS,90022,<TEXT>,<SITTER#,SCRIPT_NAME,DATA_LINE#,EXTRA>);
+
+### 90024
+[AV]dump tells a script to dump the next data line. DATA_LINE# is one less than the line to dump (-1 to start from the beginning).
+
+    llMessageLinked(LINK_THIS,90022,<SITTER#,SCRIPT_NAME>,<DATA_LINE#,EXTRA>);
 
 ### 90030
 Tell [AV]sit scripts and [AV]adjuster to [SWAP] between two sitters.

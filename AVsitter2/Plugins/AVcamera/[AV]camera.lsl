@@ -15,6 +15,7 @@
 string version = "2.2";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
+string camera_script = "[AV]camera"; // name of this script
 key notecard_key;
 key notecard_query;
 integer notecard_line;
@@ -45,12 +46,6 @@ Out(integer level, string out)
     {
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
-}
-
-Readout_Say(string say, string SCRIPT_CHANNEL)
-{
-    llSleep(0.2);
-    llMessageLinked(LINK_THIS, 90022, say, SCRIPT_CHANNEL);
 }
 
 set_camera(integer byButton)
@@ -120,9 +115,12 @@ default
     {
         if (sender == llGetLinkNumber())
         {
+            integer i;
+            integer sitter = (integer)msg;
+            list data;
             if (num == 90230 | num == 90231)
             {
-                list data = llParseStringKeepNulls(id, ["|"], []);
+                data = llParseStringKeepNulls(id, ["|"], []);
                 key this_controller = (key)llList2String(data, 0);
                 key this_sitter = (key)llList2String(data, -1);
                 if (this_sitter == mySitter)
@@ -142,8 +140,7 @@ default
             }
             else if (num == 90045)
             {
-                list data = llParseStringKeepNulls(msg, ["|"], []);
-                integer sitter = (integer)llList2String(data, 0);
+                data = llParseStringKeepNulls(msg, ["|"], []);
                 if (sitter == SCRIPT_CHANNEL)
                 {
                     mySitter = id;
@@ -167,7 +164,7 @@ default
             }
             else if (num == 90174 && (integer)msg == SCRIPT_CHANNEL)
             {
-                integer i = llGetListLength(camera_triggers);
+                i = llGetListLength(camera_triggers);
                 integer index;
                 while (~(index = llListFindList(camera_triggers, [myPose])))
                 {
@@ -187,16 +184,26 @@ default
                 }
                 set_camera(FALSE);
             }
-            else if (num == 90020 && ((string)id == llGetScriptName() || (string)id + " " + msg == llGetScriptName()))
+            if (num == 90020 && id == camera_script)
             {
-                if ((integer)msg == SCRIPT_CHANNEL)
+                // Set up to fall through and dump the first line
+                num = 90024;
+                msg += "|" + (string)id;
+                id = "-1";
+                // fall through
+            }
+            if (num == 90024)
+            {
+                if (msg == (string)SCRIPT_CHANNEL + "|" + camera_script)
                 {
-                    integer i;
-                    for (i = 0; i < llGetListLength(camera_triggers); i++)
+                    i = (integer)((string)id) + 1;
+                    if (i < llGetListLength(camera_triggers))
                     {
-                        Readout_Say("CAMERA " + llList2String(camera_triggers, i) + "|" + llList2String(camera_settings, i), msg);
+                        llMessageLinked(LINK_THIS, 90022, "CAMERA " + llList2String(camera_triggers, i) + "|" + llList2String(camera_settings, i), msg + "|" + (string)i);
+                        return;
                     }
-                    llMessageLinked(LINK_THIS, 90021, msg, (string)id);
+                    llMessageLinked(LINK_THIS, 90021, msg, camera_script);
+                    return;
                 }
             }
         }

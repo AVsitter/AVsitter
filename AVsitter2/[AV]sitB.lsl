@@ -48,6 +48,7 @@ string RLVDesignations;
 string onSit;
 integer speed_index;
 integer verbose = 0;
+string main_script_generic = main_script;
 string SEP = "�"; // OSS::string SEP = "\u007F";
 
 Out(integer level, string out)
@@ -387,7 +388,6 @@ default
 
     link_message(integer sender, integer num, string msg, key id)
     {
-        integer one = (integer)msg;
         integer two = (integer)((string)id);
         if (num == 90000 || num == 90010 || num == 90003)
         {
@@ -466,7 +466,7 @@ default
                 animation_menu((integer)msg);
             }
         }
-        else if (num == 90030 && (one == SCRIPT_CHANNEL || two == SCRIPT_CHANNEL))
+        else if (num == 90030 && ((integer)msg == SCRIPT_CHANNEL || two == SCRIPT_CHANNEL))
         {
             CONTROLLER = MY_SITTER = "";
         }
@@ -510,7 +510,7 @@ default
         {
             has_RLV = (integer)msg;
         }
-        else if (one == SCRIPT_CHANNEL)
+        else if ((integer)msg == SCRIPT_CHANNEL)
         {
             list data = llParseStringKeepNulls(id, ["|"], []);
             integer index = llListFindList(MENU_LIST, [llList2String(data, 0)]);
@@ -599,62 +599,51 @@ default
                 onSit = llList2String(data, 14);
                 memory();
             }
-            // LSL::
-            else if (num == 90020 && llList2String(data, 0) == "")
+            else if (num == 90020 && id == main_script_generic)
             {
-                Readout_Say("V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"));
-                integer i = -1;
-                while (++i < llGetListLength(MENU_LIST))
-                {
-                    llSleep(0.5);
-                    Readout_Say("S:" + llList2String(MENU_LIST, i) + "|" + llList2String(DATA_LIST, i));
-                }
-                i = -1;
-                while (++i < llGetListLength(MENU_LIST))
-                {
-                    if (llList2Vector(POS_ROT_LIST, i * 2) != ZERO_VECTOR)
-                    {
-                        llSleep(0.2);
-                        Readout_Say("{" + llList2String(MENU_LIST, i) + "}" + llList2String(POS_ROT_LIST, i * 2) + llList2String(POS_ROT_LIST, i * 2 + 1));
-                    }
-                }
-                llMessageLinked(LINK_THIS, 90021, (string)SCRIPT_CHANNEL, "");
+                llMessageLinked(LINK_THIS, 90022, "V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"), (string)SCRIPT_CHANNEL + "|" + main_script_generic + "|-1|D");
             }
-            // ::LSL
-            /* OSS::
-            else if (num == 90020 && llList2String(data, 0) == "")
+            else if (num == 90024)
             {
-                llMessageLinked(LINK_THIS, 90022, "V:" + llDumpList2String([version, MTYPE, ETYPE, SET, SWAP, SITTER_INFO, CUSTOM_TEXT, ADJUST_MENU, SELECT, AMENU, OLD_HELPER_METHOD], "|"), (string)SCRIPT_CHANNEL);
-                llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, "-1|D");
-            }
-            else if (num == 90024) // self-sent message to dump the next line
-            {
+                if (msg != (string)SCRIPT_CHANNEL + "|" + main_script_generic)
+                    return;
+
+                // Next line requested
+                ++two;
                 if (llList2String(data, 1) == "D")
                 {
-                    if (++two < llGetListLength(MENU_LIST))
+                    if (two < llGetListLength(MENU_LIST))
                     {
-                        llSleep(0.5);
-                        llMessageLinked(LINK_THIS, 90022, "S:" + llList2String(MENU_LIST, two) + "|" + llList2String(DATA_LIST, two), (string)SCRIPT_CHANNEL);
-                        llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, (string)two + "|D");
+                        // Dump and exit
+                        llMessageLinked(LINK_THIS, 90022, "S:" + llList2String(MENU_LIST, two) + "|" + llList2String(DATA_LIST, two), (string)SCRIPT_CHANNEL + "|" + main_script_generic + "|" + (string)two + "|D");
                         return;
                     }
-                    llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, "-1|P");
-                    return;
+                    two = 0;
+                    // Fall through to dump first position
                 }
-                if (++two < llGetListLength(MENU_LIST))
+                // Assumed Extra == "P"
+                while (llList2Vector(POS_ROT_LIST, two * 2) == ZERO_VECTOR)
                 {
-                    if (llList2Vector(POS_ROT_LIST, two * 2) != ZERO_VECTOR)
+                    if (two * 2 > llGetListLength(POS_ROT_LIST))
                     {
-                        llSleep(0.2);
-                        llMessageLinked(LINK_THIS, 90022, "{" + llList2String(MENU_LIST, two) + "}" + llList2String(POS_ROT_LIST, two * 2) + llList2String(POS_ROT_LIST, two * 2 + 1), (string)SCRIPT_CHANNEL);
+                        // End of list reached, send end of dump notification
+                        llMessageLinked(LINK_THIS, 90021, (string)SCRIPT_CHANNEL, main_script_generic);
+                        return;
                     }
-                    llMessageLinked(LINK_THIS, 90024, (string)SCRIPT_CHANNEL, (string)two + "|P");
-                    return;
+                    ++two;
                 }
-                llMessageLinked(LINK_THIS, 90021, (string)SCRIPT_CHANNEL, "");
+                // Dump the line
+                msg  = "{" + llList2String(MENU_LIST, two);
+                msg += "}" + llList2String(POS_ROT_LIST, two * 2);
+                msg += llList2String(POS_ROT_LIST, two * 2 + 1);
+                llMessageLinked(LINK_THIS, 90022, msg,
+                    (string)SCRIPT_CHANNEL
+                    + "|" + main_script_generic
+                    + "|" + (string)two
+                    + "|P"
+                );
                 return;
             }
-            */
         }
     }
 }

@@ -621,17 +621,20 @@ state running
 
     link_message(integer sender, integer num, string msg, key id)
     {
+        integer i;
+        string str1;
         if (num == 90030)
         {
             if (!ignorenextswap)
             {
+                string str2;
                 integer one = (integer)msg;
                 integer two = (integer)((string)id);
                 key des1 = llList2String(DESIGNATIONS_NOW, one);
                 key des2 = llList2String(DESIGNATIONS_NOW, two);
-                string role1 = llList2String(SITTER_DESIGNATIONS_MASTER, one);
-                string role2 = llList2String(SITTER_DESIGNATIONS_MASTER, two);
-                if (role1 != role2)
+                str1 = llList2String(SITTER_DESIGNATIONS_MASTER, one); // role 1
+                str2 = llList2String(SITTER_DESIGNATIONS_MASTER, two); // role 2
+                if (str1 != str2)
                 {
                     release_all();
                 }
@@ -641,7 +644,7 @@ state running
                 }
                 else
                 {
-                    DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [role2], two, two);
+                    DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [str2], two, two);
                 }
                 if (des2) // OSS::if (osIsUUID(des2) && des2 != NULL_KEY)
                 {
@@ -649,7 +652,7 @@ state running
                 }
                 else
                 {
-                    DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [role1], one, one);
+                    DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [str1], one, one);
                 }
                 llMessageLinked(LINK_THIS, 90206, llDumpList2String(DESIGNATIONS_NOW, "|"), "");
             }
@@ -680,12 +683,12 @@ state running
             }
             else
             {
-                integer index = llListFindList(DESIGNATIONS_NOW, ["S"]);
+                i = llListFindList(DESIGNATIONS_NOW, ["S"]);
                 if (llGetInventoryType("[AV]sitA 1") == INVENTORY_SCRIPT)
                 {
-                    index = (integer)msg;
+                    i = (integer)msg;
                 }
-                if (~index)
+                if (~i)
                 {
                     DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [id], (integer)msg, (integer)msg);
                 }
@@ -694,15 +697,15 @@ state running
         else if (num == 90065)
         {
             playpose(WAITPOSE, msg);
-            integer index = llListFindList(SITTING_AVATARS, [id]);
-            if (~index)
+            i = llListFindList(SITTING_AVATARS, [id]);
+            if (~i)
             {
-                SITTING_AVATARS = llDeleteSubList(SITTING_AVATARS, index, index);
+                SITTING_AVATARS = llDeleteSubList(SITTING_AVATARS, i, i);
             }
-            index = llListFindList(DESIGNATIONS_NOW, [id]);
-            if (~index)
+            i = llListFindList(DESIGNATIONS_NOW, [id]);
+            if (~i)
             {
-                DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, llList2List(SITTER_DESIGNATIONS_MASTER, index, index), index, index);
+                DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, llList2List(SITTER_DESIGNATIONS_MASTER, i, i), i, i);
                 llMessageLinked(LINK_THIS, 90206, llDumpList2String(DESIGNATIONS_NOW, "|"), "");
             }
         }
@@ -768,7 +771,6 @@ state running
                 }
                 else
                 {
-                    integer i;
                     for (i = 0; i < llGetListLength(SITTER_DESIGNATIONS_MASTER); i++)
                     {
                         if (llList2String(SITTER_DESIGNATIONS_MASTER, i) == "D")
@@ -834,6 +836,100 @@ state running
             {
                 new_controller(id);
                 start_relay_search();
+            }
+        }
+        if (num == 90020 && id == llGetScriptName()) // dump our settings
+        {
+            num = 90024;
+            msg = "0|" + (string)id;
+            id = "-1";
+            // Fall through to 90024
+        }
+        if (num == 90024) // next dump line
+        {
+            if (msg == "0|" + llGetScriptName())
+            {
+                i = (integer)((string)id) + 1;
+                if (!i)
+                {
+                    // always output the RLV command
+                    //i += (integer)(RLV_ON == 1);
+                    str1 = "RLV " + (string)RLV_ON;
+                }
+                if (i == 1)
+                {
+                    i += (integer)(WAITPOSE == "");
+                    str1 = "WAITPOSE " + WAITPOSE;
+                }
+                if (i == 2)
+                {
+                    i += (integer)(!subControl);
+                    str1 = "SUBCONTROL " + (string)subControl;
+                }
+                if (i == 3)
+                {
+                    i += (integer)(HTEXT == 1);
+                    str1 = "HTEXT " + (string)HTEXT;
+                }
+                if (i == 4)
+                {
+                    i += (integer)(DOMPOSE == "");
+                    str1 = "DOMPOSE " + DOMPOSE;
+                }
+                if (i == 5)
+                {
+                    i += (integer)(SUBPOSE == "");
+                    str1 = "SUBPOSE " + SUBPOSE;
+                }
+                if (i == 6)
+                {
+                    i += (integer)(onTouch == "ASK");
+                    str1 = "ONTOUCH " + onTouch;
+                }
+                if (i == 7)
+                {
+                    i += (integer)(onSit == "CAPTURE");
+                    str1 = "ONSIT ASKONLY";
+                    if (captureOnAsk || onSit != "ASK")
+                        str1 = "ONSIT " + onSit;
+                }
+                if (i == 8)
+                {
+                    i += (product == "AVsitter™ RLV");
+                    str1 = "BRAND " + product;
+                }
+                if (i == 9)
+                {
+                    i += (integer)(!autoRecapture);
+                    str1 = "RECAPTURE " + (string)autoRecapture;
+                }
+                if (i == 10)
+                {
+                    i += (integer)(llGetListLength(SITTER_DESIGNATIONS_MASTER) == 1
+                        && llList2String(SITTER_DESIGNATIONS_MASTER, 0) == "S");
+                    str1 = "ROLES " + llDumpList2String(SITTER_DESIGNATIONS_MASTER, "|");
+                }
+                if (i == 11)
+                {
+                    i += (integer)(defaultTimelock == 0);
+                    str1 = "TIMELOCK " + (string)(defaultTimelock / 60);
+                }
+                if (i == 12)
+                {
+                    i += (integer)(baseCaptureRestrictions == "@unsit=n");
+                    str1 = "ONCAPTURE " + baseCaptureRestrictions;
+                }
+                if (i == 13)
+                {
+                    i += (integer)(baseReleaseRestrictions == "@unsit=force");
+                    str1 = "ONRELEASE " + baseReleaseRestrictions;
+                }
+                if (i == 14)
+                {
+                    llMessageLinked(LINK_THIS, 90021, "0", llGetScriptName());
+                    return;
+                }
+                llMessageLinked(LINK_THIS, 90022, str1, msg + "|" + (string)i);
             }
         }
     }
@@ -1206,40 +1302,40 @@ state running
             else
             {
                 data = llStringTrim(data, STRING_TRIM);
-                string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
+                string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1) + " ";;
                 list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
                 string part0 = llStringTrim(llList2String(parts, 0), STRING_TRIM);
                 part0 = llGetSubString(part0, 0, 22);
-                if (command == "WAITPOSE")
+                if (command == "WAITPOSE ")
                 {
                     WAITPOSE = part0;
                     playpose(WAITPOSE, "");
                 }
-                else if (command == "RLV")
+                else if (command == "RLV ")
                 {
                     RLV_ON = (integer)part0;
                 }
-                else if (command == "SUBCONTROL")
+                else if (command == "SUBCONTROL ")
                 {
                     subControl = (integer)part0;
                 }
-                else if (command == "HTEXT")
+                else if (command == "HTEXT ")
                 {
                     HTEXT = (integer)part0;
                 }
-                else if (command == "DOMPOSE")
+                else if (command == "DOMPOSE ")
                 {
                     DOMPOSE = part0;
                 }
-                else if (command == "SUBPOSE")
+                else if (command == "SUBPOSE ")
                 {
                     SUBPOSE = part0;
                 }
-                else if (command == "ONTOUCH")
+                else if (command == "ONTOUCH ")
                 {
                     onTouch = part0;
                 }
-                else if (command == "ONSIT")
+                else if (command == "ONSIT ")
                 {
                     onSit = part0;
                     if (onSit == "ASKONLY")
@@ -1248,29 +1344,29 @@ state running
                         captureOnAsk = FALSE;
                     }
                 }
-                else if (command == "BRAND")
+                else if (command == "BRAND ")
                 {
                     product = part0;
                 }
-                else if (command == "RECAPTURE")
+                else if (command == "RECAPTURE ")
                 {
                     autoRecapture = (integer)part0;
                 }
-                else if (command == "ROLES")
+                else if (command == "ROLES ")
                 {
                     SITTER_DESIGNATIONS_MASTER = parts;
                     DESIGNATIONS_NOW = SITTER_DESIGNATIONS_MASTER;
                     llMessageLinked(LINK_THIS, 90206, llDumpList2String(DESIGNATIONS_NOW, "|"), "");
                 }
-                else if (command == "TIMELOCK")
+                else if (command == "TIMELOCK ")
                 {
                     defaultTimelock = TimelockSecUntilRelease = (integer)part0 * 60;
                 }
-                else if (command == "ONCAPTURE")
+                else if (command == "ONCAPTURE ")
                 {
                     baseCaptureRestrictions = llDumpList2String(parts, "|");
                 }
-                else if (command == "ONRELEASE")
+                else if (command == "ONRELEASE ")
                 {
                     baseReleaseRestrictions = llDumpList2String(parts, "|");
                 }
