@@ -79,7 +79,7 @@ $(SLZIP): $(OPTIMIZED) $(UNOPTIMIZED)
 	$(PYTHON) build-aux.py rm $@
 	$(ZIP) $@ $(OPTIMIZED) $(UNOPTIMIZED)
 
-%.lslo: %.lsl
+%.lslo %.lslt: %.lsl
 	$(PYTHON) $(OPTIMIZER) -H -O addstrings,shrinknames,-extendedglobalexpr -p $(PREPROC_KIND) --precmd=$(PREPROC_PATH) $< -o $@
 
 $(OSZIP): $(OPENSIM)
