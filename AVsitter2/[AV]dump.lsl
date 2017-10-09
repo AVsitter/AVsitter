@@ -91,7 +91,6 @@ default
         if (sender == llGetLinkNumber())
         {
             integer script_channel;
-            list data = llParseStringKeepNulls(id, ["|"], []);
             if (num == 90020 && id == "")
             {
                 webkey = llGenerateKey();
