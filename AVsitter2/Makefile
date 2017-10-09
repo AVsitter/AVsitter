@@ -89,4 +89,4 @@ $(OSZIP): $(OPENSIM)
 %.oss: %.lsl
 	$(PYTHON) build-aux.py oss-process $< > $@
 
-.PHONY : all clean optimized
+.PHONY : all clean optimized opensim
