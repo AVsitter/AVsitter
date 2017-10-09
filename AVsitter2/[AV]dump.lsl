@@ -169,7 +169,9 @@ default
                 {
                     if (!script_channel)
                     {
-                        Readout_Say("\"" + llToUpper(llGetObjectName()) + "\" " + strReplace(llList2String(data, 0), "V:", "AVsitter "));
+                        Readout_Say("\"" + llToUpper(llGetObjectName()) + "\" " + strReplace(llList2String(data, 0), "V:",
+                            "AVsitter " // OSS::"AVsitter OS "
+                        ));
                         if ((integer)llList2String(data, 1))
                         {
                             Readout_Say("MTYPE " + llList2String(data, 1));
