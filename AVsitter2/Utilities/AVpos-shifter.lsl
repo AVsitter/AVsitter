@@ -68,7 +68,7 @@ string FormatFloat(float f, integer num_decimals)
 
 instructions()
 {
-    llOwnerSay("\n\nINSTRUCTIONS:\n\nFOR MOVING ALL POSE & PROP POSITIONS BY AN OFFSET:\nManual Position: specify a position offset on channel 5, and positions will be converted by that offset. E.g. /5 <0,0,1.5>\nManual Rotation: specify a rotation offset on channel 6 (in degrees), and rotations will be converted by that offset, relative to the prim center. E.g. /6 <0,0,180>\n\nFOR RELOCATING SCRIPTS TO NEW PRIM:\n1. Unlink your object and re-link so that the prim you want to move the animations from is the root prim, then place this script inside the root prim.\n2. Touch the prim you want to locate the poses to. This prim should be empty or contain a script with llPassTouches(TRUE);\n3. The script will read out the notecard in chat, with pos/rot modified to the prim you touched.\n\nHave Fun! :)\n");
+    llOwnerSay("\n\nINSTRUCTIONS:\n\nFOR MOVING ALL POSE & PROP POSITIONS BY AN OFFSET:\nManual Position: specify a position offset on channel 5, and positions will be converted by that offset. E.g. /5 <0,0,1.5>\nManual Rotation: specify a rotation offset on channel 6 (in degrees), and rotations will be converted by that offset, relative to the prim center. E.g. /6 <0,0,180>\nBoth Position and Rotation: Enter /5 <position>,<rotation> (there's a comma between both). E.g. /5 <0,0,1.5>,<0,0,180>\n\nFOR RELOCATING SCRIPTS TO NEW PRIM:\n1. Unlink your object and re-link so that the prim you want to move the animations from is the root prim, then place this script inside the root prim.\n2. Touch the prim you want to locate the poses to. This prim should be empty or contain a script with llPassTouches(TRUE);\n3. The script will read out the notecard in chat, with pos/rot modified to the prim you touched.\n\nHave Fun! :)\n");
 }
 
 cut_above_text()
@@ -147,6 +147,7 @@ default
                 v = (vector)llList2String(llCSV2List(msg), 1);
                 if (v != ZERO_VECTOR)
                 {
+                    llOwnerSay("Converting rotations in " + notecard_name + " by offset: " + (string)v);
                     target_prim_rot = llEuler2Rot(v * DEG_TO_RAD);
                 }
                 cut_above_text();
