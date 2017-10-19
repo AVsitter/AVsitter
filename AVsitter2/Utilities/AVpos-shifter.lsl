@@ -197,7 +197,7 @@ default
                     data = llGetSubString(data, llSubStringIndex(data, "}") + 1, -1);
                     list parts = llParseStringKeepNulls(data, ["<"], []);
                     vector pos = (vector)("<" + llList2String(parts, 1));
-                    pos = -target_prim_pos / target_prim_rot + pos / target_prim_rot;
+                    pos = (pos - target_prim_pos) / target_prim_rot;
                     rotation rot = llEuler2Rot((vector)("<" + llList2String(parts, 2)) * DEG_TO_RAD);
                     vector vec_rot = llRot2Euler(rot / target_prim_rot) * RAD_TO_DEG;
                     string result = "<" + FormatFloat(pos.x, 3) + "," + FormatFloat(pos.y, 3) + "," + FormatFloat(pos.z, 3) + ">";
@@ -222,7 +222,7 @@ default
                     {
                         pos = (vector)llList2String(parts, index);
                         rot = llEuler2Rot((vector)llList2String(parts, index + 1) * DEG_TO_RAD);
-                        pos = -target_prim_pos / target_prim_rot + pos / target_prim_rot;
+                        pos = (pos - target_prim_pos) / target_prim_rot;
                         vector vec_rot = llRot2Euler(rot / target_prim_rot) * RAD_TO_DEG;
                         string pos_string = "<" + FormatFloat(pos.x, 3) + "," + FormatFloat(pos.y, 3) + "," + FormatFloat(pos.z, 3) + ">";
                         string rot_string = "<" + FormatFloat(vec_rot.x, 1) + "," + FormatFloat(vec_rot.y, 1) + "," + FormatFloat(vec_rot.z, 1) + ">";
