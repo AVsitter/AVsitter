@@ -143,8 +143,13 @@ default
             if (v != ZERO_VECTOR)
             {
                 llOwnerSay("Converting positions in " + notecard_name + " by offset: " + (string)v);
-                cut_above_text();
                 target_prim_pos = -v;
+                v = (vector)llList2String(llCSV2List(msg), 1);
+                if (v != ZERO_VECTOR)
+                {
+                    target_prim_rot = llEuler2Rot(v * DEG_TO_RAD);
+                }
+                cut_above_text();
                 notecard_query = llGetNotecardLine(notecard_name, notecard_line);
             }
             else
