@@ -189,7 +189,7 @@ default
             }
             else
             {
-                data = llStringTrim(llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1), STRING_TRIM);
+                data = llStringTrim(llGetSubString(data, llSubStringIndex(data, "◆") + 1, 99999), STRING_TRIM);
                 if (llGetSubString(data, 0, 0) == "{")
                 {
                     string command = llStringTrim(llGetSubString(data, 1, llSubStringIndex(data, "}") - 1), STRING_TRIM);
