@@ -87,11 +87,6 @@ Out(integer level, string out)
     }
 }
 
-integer IsInteger(string data)
-{
-    return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
-}
-
 integer get_number_of_scripts()
 {
     integer i = 1;
@@ -292,12 +287,6 @@ remove_props_by_group(integer gp)
     }
 }
 
-Readout_Say(string say)
-{
-    llSleep(0.2);
-    llMessageLinked(LINK_THIS, 90022, say, ""); // dump to [AV]adjuster
-}
-
 init_sitters()
 {
     SITTERS = [];
@@ -346,18 +335,20 @@ default
     {
         if (sender == llGetLinkNumber())
         {
+            integer sitter;
+            string str;
             if (num == 90045) // play pose
             {
                 list data = llParseStringKeepNulls(msg, ["|"], []);
-                integer sitter = (integer)llList2String(data, 0);
+                sitter = (integer)llList2String(data, 0);
                 if (id == llList2Key(SITTERS, sitter))
                 {
                     remove_sitter_props_by_pose(llList2String(SITTER_POSES, sitter), FALSE);
-                    string given_posename = llList2String(data, 1);
-                    given_posename = (string)sitter + "|" + given_posename;
-                    SITTER_POSES = llListReplaceList(SITTER_POSES, [given_posename], sitter, sitter);
-                    remove_sitter_props_by_pose_group(given_posename);
-                    rez_props_by_trigger(given_posename);
+                    str = llList2String(data, 1); // given pose name
+                    str = (string)sitter + "|" + str;
+                    SITTER_POSES = llListReplaceList(SITTER_POSES, [str], sitter, sitter);
+                    remove_sitter_props_by_pose_group(str);
+                    rez_props_by_trigger(str);
                 }
                 return;
             }
@@ -459,7 +450,6 @@ default
             }
             if (num == 90171 || num == 90173) // [AV]adjuster/[AV]menu add PROP line
             {
-                integer sitter;
                 if (num == 90171) // [AV]adjuster?
                 {
                     sitter = (integer)msg;
@@ -494,20 +484,46 @@ default
             }
             if (num == 90020 && (string)id == llGetScriptName()) // dump our settings
             {
-                integer i;
-                for (; i < llGetListLength(prop_triggers); i++)
+                // Set up to fall through and dump the first line
+                num = 90024;
+                msg += "|" + (string)id;
+                id = "-1";
+                // fall through
+            }
+            if (num == 90024)
+            {
+                sitter = (integer)msg;
+                if (msg == (string)sitter + "|" + llGetScriptName())
                 {
-                    if (llSubStringIndex(llList2String(prop_triggers, i), msg + "|") == 0)
+                    integer i = (integer)((string)id) + 1;
+                    while (i < llGetListLength(prop_triggers) && llSubStringIndex(llList2String(prop_triggers, i), (string)sitter + "|"))
                     {
-                        string type = (string)llList2Integer(prop_types, i);
-                        if (type == "0")
-                        {
-                            type = "";
-                        }
-                        Readout_Say("PROP" + type + " " + llDumpList2String([element(llList2String(prop_triggers, i), 1), llList2String(prop_objects, i), element(llList2String(prop_groups, i), 1), llList2String(prop_positions, i), llList2String(prop_rotations, i), llList2String(prop_points, i)], "|"));
+                        ++i;
                     }
+                    if (i < llGetListLength(prop_triggers))
+                    {
+                        str = llList2String(prop_types, i);
+                        if (str == "0")
+                        {
+                            str = "";
+                        }
+                        str = "PROP" + str + " "
+                            + llDumpList2String([
+                                element(llList2String(prop_triggers, i), 1),
+                                llList2String(prop_objects, i),
+                                element(llList2String(prop_groups, i), 1),
+                                llList2String(prop_positions, i),
+                                llList2String(prop_rotations, i),
+                                llList2String(prop_points, i)
+                                ], "|");
+                        llMessageLinked(LINK_THIS, 90022 // dump to [AV]adjuster
+                            , str, msg + "|" + (string)i
+                        );
+                        return;
+                    }
+                    // done with this sitter
+                    llMessageLinked(LINK_THIS, 90021, (string)sitter, llGetScriptName());
                 }
-                llMessageLinked(LINK_THIS, 90021, msg, llGetScriptName()); // notify finished dumping
                 return;
             }
         }

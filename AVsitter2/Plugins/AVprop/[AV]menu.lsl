@@ -18,6 +18,7 @@ integer verbose = 0;
 string prop_script = "[AV]prop";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
+string dump_script = "[AV]dump";
 string custom_text;
 list MENUCONTROL_TYPES = ["ALL", "OWNER ONLY", "GROUP ONLY"];
 integer MENUCONTROL_INDEX;
@@ -79,15 +80,6 @@ Out(integer level, string out)
     {
         llOwnerSay(llGetScriptName() + "[" + version + "] " + out);
     }
-}
-
-Readout_Say(string say)
-{
-    llSleep(0.2);
-    string objectname = llGetObjectName();
-    llSetObjectName("");
-    llRegionSayTo(llGetOwner(), 0, "◆" + say);
-    llSetObjectName(objectname);
 }
 
 dialog(key av, string menu_text, list menu_items)
@@ -445,41 +437,12 @@ default
         }
         else if (msg == "[DUMP]")
         {
-            Readout_Say("");
-            Readout_Say("--✄--COPY BELOW INTO \"AVpos\" NOTECARD--✄--");
-            Readout_Say("");
-            if (custom_text != "")
+            if (llGetInventoryType(dump_script) == INVENTORY_SCRIPT)
             {
-                Readout_Say("TEXT " + strReplace(custom_text, "\n", "\\n"));
+                llMessageLinked(LINK_THIS, 90020, "0", "");
+                return;
             }
-            integer i;
-            for (i = 0; i < llGetListLength(MENU_LIST); i++)
-            {
-                list change_me = llParseString2List(llList2String(MENU_LIST, i), [":"], []);
-                if (llGetListLength(change_me) == 2)
-                {
-                    if (llList2String(change_me, 0) == "M")
-                    {
-                        Readout_Say("MENU " + llGetSubString(llList2String(change_me, 1), 0, -2));
-                    }
-                    else if (llList2String(change_me, 0) == "T")
-                    {
-                        Readout_Say("TOMENU " + llGetSubString(llList2String(change_me, 1), 0, -2));
-                    }
-                    else if (llList2String(change_me, 0) == "B")
-                    {
-                        list l = [llList2String(change_me, 1), strReplace(strReplace(llList2String(DATA_LIST, i), "90200", ""), SEP, "|")];
-                        if (llList2String(l, 1) == "")
-                        {
-                            l = llList2List(l, 0, 0);
-                        }
-                        string end = llDumpList2String(l, "|");
-                        Readout_Say("BUTTON " + end);
-                    }
-                }
-            }
-            llMessageLinked(LINK_THIS, 90020, "0", prop_script); // Dump prop settings
-            return;
+            // TODO: emit warning
         }
         else if (msg == "[SAVE]" && id == llGetOwner())
         {
@@ -524,9 +487,6 @@ default
                 options_menu();
                 return;
             }
-            else
-            {
-            }
         }
         prop_menu(FALSE, id);
     }
@@ -558,16 +518,35 @@ default
             if (num == 90005) // send menu to id
             {
                 menu_check(llKey2Name(id), id);
+                return;
             }
-            else if (num == 90022) // send dump to [AV]adjuster
+            if (num == 90020)
             {
-                Readout_Say(msg);
+                if (id == llGetScriptName())
+                {
+                    llMessageLinked(LINK_THIS, 90022, "V:" + version + "|" + (string)MTYPE + "|1|-1|2||" + custom_text + "||0|2|0", "0|" + llGetScriptName() + "|-1");
+                }
+                return;
             }
-            else if (num == 90021) // end of dump
+            if (num == 90024) // dump menu line
             {
-                Readout_Say("");
-                Readout_Say("--✄--COPY ABOVE INTO \"AVpos\" NOTECARD--✄--");
-                Readout_Say("");
+                if (msg == "0|" + llGetScriptName())
+                {
+                    integer line = (integer)((string)id) + 1;
+                    if (line >= llGetListLength(MENU_LIST))
+                    {
+                        llMessageLinked(LINK_THIS, 90021, "0", llGetScriptName());
+                        return;
+                    }
+                    msg = "S:" + llList2String(MENU_LIST, line);
+                    // Note that this will change a BUTTON xxx|90210 into a SEQUENCE,
+                    // so don't use that number in a BUTTON.
+                    if (llList2String(DATA_LIST, line) != "")
+                        msg += "|" + llList2String(DATA_LIST, line);
+                    llMessageLinked(LINK_THIS, 90022, msg,
+                                    "0|" + llGetScriptName() + "|" + (string)line);
+                }
+                return;
             }
         }
     }

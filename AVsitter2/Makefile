@@ -56,7 +56,8 @@ OPTIMIZED=[AV]sitA.lslo\
  Utilities/Noob-detector.lslo
 
 UNOPTIMIZED=Plugins/AVcontrol/LockGuard/[AV]LockGuard.lsl\
- Plugins/AVcontrol/LockGuard/[AV]LockGuard-object.lsl
+ Plugins/AVcontrol/LockGuard/[AV]LockGuard-object.lsl\
+ [AV]dump.lsl
 
 OPENSIM=[AV]sitA.oss\
  [AV]sitB.oss\
@@ -64,7 +65,8 @@ OPENSIM=[AV]sitA.oss\
  [AV]helper.oss\
  [AV]root.oss\
  [AV]root-security.oss\
- [AV]select.oss
+ [AV]select.oss\
+ [AV]dump.oss
 
 all: $(SLZIP) $(OSZIP)
 
