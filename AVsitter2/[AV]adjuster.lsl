@@ -426,7 +426,7 @@ default
                         return;
                     }
                 }
-                if (llGetInventoryType(mainscript + " " + (string)(script_channel + 1)) == INVENTORY_SCRIPT)
+                if (llGetInventoryType(main_script + " " + (string)(script_channel + 1)) == INVENTORY_SCRIPT)
                 {
                     llMessageLinked(LINK_THIS, 90020, (string)(script_channel + 1), "");
                 }
