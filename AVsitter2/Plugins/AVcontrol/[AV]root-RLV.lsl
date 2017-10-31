@@ -198,7 +198,7 @@ rlv_top_menu()
     list menu_items;
     string text = "RLV for " + slaveName;
     list extra;
-    if (llGetListLength(SITTING_AVATARS) > 1 || ~llListFindList(DESIGNATIONS_NOW, ["S"]))
+    if (llGetListLength(SITTING_AVATARS) > 1 || llListFindList(DESIGNATIONS_NOW, ["S"]) != -1)
     {
         extra += "[BACK]";
     }
@@ -209,7 +209,7 @@ rlv_top_menu()
         {
             if (slaveWearingRelay)
             {
-                if (~designationIndex && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
+                if (designationIndex != -1 && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
                 {
                     text = slaveName + " has not chosen submissive role.";
                 }
@@ -316,13 +316,13 @@ stop()
 release(key SLAVE, integer allowUnsit)
 {
     integer index = llListFindList(CAPTIVES, [SLAVE]);
-    if (~index)
+    if (index != -1)
     {
         CAPTIVES = llDeleteSubList(CAPTIVES, index - 1, index);
         llSay(0, llKey2Name(SLAVE) + " was released.");
         relay(SLAVE, baseReleaseRestrictions);
         relay(SLAVE, "!release");
-        if (allowUnsit && ~llSubStringIndex(baseReleaseRestrictions, "@unsit=force"))
+        if (allowUnsit && llSubStringIndex(baseReleaseRestrictions, "@unsit=force") != -1)
         {
             llUnSit(SLAVE);
         }
@@ -381,7 +381,7 @@ get_unique_channels()
     RELAY_CHECK_CHANNEL = RELAY_SEARCH_CHANNEL + 4;
     ASKROLE_CHANEL = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
     llListenRemove(relay_handle);
-    relay_handle = llListen(RELAY_CHANNEL, "", "", ping = "ping," + (string)llGetKey() + ",ping,ping");
+    relay_handle = llListen(RELAY_CHANNEL, "", "", (ping = "ping," + (string)llGetKey() + ",ping,ping"));
 }
 
 check_submissive()
@@ -415,7 +415,7 @@ select_submissive_rlv()
     {
         text = "There are no submissives sitting.";
     }
-    if (~llListFindList(DESIGNATIONS_NOW, ["S"]) && llGetListLength(SITTING_AVATARS) < llGetListLength(DESIGNATIONS_NOW))
+    if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1 && llGetListLength(SITTING_AVATARS) < llGetListLength(DESIGNATIONS_NOW))
     {
         text += "\n\nCapture = trap a new avatar.";
         menu_items += "Capture...";
@@ -431,10 +431,10 @@ select_submissive_rlv()
 
 find_seat(key id, integer index, string msg, integer captureSub)
 {
-    if (~index)
+    if (index != -1)
     {
         integer first_available = index;
-        if (~llListFindList(DESIGNATIONS_NOW, [id]))
+        if (llListFindList(DESIGNATIONS_NOW, [id]) != -1)
         {
             first_available = llListFindList(DESIGNATIONS_NOW, [id]);
         }
@@ -442,7 +442,7 @@ find_seat(key id, integer index, string msg, integer captureSub)
         {
             first_available = llListFindList(DESIGNATIONS_NOW, [llGetSubString(msg, 0, 0)]);
         }
-        if (~first_available)
+        if (first_available != -1)
         {
             if (msg == "Dominant")
             {
@@ -568,7 +568,7 @@ ask_role(key id)
 
 back(key id)
 {
-    if (~llListFindList(SITTING_AVATARS, [id]))
+    if (llListFindList(SITTING_AVATARS, [id]) != -1)
     {
         llMessageLinked(LINK_SET, 90005, "", id);
     }
@@ -581,7 +581,7 @@ back(key id)
 integer isSub(key id)
 {
     integer index = llListFindList(DESIGNATIONS_NOW, [id]);
-    if (~index)
+    if (index != -1)
     {
         if (llList2String(SITTER_DESIGNATIONS_MASTER, index) == "S")
         {
@@ -671,7 +671,7 @@ state running
             SITTING_AVATARS += id;
             if (onSit == "CAPTURE" || (string)CONTROLLER + (string)id == PairWhoStartedCapture)
             {
-                if (~llListFindList(DESIGNATIONS_NOW, ["S"]))
+                if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1)
                 {
                     find_seat(id, (integer)msg, "Submissive", TRUE);
                 }
@@ -687,7 +687,7 @@ state running
                 {
                     index = (integer)msg;
                 }
-                if (~index)
+                if (index != -1)
                 {
                     DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [id], (integer)msg, (integer)msg);
                 }
@@ -697,12 +697,12 @@ state running
         {
             playpose(WAITPOSE, msg);
             integer index = llListFindList(SITTING_AVATARS, [id]);
-            if (~index)
+            if (index != -1)
             {
                 SITTING_AVATARS = llDeleteSubList(SITTING_AVATARS, index, index);
             }
             index = llListFindList(DESIGNATIONS_NOW, [id]);
-            if (~index)
+            if (index != -1)
             {
                 DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, llList2List(SITTER_DESIGNATIONS_MASTER, index, index), index, index);
                 llMessageLinked(LINK_THIS, 90206, llDumpList2String(DESIGNATIONS_NOW, "|"), "");
@@ -710,7 +710,7 @@ state running
         }
         else if (num == 90012)
         {
-            if (~llListFindList(CAPTIVES, [id]))
+            if (llListFindList(CAPTIVES, [id]) != -1)
             {
                 if (subControl)
                 {
@@ -745,9 +745,9 @@ state running
             {
                 integer designationIndex = llListFindList(DESIGNATIONS_NOW, [id]);
                 integer isSittingIndex = llListFindList(SITTING_AVATARS, [id]);
-                if (~isSittingIndex)
+                if (isSittingIndex != -1)
                 {
-                    if (RLV_ON && ~designationIndex && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "S")
+                    if (RLV_ON && designationIndex != -1 && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "S")
                     {
                         if (subControl)
                         {
@@ -784,7 +784,7 @@ state running
                 }
                 if (controllerHasKeys && id != CONTROLLER)
                 {
-                    if (~isSittingIndex)
+                    if (isSittingIndex != -1)
                     {
                         if (llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
                         {
@@ -832,7 +832,7 @@ state running
         }
         else if (num == 90211)
         {
-            if (~llListFindList(DESIGNATIONS_NOW, ["S"]))
+            if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1)
             {
                 new_controller(id);
                 start_relay_search();
@@ -844,7 +844,7 @@ state running
     {
         if (channel == ASKROLE_CHANEL)
         {
-            if (~llListFindList(SITTING_AVATARS, [id]))
+            if (llListFindList(SITTING_AVATARS, [id]) != -1)
             {
                 integer index = llListFindList(SITTERS, [(string)id]);
                 find_seat(id, index, msg, captureOnAsk);
@@ -854,7 +854,7 @@ state running
         {
             key newSlave = llGetOwnerKey(id);
             string newSlaveName = llKey2Name(newSlave);
-            if (~llListFindList(SITTING_AVATARS, [newSlave]))
+            if (llListFindList(SITTING_AVATARS, [newSlave]) != -1)
             {
                 if (!llGetListLength(CAPTIVES))
                 {
@@ -891,11 +891,11 @@ state running
             if (msg == ping)
             {
                 integer index = llListFindList(CAPTIVES, [llGetOwnerKey(id)]);
-                if (~index)
+                if (index != -1)
                 {
                     if (autoRecapture)
                     {
-                        if (~llListFindList(DESIGNATIONS_NOW, ["S"]))
+                        if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1)
                         {
                             if (CONTROLLER) // OSS::if (osIsUUID(CONTROLLER) && CONTROLLER != NULL_KEY)
                             {
@@ -949,7 +949,7 @@ state running
             else if (menu == "SUB_SELECT")
             {
                 integer index = llListFindList(SITTERS_SHORTNAMES, [msg]);
-                if (~index)
+                if (index != -1)
                 {
                     SLAVE = llList2Key(SITTERS_MENUKEYS, index);
                     check_submissive();
@@ -962,7 +962,7 @@ state running
             else if (menu == "SELECT")
             {
                 integer index = llListFindList(DETECTED_AVATAR_SHORTNAMES, [msg]);
-                if (~index)
+                if (index != -1)
                 {
                     if (llList2String(DETECTED_AVATAR_KEYS, index) == CONTROLLER)
                     {
@@ -977,7 +977,7 @@ state running
                         TimelockPaused = TRUE;
                         llSetTimerEvent(0);
                         PairWhoStartedCapture = (string)CONTROLLER + llList2String(DETECTED_AVATAR_KEYS, index);
-                        if (~llListFindList(SITTING_AVATARS, [llList2Key(DETECTED_AVATAR_KEYS, index)]))
+                        if (llListFindList(SITTING_AVATARS, [llList2Key(DETECTED_AVATAR_KEYS, index)]) != -1)
                         {
                             capture_attempt(llList2Key(DETECTED_AVATAR_KEYS, index), "");
                         }
@@ -1141,7 +1141,7 @@ state running
                         while (i >= 0)
                         {
                             key SLAVE = llList2Key(CAPTIVES, i);
-                            if (~llListFindList(SITTING_AVATARS, [SLAVE]))
+                            if (llListFindList(SITTING_AVATARS, [SLAVE]) != -1)
                             {
                                 release(SLAVE, TRUE);
                             }

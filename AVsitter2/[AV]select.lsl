@@ -243,7 +243,7 @@ default
                         }
                     }
                 }
-                notecard_query = llGetNotecardLine(notecard_name, (variable1 += 1));
+                notecard_query = llGetNotecardLine(notecard_name, ++variable1);
             }
         }
     }

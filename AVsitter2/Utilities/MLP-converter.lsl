@@ -122,16 +122,16 @@ default
             {
                 if (llGetListLength(NOTECARDS) - notecard_pointer > 1)
                 {
-                    notecard_name = llList2String(NOTECARDS, notecard_pointer += 1);
-                    notecard_query = llGetNotecardLine(notecard_name, notecard_line = 0);
+                    notecard_name = llList2String(NOTECARDS, ++notecard_pointer);
+                    notecard_query = llGetNotecardLine(notecard_name, (notecard_line = 0));
                 }
                 else if (animator_count + 1 < animator_total)
                 {
                     animator_count++;
                     Readout_Say(" ");
                     Readout_Say("SITTER " + (string)animator_count);
-                    notecard_name = llList2String(NOTECARDS, notecard_pointer = 0);
-                    notecard_query = llGetNotecardLine(notecard_name, notecard_line = 0);
+                    notecard_name = llList2String(NOTECARDS, (notecard_pointer = 0));
+                    notecard_query = llGetNotecardLine(notecard_name, (notecard_line = 0));
                 }
                 else
                 {
@@ -196,7 +196,7 @@ default
                         }
                     }
                 }
-                notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
+                notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }
         }
     }

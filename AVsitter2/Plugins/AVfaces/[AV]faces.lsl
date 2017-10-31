@@ -448,7 +448,7 @@ default
                         part1 = llList2String(anim_animsequences, x);
                     anim_animsequences += part1;
                 }
-                notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
+                notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }
         }
     }
