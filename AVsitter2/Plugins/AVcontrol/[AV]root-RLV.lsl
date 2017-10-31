@@ -1207,7 +1207,7 @@ state running
             {
                 data = llStringTrim(data, STRING_TRIM);
                 string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
-                list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
+                list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, 99999), [" | ", " |", "| ", "|"], []);
                 string part0 = llStringTrim(llList2String(parts, 0), STRING_TRIM);
                 part0 = llGetSubString(part0, 0, 22);
                 if (command == "WAITPOSE")

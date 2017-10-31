@@ -267,7 +267,7 @@ default
             {
                 list datalist = llParseString2List(data, [" "], []);
                 string command = llList2String(datalist, 0);
-                data = llStringTrim(llDumpList2String(llList2List(datalist, 1, -1), " "), STRING_TRIM);
+                data = llStringTrim(llDumpList2String(llList2List(datalist, 1, 99999), " "), STRING_TRIM);
                 list commands = ["PLAY", "WAIT", "SAY", "WHISPER", "SOUND", "LOOP"];
                 if (command == "DEBUG")
                 {

@@ -194,7 +194,7 @@ default
                 {
                     string command = llStringTrim(llGetSubString(data, 1, llSubStringIndex(data, "}") - 1), STRING_TRIM);
                     data = llDumpList2String(llParseString2List(data, [" "], [""]), "");
-                    data = llGetSubString(data, llSubStringIndex(data, "}") + 1, -1);
+                    data = llGetSubString(data, llSubStringIndex(data, "}") + 1, 99999);
                     list parts = llParseStringKeepNulls(data, ["<"], []);
                     vector pos = (vector)("<" + llList2String(parts, 1));
                     pos = (pos - target_prim_pos) / target_prim_rot;

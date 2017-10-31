@@ -86,7 +86,7 @@ Readout_Say(string say, string SCRIPT_CHANNEL)
 
 string Key2Number(key objKey)
 {
-    return llGetSubString((string)llAbs((integer)("0x" + llGetSubString((string)objKey, -8, -1)) & 1073741823 ^ -1073741825), 6, -1);
+    return llGetSubString((string)llAbs((integer)("0x" + llGetSubString((string)objKey, -8, -1)) & 0x3FFFFFFF ^ 0xBFFFFFFF), 6, 99999);
 }
 
 init_sitters()
@@ -414,10 +414,10 @@ default
             }
             else
             {
-                data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1);
+                data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, 99999);
                 data = llStringTrim(data, STRING_TRIM);
                 string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
-                list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
+                list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, 99999), [" | ", " |", "| ", "|"], []);
                 if (command == "SITTER")
                 {
                     notecard_section = llList2Integer(parts, 0);

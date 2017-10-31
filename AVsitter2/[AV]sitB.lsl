@@ -191,7 +191,7 @@ integer animation_menu(integer animation_menu_function)
                 }
                 else
                 {
-                    menu_items1 += llGetSubString(m, 2, -1);
+                    menu_items1 += llGetSubString(m, 2, 99999);
                 }
             }
         }
@@ -225,7 +225,7 @@ default
     state_entry()
     {
         memory();
-        SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), -1);
+        SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), 99999);
         if (SCRIPT_CHANNEL)
             main_script += " " + (string)SCRIPT_CHANNEL;
         if (llGetInventoryType(main_script) == INVENTORY_SCRIPT)
@@ -321,7 +321,7 @@ default
                 }
                 else
                 {
-                    current_menu = llListFindList(MENU_LIST, ["T:" + llGetSubString(llList2String(MENU_LIST, current_menu), 2, -1)]);
+                    current_menu = llListFindList(MENU_LIST, ["T:" + llGetSubString(llList2String(MENU_LIST, current_menu), 2, 99999)]);
                     if (current_menu != -1)
                     {
                         current_menu -= 1;

@@ -376,7 +376,7 @@ default
                     {
                         if (llList2Key(SITTERS, i) == sitting_av_or_sitter || id == "" || (string)sitting_av_or_sitter == (string)i)
                         {
-                            remove_sitter_props_by_pose((string)i + "|" + llGetSubString(msg, 8, -1), TRUE);
+                            remove_sitter_props_by_pose((string)i + "|" + llGetSubString(msg, 8, 99999), TRUE);
                         }
                     }
                 }
@@ -601,10 +601,10 @@ default
                 return;
             }
 
-            data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1);
+            data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, 99999);
             data = llStringTrim(data, STRING_TRIM);
             string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
-            list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
+            list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, 99999), [" | ", " |", "| ", "|"], []);
             if (command == "SITTER")
             {
                 notecard_section = (integer)llList2String(parts, 0);

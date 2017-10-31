@@ -72,7 +72,7 @@ default
     {
         llSetTimerEvent(0);
         llListenRemove(listenhandle);
-        state do_update;        
+        state do_update;
     }
 
     touch_start(integer touched)
@@ -109,7 +109,7 @@ default
                 if (distance <= mysize.x / 2)
                 {
                     objects_to_update += id;
-                    objects_files += llDumpList2String(llList2List(data, 1, -1), "|");
+                    objects_files += llDumpList2String(llList2List(data, 1, 99999), "|");
                 }
             }
         }
@@ -124,11 +124,11 @@ state do_update
         i = 0;
         llSetTimerEvent(0.1);
     }
-    
+
     timer(){
 
         llRegionSayTo(av, 0, "Processing prim " + (string)(i+1) + "/" + (string)llGetListLength(objects_to_update));
-       	
+
         key object = llList2Key(objects_to_update, i);
         list items = llParseStringKeepNulls(llList2String(objects_files, i), ["|"], []);
         if (1 == 1)
@@ -196,10 +196,10 @@ state do_update
                 }
             }
         }
-        
+
         i++;
 
-        if(i==llGetListLength(objects_to_update)){        
+        if(i==llGetListLength(objects_to_update)){
             llRegionSayTo(av, 0, "Updates complete!");
             llResetScript();
         }
