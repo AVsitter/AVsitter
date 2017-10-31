@@ -234,7 +234,7 @@ default
                 {
                     Readout_Say(data);
                 }
-                notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
+                notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }
         }
     }

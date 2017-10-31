@@ -100,7 +100,7 @@ default
                         ALL_USED_ANIMATIONS += llList2String(anims, i);
                     }
                 }
-                notecard_query = llGetNotecardLine(notecard_basename, variable1 += 1);
+                notecard_query = llGetNotecardLine(notecard_basename, ++variable1);
             }
         }
     }

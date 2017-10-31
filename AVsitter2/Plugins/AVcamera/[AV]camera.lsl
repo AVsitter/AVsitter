@@ -239,7 +239,7 @@ default
                     camera_triggers += part0;
                     camera_settings += part1;
                 }
-                notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
+                notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }
         }
     }

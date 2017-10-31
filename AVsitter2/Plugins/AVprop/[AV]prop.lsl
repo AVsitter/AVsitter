@@ -107,7 +107,7 @@ integer get_point(string text)
     integer i;
     for (i = 1; i < llGetListLength(ATTACH_POINTS); i = i + 2)
     {
-        if (~llSubStringIndex(llToUpper(text), llToUpper(llList2String(ATTACH_POINTS, i))))
+        if (llSubStringIndex(llToUpper(text), llToUpper(llList2String(ATTACH_POINTS, i))) != -1)
         {
             return llList2Integer(ATTACH_POINTS, i - 1);
         }
@@ -385,7 +385,7 @@ default
                     integer flag;
                     for (; i < llGetListLength(SITTERS); i++)
                     {
-                        if (~llListFindList(prop_triggers, [(string)i + "|" + msg]))
+                        if (llListFindList(prop_triggers, [(string)i + "|" + msg]) != -1)
                         {
                             flag = TRUE;
                         }
@@ -438,7 +438,7 @@ default
                 remove_props_by_sitter(msg, FALSE);
                 remove_worn(id);
                 integer index = llListFindList(SITTERS, [id]);
-                if (~index)
+                if (index != -1)
                 {
                     SITTERS = llListReplaceList(SITTERS, [NULL_KEY], index, index);
                 }
@@ -648,7 +648,7 @@ default
             {
                 WARN = (integer)llList2String(parts, 0);
             }
-            notecard_query = llGetNotecardLine(notecard_name, notecard_line += 1);
+            notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
         }
     }
 }
