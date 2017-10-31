@@ -527,7 +527,7 @@ default
                 else if (llGetSubString(msg, 0, 0) == "{")
                 {
                     msg = strReplace(msg, "{P:", "{");
-                    list parts = llParseStringKeepNulls(llDumpList2String(llParseString2List(llGetSubString(msg, llSubStringIndex(msg, "}") + 1, -1), [" "], [""]), ""), ["<"], []);
+                    list parts = llParseStringKeepNulls(llDumpList2String(llParseString2List(llGetSubString(msg, llSubStringIndex(msg, "}") + 1, 99999), [" "], [""]), ""), ["<"], []);
                     vector pos2 = (vector)("<" + llList2String(parts, 1));
                     vector rot2 = (vector)("<" + llList2String(parts, 2));
                     string result = "<" + FormatFloat(pos2.x, 3) + "," + FormatFloat(pos2.y, 3) + "," + FormatFloat(pos2.z, 3) + ">";
@@ -597,7 +597,7 @@ default
                             if (llSubStringIndex(llList2String(SITTER_POSES, i), "P:") == 0)
                             {
                                 type = "POSE";
-                                temp_pose_name = llGetSubString(temp_pose_name, 2, -1);
+                                temp_pose_name = llGetSubString(temp_pose_name, 2, 99999);
                             }
                             llMessageLinked(LINK_THIS, 90301, (string)i, llList2String(SITTER_POSES, i) + "|" + llList2String(POS_LIST, i) + "|" + llList2String(ROT_LIST, i) + "|");
                             vector pos = llList2Vector(POS_LIST, i);
@@ -910,7 +910,7 @@ default
             }
             else if (OLD_HELPER_METHOD)
             {
-                integer sitter = (integer)llGetSubString(name, llSubStringIndex(name, " ") + 1, -1);
+                integer sitter = (integer)llGetSubString(name, llSubStringIndex(name, " ") + 1, 99999);
                 if (llList2String(data, 0) == "ANIMA")
                 {
                     llMessageLinked(LINK_THIS, 90075, (string)sitter, llList2Key(data, 1));

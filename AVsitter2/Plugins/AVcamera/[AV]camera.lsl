@@ -109,7 +109,7 @@ default
 
     state_entry()
     {
-        SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), -1);
+        SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), 99999);
         notecard_key = llGetInventoryKey(notecard_name);
         if (llGetInventoryType(notecard_name) == INVENTORY_NOTECARD)
         {
@@ -225,10 +225,10 @@ default
             }
             else
             {
-                data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1);
+                data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, 99999);
                 data = llStringTrim(data, STRING_TRIM);
                 string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
-                list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
+                list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, 99999), [" | ", " |", "| ", "|"], []);
                 string part0 = llStringTrim(llList2String(parts, 0), STRING_TRIM);
                 if (command == "SITTER")
                 {
@@ -236,7 +236,7 @@ default
                 }
                 else if (notecard_section == SCRIPT_CHANNEL && command == "CAMERA")
                 {
-                    string part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, -1), "|"), STRING_TRIM);
+                    string part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, 99999), "|"), STRING_TRIM);
                     list sequence = llParseString2List(part1, ["|"], []);
                     camera_triggers += part0;
                     camera_settings += part1;

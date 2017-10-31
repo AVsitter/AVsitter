@@ -221,7 +221,7 @@ sittargets()
         {
             integer next = llListFindList(SITTERS_SITTARGETS, [1000]);
             string desc = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
-            desc = llGetSubString(desc, llSubStringIndex(desc, "#") + 1, -1);
+            desc = llGetSubString(desc, llSubStringIndex(desc, "#") + 1, 99999);
             if (desc != "-1")
             {
                 list data = llParseStringKeepNulls(desc, ["-"], []);
@@ -364,7 +364,7 @@ apply_current_anim(integer broadcast)
                 }
                 else
                 {
-                    POSENAME = llGetSubString(POSENAME, 2, -1);
+                    POSENAME = llGetSubString(POSENAME, 2, 99999);
                 }
                 string OLD_SYNC;
                 if (OLD_POSE_NAME != CURRENT_POSE_NAME)
@@ -454,7 +454,7 @@ default
 {
     state_entry()
     {
-        SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), -1);
+        SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), 99999);
         while (llGetInventoryType(memoryscript) != INVENTORY_SCRIPT)
         {
             llSleep(0.1);
@@ -1105,7 +1105,7 @@ default
             string posename = CURRENT_POSE_NAME;
             if (llGetSubString(CURRENT_POSE_NAME, 0, 1) == "P:")
             {
-                posename = llGetSubString(CURRENT_POSE_NAME, 2, -1);
+                posename = llGetSubString(CURRENT_POSE_NAME, 2, 99999);
             }
             llMessageLinked(LINK_THIS, 90070, (string)SCRIPT_CHANNEL, MY_SITTER); // 90070=update SITTERS after permissions granted
             llMessageLinked(LINK_THIS, lnk, posename, channel_or_swap);
@@ -1157,15 +1157,15 @@ default
             // Request next line
             notecard_query = llGetNotecardLine(notecard_name, ++reused_variable);
 
-            data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, -1);
+            data = llGetSubString(data, llSubStringIndex(data, "◆") + 1, 99999);
             data = llStringTrim(data, STRING_TRIM_HEAD);
             string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
-            list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
+            list parts = llParseStringKeepNulls(llGetSubString(data, llSubStringIndex(data, " ") + 1, 99999), [" | ", " |", "| ", "|"], []);
             string part0 = llStringTrim(llList2String(parts, 0), STRING_TRIM);
             string part1;
             if (llGetListLength(parts) > 1)
             {
-                part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, -1), SEP), STRING_TRIM);
+                part1 = llStringTrim(llDumpList2String(llList2List(parts, 1, 99999), SEP), STRING_TRIM);
             }
             if (command == "SITTER")
             {
@@ -1187,7 +1187,7 @@ default
                     reading_notecard_section = TRUE;
                     if (llGetListLength(parts) > 1)
                     {
-                        SITTER_INFO = llList2List(parts, 1, -1);
+                        SITTER_INFO = llList2List(parts, 1, 99999);
                     }
                 }
                 return;
@@ -1282,7 +1282,7 @@ default
                 if (llGetSubString(data, 0, 0) == "{")
                 {
                     command = llStringTrim(llGetSubString(data, 1, llSubStringIndex(data, "}") - 1), STRING_TRIM);
-                    parts = llParseStringKeepNulls(llDumpList2String(llParseString2List(llGetSubString(data, llSubStringIndex(data, "}") + 1, -1), [" "], [""]), ""), ["<"], []);
+                    parts = llParseStringKeepNulls(llDumpList2String(llParseString2List(llGetSubString(data, llSubStringIndex(data, "}") + 1, 99999), [" "], [""]), ""), ["<"], []);
                     string pos = "<" + llList2String(parts, 1);
                     string rot = "<" + llList2String(parts, 2);
                     if (command == FIRST_POSENAME || "P:" + command == FIRST_POSENAME)

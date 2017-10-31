@@ -111,7 +111,7 @@ default
                 if (distance <= mysize.x / 2)
                 {
                     objects_to_update += id;
-                    objects_files += llDumpList2String(llList2List(data, 1, -1), "|");
+                    objects_files += llDumpList2String(llList2List(data, 1, 99999), "|");
                 }
             }
         }

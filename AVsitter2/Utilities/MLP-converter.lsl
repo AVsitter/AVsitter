@@ -147,7 +147,7 @@ default
                 if (llGetSubString(notecard_name, 0, 9) == ".MENUITEMS")
                 {
                     string command = llGetSubString(data, 0, llSubStringIndex(data, " ") - 1);
-                    list parts = llParseString2List(llGetSubString(data, llSubStringIndex(data, " ") + 1, -1), [" | ", " |", "| ", "|"], []);
+                    list parts = llParseString2List(llGetSubString(data, llSubStringIndex(data, " ") + 1, 99999), [" | ", " |", "| ", "|"], []);
                     if (command == "TOMENU" || command == "MENU")
                     {
                     }
