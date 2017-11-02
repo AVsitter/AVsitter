@@ -64,7 +64,18 @@ OPENSIM=[AV]sitA.oss\
  [AV]helper.oss\
  [AV]root.oss\
  [AV]root-security.oss\
- [AV]select.oss
+ [AV]select.oss\
+ Plugins/AVcamera/[AV]camera.oss\
+ Plugins/AVfaces/[AV]faces.oss\
+ Plugins/AVprop/[AV]menu.oss\
+ Plugins/AVprop/[AV]object.oss\
+ Plugins/AVprop/[AV]prop.oss\
+ Utilities/Anim-perm-checker.oss\
+ Utilities/AVpos-generator.oss\
+ Utilities/AVpos-shifter.oss\
+ Utilities/Missing-anim-finder.oss\
+ Utilities/MLP-converter.oss\
+ Utilities/Noob-detector.oss
 
 all: $(SLZIP) $(OSZIP)
 
