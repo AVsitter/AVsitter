@@ -84,7 +84,7 @@ default {
 state permission {
     state_entry(){
         llSetTimerEvent(120);
-        llListen(menu_channel=((integer)llFrand(0x7FFFFF80)+1)*-1,"","","");
+        llListen((menu_channel=((integer)llFrand(0x7FFFFF80)+1)*-1),"","","");
         llDialog(llGetOwner(),product+" "+version+"\n\n"+disclaimer,["OK"],menu_channel);//RLV
     }
 
