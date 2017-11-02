@@ -8,7 +8,7 @@ If you would prefer a packaged version of the latest release, and to receive pac
 
 1. Visit the [AVsitter project releases page](https://github.com/AVsitter/AVsitter/releases) and download the `.zip` file for the latest AVsitter2 release to your computer.
 
-2. Unpack the file you downloaded to a folder where you plan on keeping your AVsitter distributions.
+2. Unpack the file you downloaded to a folder where you plan on keeping your AVsitter distributions. The file for Second Life contains `.lslo` and `.lsl` scripts; the file for OpenSim contains `.oss` scripts.
 
 3. In your Second Life inventory, locate a suitable place and create a folder named AVsitter, where you'll save all the scripts and needed objects. 
 
@@ -16,7 +16,9 @@ If you would prefer a packaged version of the latest release, and to receive pac
 
     For example, if the script you unpacked was called **[AV]sitA.lslo** then the script you create in Second Life should be named simply **[AV]sitA**. The name of the script is important! Do not add `.lslo` at the end of the name.
 
-5. Only if you are using the official Second Life viewer (skip to step 6 if not):
+    In the case of OpenSim, do the same for every `.oss` file.
+
+5. Only if you are using the official viewer in Second Life (skip to step 6 if not):
     - Create a box.
     - While holding the Ctrl key, drop all scripts you have created in the previous step, from your inventory to the box.
 
@@ -29,6 +31,7 @@ If you would prefer a packaged version of the latest release, and to receive pac
     - Open the corresponding `.lslo` file on your computer with a plain text editor (e.g. Notepad).
     - Select All text in the file (CTRL-A) and Copy (CTRL-C).
     - In SL, replace the script's content with the text you've copied. You can do this by overwriting the text of the default script by Selecting All (CTRL-A) and pasting the code you've copied from your computer's text editor (CTRL-V).
+    - If you are using the official viewer and followed step 5 above, ensure that the Mono checkbox is checked, and check it if not.
     - Once you do this, hit **Save** to compile the script. If you get a script error, then you have not correctly replaced the entire script's contents with the content of the file on your computer.
     - No errors? Then proceed similarly with the rest of the scripts. 
     - If you are using the official viewer and followed step 5 above, copy all the scripts back to your inventory and delete the old ones.
