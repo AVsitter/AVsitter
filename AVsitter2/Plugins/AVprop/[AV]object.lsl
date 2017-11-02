@@ -81,7 +81,7 @@ state prop
         {
             if (llGetInventoryType("[AV]sitA") == INVENTORY_NONE)
             {
-                llSetClickAction(-1); // OSS::llSetClickAction(CLICK_ACTION_DEFAULT);
+                llSetClickAction(-1); // OSS::llSetClickAction(CLICK_ACTION_NONE);
             }
         }
         else
@@ -89,6 +89,7 @@ state prop
             llSetClickAction(CLICK_ACTION_TOUCH);
         }
 
+        //LSL::
         parentkey = llList2String(llGetObjectDetails(llGetKey(), [OBJECT_REZZER_KEY]), 0);
         if(llGetStartParameter() && !llList2Integer(llGetObjectDetails(parentkey, [OBJECT_ATTACHED_POINT]), 0))
         {
@@ -98,6 +99,7 @@ state prop
         {
             llSetTimerEvent(0);
         }
+        //::LSL
     }
 
     attach(key id)
@@ -113,7 +115,7 @@ state prop
                 {
                     if (llGetOwner() == originalowner)
                     {
-                        list details = llGetExperienceDetails("");
+                        list details = llGetExperienceDetails(""); // OSS::list details;
                         if (llList2String(details, 3) == "17")
                         {
                             llSay(comm_channel, "NAG|" + llList2String(details, 0));
@@ -132,7 +134,7 @@ state prop
     {
         if ((!llGetAttached()) && (prop_type == 2 || prop_type == 1))
         {
-            llRequestExperiencePermissions(llDetectedKey(0), "");
+            llRequestExperiencePermissions(llDetectedKey(0), ""); // OSS::llRequestPermissions(llDetectedKey(0), PERMISSION_ATTACH);
         }
     }
 
@@ -156,6 +158,7 @@ state prop
         }
     }
 
+    //LSL::
     experience_permissions(key target_id)
     {
         if (llGetAttached())
@@ -174,6 +177,7 @@ state prop
         experience_denied_reason = reason;
         llRequestPermissions(agent_id, PERMISSION_ATTACH);
     }
+    //::LSL
 
     on_rez(integer start)
     {
@@ -200,7 +204,7 @@ state prop
             }
             else
             {
-                llRequestExperiencePermissions((key)llList2String(data, 1), "");
+                llRequestExperiencePermissions(llList2Key(data, 1), ""); // OSS::llRequestPermissions(llList2Key(data, 1), PERMISSION_ATTACH);
             }
         }
         else if (llGetSubString(command, 0, 3) == "REM_")
@@ -245,6 +249,7 @@ state prop
         }
     }
 
+    //LSL::
     timer()
     {
         if(llGetObjectMass(parentkey) == 0)
@@ -259,6 +264,7 @@ state prop
             }
         }
     }
+    //::LSL
 }
 
 state restart_prop
