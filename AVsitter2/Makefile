@@ -70,6 +70,7 @@ OPENSIM=[AV]sitA.oss\
  Plugins/AVprop/[AV]menu.oss\
  Plugins/AVprop/[AV]object.oss\
  Plugins/AVprop/[AV]prop.oss\
+ Plugins/AVsequence/[AV]sequence.oss\
  Utilities/Anim-perm-checker.oss\
  Utilities/AVpos-generator.oss\
  Utilities/AVpos-shifter.oss\
