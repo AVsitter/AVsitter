@@ -553,7 +553,7 @@ default
                 if (llList2Vector(llGetObjectDetails(id, [OBJECT_POS]), 0) != ZERO_VECTOR)
                 {
                     list details = [OBJECT_POS, OBJECT_ROT];
-                    rotation f = llList2Rot(details = llGetObjectDetails(llGetKey(), details) + llGetObjectDetails(id, details), 1);
+                    rotation f = llList2Rot((details = llGetObjectDetails(llGetKey(), details) + llGetObjectDetails(id, details)), 1);
                     vector target_rot = llRot2Euler(llList2Rot(details, 3) / f) * RAD_TO_DEG;
                     vector target_pos = (llList2Vector(details, 2) - llList2Vector(details, 0)) / f;
                     prop_positions = llListReplaceList(prop_positions, [target_pos], index, index);
