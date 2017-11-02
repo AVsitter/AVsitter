@@ -199,7 +199,7 @@ stop_sequence(integer stopSound)
     sequence_running = FALSE;
     SEQUENCE_POINTER = -1;
     llSetTimerEvent(0);
-    if (stopSound && ~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["SOUND"]))
+    if (stopSound && llListFindList(CURRENT_SEQUENCE_ACTIONS, ["SOUND"]) != -1)
     {
         llStopSound();
     }
@@ -363,7 +363,7 @@ state running
                 if (index != -1)
                 {
                     start_sequence(index);
-                    if (~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["WAIT"]) && ~llListFindList(CURRENT_SEQUENCE_ACTIONS, ["PLAY"]))
+                    if (llListFindList(CURRENT_SEQUENCE_ACTIONS, ["WAIT"]) != -1 && llListFindList(CURRENT_SEQUENCE_ACTIONS, ["PLAY"]) != -1)
                     {
                         sequence_control();
                     }
