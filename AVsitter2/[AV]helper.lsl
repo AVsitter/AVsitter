@@ -83,7 +83,7 @@ setup()
     llSetObjectName(base_object_name + " " + (string)helper_index);
     if (llGetCreator() == llGetInventoryCreator(llGetScriptName()))
     {
-        llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TYPE, PRIM_TYPE_BOX, PRIM_HOLE_DEFAULT, <0,1,0>, 0, ZERO_VECTOR, <1,1,0>, ZERO_VECTOR, PRIM_TEXTURE, ALL_SIDES, "5748decc-f629-461c-9a36-a35a221fe21f", <1,1,0>, ZERO_VECTOR, 0, PRIM_COLOR, ALL_SIDES, llList2Vector(colors, helper_index % llGetListLength(colors)), alpha, PRIM_COLOR, 1, <1,1,1>, alpha, PRIM_COLOR, 3, <1,1,1>, alpha, PRIM_SIZE, size]);
+        llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TYPE, PRIM_TYPE_BOX, PRIM_HOLE_DEFAULT, <0,1,0>, 0, ZERO_VECTOR, <1,1,0>, ZERO_VECTOR, PRIM_TEXTURE, ALL_SIDES, TEXTURE_BLANK, <1,1,0>, ZERO_VECTOR, 0, PRIM_COLOR, ALL_SIDES, llList2Vector(colors, helper_index % llGetListLength(colors)), alpha, PRIM_COLOR, 1, <1,1,1>, alpha, PRIM_COLOR, 3, <1,1,1>, alpha, PRIM_SIZE, size]);
     }
     else
     {
@@ -100,11 +100,11 @@ default
         llSetObjectName(base_object_name);
         if (llGetCreator() == llGetInventoryCreator(llGetScriptName()))
         {
-            llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, "5748decc-f629-461c-9a36-a35a221fe21f", <1,1,0>, <0,0,0>, 0, PRIM_FULLBRIGHT, ALL_SIDES, TRUE, PRIM_COLOR, ALL_SIDES, llList2Vector(colors, 0), 0.7, PRIM_GLOW, ALL_SIDES, 0.]);
+            llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, TEXTURE_BLANK, <1,1,0>, <0,0,0>, 0, PRIM_FULLBRIGHT, ALL_SIDES, TRUE, PRIM_COLOR, ALL_SIDES, llList2Vector(colors, 0), 0.7, PRIM_GLOW, ALL_SIDES, 0.]);
         }
         else
         {
-            llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, "5748decc-f629-461c-9a36-a35a221fe21f", <1,1,0>, <0,0,0>, 0, PRIM_FULLBRIGHT, ALL_SIDES, TRUE]);
+            llSetLinkPrimitiveParamsFast(LINK_THIS, [PRIM_TEXTURE, ALL_SIDES, TEXTURE_BLANK, <1,1,0>, <0,0,0>, 0, PRIM_FULLBRIGHT, ALL_SIDES, TRUE]);
         }
         integer everyonePerms = llGetObjectPermMask(MASK_EVERYONE);
         if ((everyonePerms & PERM_MOVE) == 0 && llGetOwner() == llGetInventoryCreator(llGetScriptName()))
