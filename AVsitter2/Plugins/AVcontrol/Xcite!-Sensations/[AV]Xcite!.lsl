@@ -1,4 +1,6 @@
 /*
+ * [AV]Xcite! - Allows working with Xcite!™ and Sensations products
+ *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -12,7 +14,7 @@
  * instructions can be found at http://avsitter.github.io
  */
 
-string product = "AVsitter™ Xcite!";
+string product = "AVsitter™ Xcite!™";
 string version = "1.02";
 string notecard_name = "[AV]Xcite_settings";
 key notecard_key;
