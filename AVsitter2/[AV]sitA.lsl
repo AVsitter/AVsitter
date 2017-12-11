@@ -1328,6 +1328,9 @@ default
                                 FIRST_FEMALE_ANIMATION_SEQUENCE = part1;
                             }
                         }
+                        // Don't generate empty buttons (issue #60)
+                        if (part0 == "B:")
+                            part0 = "B: ";
                         if (command == "BUTTON" && part1 == "")
                         {
                             part1 = "90200"; // default to rez prop
