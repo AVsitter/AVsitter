@@ -61,6 +61,12 @@ def oss_process(filename):
                   'b88526b7-3966-43fd-ae76-1e39881c86aa')
     # TODO: Replace LockGuard texture UUIDs
 
+    # OpenSim 0.8.0 does not support this constant.
+    #s = s.replace('OBJECT_BODY_SHAPE_TYPE', '26 /*OBJECT_BODY_SHAPE_TYPE*/')
+
+    # Tag OpenSim releases
+    s = s.replace('\n *\n * This Source Code', '\n * (OpenSim version)\n *\n * This Source Code')
+
     s = os_line_re.sub(r'\1\2', s)
     s = sl_block_re.sub('', s)
     s = os_block_re.sub(r'\1', s)
