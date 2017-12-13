@@ -19,6 +19,9 @@ string version = "2.2";
 integer ignorenextswap;
 string notecard_name = "AVpos";
 string unDressScript = "[AV]root-RLV-extra";
+string Dominant_name = "Dominant";
+string Submissive_name = "Submissive";
+string Submissive_name_plural = "submissives";
 integer RLV_ON = TRUE;
 string WAITPOSE;
 string DOMPOSE;
@@ -211,7 +214,7 @@ rlv_top_menu()
             {
                 if (designationIndex != -1 && llList2String(SITTER_DESIGNATIONS_MASTER, designationIndex) == "D")
                 {
-                    text = slaveName + " has not chosen submissive role.";
+                    text = slaveName + " has not chosen " + llToLower(Submissive_name) + " role.";
                 }
                 else
                 {
@@ -395,7 +398,7 @@ check_submissive()
 select_submissive_rlv()
 {
     menu = "SUB_SELECT";
-    string text = "Which submissive?";
+    string text = "Which " + llToLower(Submissive_name) + "?";
     SITTERS_MENUKEYS = [];
     list menu_items;
     integer i;
@@ -413,7 +416,7 @@ select_submissive_rlv()
     SITTERS_SHORTNAMES = menu_items;
     if (!llGetListLength(menu_items))
     {
-        text = "There are no submissives sitting.";
+        text = "There are no " + llToLower(Submissive_name_plural) + " sitting.";
     }
     if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1 && llGetListLength(SITTING_AVATARS) < llGetListLength(DESIGNATIONS_NOW))
     {
@@ -444,11 +447,11 @@ find_seat(key id, integer index, string msg, integer captureSub)
         }
         if (first_available != -1)
         {
-            if (msg == "Dominant")
+            if (msg == Dominant_name)
             {
                 playpose(DOMPOSE, (string)first_available);
             }
-            else if (msg == "Submissive")
+            else if (msg == Submissive_name)
             {
                 if (captureSub)
                 {
@@ -479,7 +482,7 @@ find_seat(key id, integer index, string msg, integer captureSub)
             }
             hovertext();
             llMessageLinked(LINK_THIS, 90206, llDumpList2String(DESIGNATIONS_NOW, "|"), "");
-            if (msg == "Dominant")
+            if (msg == Dominant_name)
             {
                 llSleep(1);
                 llMessageLinked(LINK_THIS, 90007, "", id);
@@ -563,7 +566,7 @@ hovertext()
 
 ask_role(key id)
 {
-    llDialog(id, product + " " + version + "\n\nPlease select your role:\n", ["Dominant", "Submissive"], ASKROLE_CHANEL);
+    llDialog(id, product + " " + version + "\n\nPlease select your role:\n", [Dominant_name, Submissive_name], ASKROLE_CHANEL);
 }
 
 back(key id)
@@ -585,7 +588,7 @@ integer isSub(key id)
     {
         if (llList2String(SITTER_DESIGNATIONS_MASTER, index) == "S")
         {
-            info_dialog(id, "submissives can't access this");
+            info_dialog(id, Submissive_name_plural + " can't access this");
             return TRUE;
         }
     }
@@ -673,7 +676,7 @@ state running
             {
                 if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1)
                 {
-                    find_seat(id, (integer)msg, "Submissive", TRUE);
+                    find_seat(id, (integer)msg, Submissive_name, TRUE);
                 }
             }
             else if (onSit == "ASK")
@@ -755,7 +758,7 @@ state running
                         }
                         else
                         {
-                            info_dialog(id, "submissives can't access the menu");
+                            info_dialog(id, Submissive_name_plural + " can't access the menu");
                         }
                         return;
                     }
@@ -1072,7 +1075,7 @@ state running
                 {
                     index = 0;
                 }
-                find_seat(SLAVE, index, "Submissive", TRUE);
+                find_seat(SLAVE, index, Submissive_name, TRUE);
                 check_submissive();
             }
             else if (msg == "Release!")
