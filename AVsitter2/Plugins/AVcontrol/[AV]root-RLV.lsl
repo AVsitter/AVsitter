@@ -19,6 +19,7 @@ string version = "2.2";
 integer ignorenextswap;
 string notecard_name = "AVpos";
 string unDressScript = "[AV]root-RLV-extra";
+string main_script = "[AV]sitA";
 string Dominant_name = "Dominant";
 string Submissive_name = "Submissive";
 string Submissive_name_plural = "submissives";
@@ -264,7 +265,7 @@ capture_attempt(key id, string target_sitter)
         GETCAPTURESTATUShandle = llListen(RELAY_GETCAPTURESTATUSchannel, "", "", "");
         relay(id, "@getstatus=" + (string)RELAY_GETCAPTURESTATUSchannel);
     }
-    if (llGetInventoryType("[AV]sitA 1") == INVENTORY_SCRIPT)
+    if (llGetInventoryType(main_script + " 1") == INVENTORY_SCRIPT)
     {
         playpose(SUBPOSE, target_sitter);
     }
@@ -464,7 +465,7 @@ find_seat(key id, integer index, string msg, integer captureSub)
             }
             if (first_available != index)
             {
-                if (llGetInventoryType("[AV]sitA 1") == INVENTORY_SCRIPT)
+                if (llGetInventoryType(main_script + " 1") == INVENTORY_SCRIPT)
                 {
                     llSleep(1);
                     llMessageLinked(LINK_SET, 90030, (string)index, (string)first_available);
@@ -694,7 +695,7 @@ state running
             else
             {
                 integer index = llListFindList(DESIGNATIONS_NOW, ["S"]);
-                if (llGetInventoryType("[AV]sitA 1") == INVENTORY_SCRIPT)
+                if (llGetInventoryType(main_script + " 1") == INVENTORY_SCRIPT)
                 {
                     index = (integer)msg;
                 }
