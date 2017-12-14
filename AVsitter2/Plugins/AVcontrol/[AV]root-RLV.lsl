@@ -40,7 +40,7 @@ integer RELAY_CHANNEL = -1812221819;
 integer RELAY_SEARCH_CHANNEL;
 integer RELAY_GETCAPTURESTATUSchannel;
 integer RELAY_CHECK_CHANNEL;
-integer ASKROLE_CHANEL = -748363;
+integer ASKROLE_CHANNEL = -748363;
 integer menu_channel;
 integer menu_handle;
 integer relay_handle;
@@ -383,7 +383,7 @@ get_unique_channels()
     RELAY_SEARCH_CHANNEL = (integer)llFrand(999999936) + 1; // 999999936 = max float < 1e9
     RELAY_GETCAPTURESTATUSchannel = RELAY_SEARCH_CHANNEL + 2;
     RELAY_CHECK_CHANNEL = RELAY_SEARCH_CHANNEL + 4;
-    ASKROLE_CHANEL = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
+    ASKROLE_CHANNEL = ((integer)llFrand(0x7FFFFF80) + 1) * -1; // 7FFFFF80 = max float < 2^31
     llListenRemove(relay_handle);
     relay_handle = llListen(RELAY_CHANNEL, "", "", (ping = "ping," + (string)llGetKey() + ",ping,ping"));
 }
@@ -575,7 +575,7 @@ hovertext()
 
 ask_role(key id)
 {
-    llDialog(id, product + " " + version + "\n\nPlease select your role:\n", [Dominant_name, Submissive_name], ASKROLE_CHANEL);
+    llDialog(id, product + " " + version + "\n\nPlease select your role:\n", [Dominant_name, Submissive_name], ASKROLE_CHANNEL);
 }
 
 back(key id)
@@ -854,7 +854,7 @@ state running
 
     listen(integer channel, string name, key id, string msg)
     {
-        if (channel == ASKROLE_CHANEL)
+        if (channel == ASKROLE_CHANNEL)
         {
             if (llListFindList(SITTING_AVATARS, [id]) != -1)
             {
@@ -1195,7 +1195,7 @@ state running
             }
             else
             {
-                ASKROLEhandle = llListen(ASKROLE_CHANEL, "", "", "");
+                ASKROLEhandle = llListen(ASKROLE_CHANNEL, "", "", "");
                 CHECKhandle = llListen(RELAY_CHECK_CHANNEL, "", "", "");
             }
             hovertext();
