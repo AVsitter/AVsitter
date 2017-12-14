@@ -437,7 +437,7 @@ find_seat(key id, integer index, string msg, integer captureSub)
 {
     if (index != -1)
     {
-        if (msg == Dominant_name)
+        if (msg == Dominant_name || msg == "D")
             msg = "D";
         else
             msg = "S";
@@ -682,6 +682,9 @@ state running
         {
             menu = "";
             SITTING_AVATARS += id;
+            // If they must be assigned a SUB spot, regardless of the
+            // automatically assigned sitter, lock them as they sit.
+            // That happens with ONSIT CAPTURE and with force-sitting.
             if (onSit == "CAPTURE" || (string)CONTROLLER + (string)id == PairWhoStartedCapture)
             {
                 if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1)
@@ -689,18 +692,21 @@ state running
                     find_seat(id, one, Submissive_name, TRUE);
                 }
             }
-            else if (onSit == "ASK")
+        }
+        else if (num == 90070)
+        {
+            // This is the first message where we know the sitter number
+            if (llListFindList(DESIGNATIONS_NOW, [id]) == -1)
             {
-                ask_role(id);
-            }
-            else
-            {
-                two = llListFindList(DESIGNATIONS_NOW, ["S"]);
-                if (llGetInventoryType(main_script + " 1") == INVENTORY_SCRIPT)
+                if (onSit == "CAPIFSUB")
                 {
-                    two = one;
+                    find_seat(id, one, llList2String(DESIGNATIONS_NOW, one), TRUE);
                 }
-                if (two != -1)
+                else if (onSit == "ASK")
+                {
+                    ask_role(id);
+                }
+                else if (onSit == "NONE")
                 {
                     DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [id], one, one);
                 }
