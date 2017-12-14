@@ -456,7 +456,7 @@ find_seat(key id, integer index, string msg, integer captureSub)
             {
                 playpose(DOMPOSE, (string)first_available);
             }
-            else if (msg == "S")
+            else //if (msg == "S") // assumed
             {
                 if (captureSub)
                 {
@@ -635,12 +635,13 @@ state running
 
     link_message(integer sender, integer num, string msg, key id)
     {
+        integer one = (integer)msg;
+        integer two;
         if (num == 90030)
         {
             if (!ignorenextswap)
             {
-                integer one = (integer)msg;
-                integer two = (integer)((string)id);
+                two = (integer)((string)id);
                 key des1 = llList2String(DESIGNATIONS_NOW, one);
                 key des2 = llList2String(DESIGNATIONS_NOW, two);
                 string role1 = llList2String(SITTER_DESIGNATIONS_MASTER, one);
@@ -685,7 +686,7 @@ state running
             {
                 if (llListFindList(DESIGNATIONS_NOW, ["S"]) != -1)
                 {
-                    find_seat(id, (integer)msg, Submissive_name, TRUE);
+                    find_seat(id, one, Submissive_name, TRUE);
                 }
             }
             else if (onSit == "ASK")
@@ -694,14 +695,14 @@ state running
             }
             else
             {
-                integer index = llListFindList(DESIGNATIONS_NOW, ["S"]);
+                two = llListFindList(DESIGNATIONS_NOW, ["S"]);
                 if (llGetInventoryType(main_script + " 1") == INVENTORY_SCRIPT)
                 {
-                    index = (integer)msg;
+                    two = one;
                 }
-                if (index != -1)
+                if (two != -1)
                 {
-                    DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [id], (integer)msg, (integer)msg);
+                    DESIGNATIONS_NOW = llListReplaceList(DESIGNATIONS_NOW, [id], one, one);
                 }
             }
         }
