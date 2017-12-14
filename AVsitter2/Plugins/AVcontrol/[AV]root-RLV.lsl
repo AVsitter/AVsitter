@@ -436,22 +436,26 @@ find_seat(key id, integer index, string msg, integer captureSub)
 {
     if (index != -1)
     {
+        if (msg == Dominant_name)
+            msg = "D";
+        else
+            msg = "S";
         integer first_available = index;
         if (llListFindList(DESIGNATIONS_NOW, [id]) != -1)
         {
             first_available = llListFindList(DESIGNATIONS_NOW, [id]);
         }
-        else if (llList2String(DESIGNATIONS_NOW, index) != llGetSubString(msg, 0, 0))
+        else if (llList2String(DESIGNATIONS_NOW, index) != msg)
         {
-            first_available = llListFindList(DESIGNATIONS_NOW, [llGetSubString(msg, 0, 0)]);
+            first_available = llListFindList(DESIGNATIONS_NOW, [msg]);
         }
         if (first_available != -1)
         {
-            if (msg == Dominant_name)
+            if (msg == "D")
             {
                 playpose(DOMPOSE, (string)first_available);
             }
-            else if (msg == Submissive_name)
+            else if (msg == "S")
             {
                 if (captureSub)
                 {
@@ -482,7 +486,7 @@ find_seat(key id, integer index, string msg, integer captureSub)
             }
             hovertext();
             llMessageLinked(LINK_THIS, 90206, llDumpList2String(DESIGNATIONS_NOW, "|"), "");
-            if (msg == Dominant_name)
+            if (msg == "D")
             {
                 llSleep(1);
                 llMessageLinked(LINK_THIS, 90007, "", id);
@@ -491,6 +495,10 @@ find_seat(key id, integer index, string msg, integer captureSub)
         else
         {
             llUnSit(id);
+            if (msg == "D")
+                msg = Dominant_name;
+            else
+                msg = Submissive_name;
             info_dialog(id, "there no available seats for " + msg);
         }
     }
