@@ -364,7 +364,7 @@ new_controller(key id)
     CONTROLLER = id;
     controllerName = llKey2Name(CONTROLLER);
     llListenRemove(menu_handle);
-    menu_handle = llListen(menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1, "", CONTROLLER, ""); // 7FFFFF80 = max float < 2^31
+    menu_handle = llListen((menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1), "", CONTROLLER, ""); // 7FFFFF80 = max float < 2^31
 }
 
 no_sensor_results()
