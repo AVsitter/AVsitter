@@ -260,7 +260,7 @@ integer prop_menu(integer return_pages, key av)
     {
         if (i < llGetListLength(MENU_LIST))
         {
-            if (llSubStringIndex(llList2String(MENU_LIST, i), "M:") != -1)
+            if (llSubStringIndex(llList2String(MENU_LIST, i), "M:") == 0)
             {
                 jump end;
             }
