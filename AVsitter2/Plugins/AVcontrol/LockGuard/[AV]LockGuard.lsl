@@ -22,7 +22,7 @@
 //      The AVsitter SITTER # the chain settings are for.
 //      -> You can use -1 to mean all sitters, but that will mean that the very same
 //         chain settings and pose list will be applied to all at the same time. If
-//         you don't want that, then you need to  add one script per sitter.
+//         you don't want that, then you need to add one script per sitter.
 
 integer SITTER = 0;
 

@@ -89,11 +89,6 @@ Out(integer level, string out)
     }
 }
 
-integer IsInteger(string data)
-{
-    return llParseString2List((string)llParseString2List(data, ["8", "9"], []), ["0", "1", "2", "3", "4", "5", "6", "7"], []) == [] && data != "";
-}
-
 integer get_number_of_scripts()
 {
     integer i = 1;
@@ -255,6 +250,7 @@ remove_sitter_props_by_pose(string sitter_pose, integer remove_type3)
         send_command(llDumpList2String(["REM_INDEX"] + text, "|"));
     }
 }
+
 remove_sitter_props_by_pose_group(string msg)
 {
     list props = get_props_by_pose(msg);
