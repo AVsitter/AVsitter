@@ -137,7 +137,6 @@ menu_check(string name, key id, string msg, integer menu_function)
             {
                 menu_page = 0;
                 current_menu = index;
-                msg = "";
             }         
             avmenu(FALSE, id);
         }
