@@ -31,7 +31,7 @@ ini_set('display_errors', '1');
 
 require_once("settings-config.inc.php");
 
-$link = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname) or die("Error " . mysqli_error($link));
+$link = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
 if (mysqli_connect_errno()) {
     die ("Connect failed: " . mysqli_connect_error());
