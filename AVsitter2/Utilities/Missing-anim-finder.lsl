@@ -19,6 +19,7 @@ integer variable1;
 key notecard_query;
 list ALL_USED_ANIMATIONS;
 list UNUSED_ANIMS;
+integer NOT_FOUND_COUNT;
 
 Owner_Say(string say)
 {
@@ -62,11 +63,20 @@ default
         if (query_id == notecard_query)
         {
             if (data == EOF)
-            {
+            { 
+                if(NOT_FOUND_COUNT>0){
+                    Owner_Say("Anims were used in the notecard but not found in inventory!");
+                }
                 integer i;
                 for (i = 0; i < llGetInventoryNumber(INVENTORY_ANIMATION); i++)
                 {
-                    if (llListFindList(ALL_USED_ANIMATIONS, [llGetInventoryName(INVENTORY_ANIMATION, i)]) == -1 && llListFindList(["AVhipfix"], [llGetInventoryName(INVENTORY_ANIMATION, i)]) == -1)
+                    string anim_basename = llGetInventoryName(INVENTORY_ANIMATION, i);
+                    if(llListFindList(["+","-"], [llGetSubString(anim_basename,-1,-1)]) != -1)
+                    {
+                        anim_basename = llGetSubString(anim_basename,0,-2);
+                    }
+                    
+                    if (llListFindList(ALL_USED_ANIMATIONS, [anim_basename]) == -1 && llListFindList(["AVhipfix"], [llGetInventoryName(INVENTORY_ANIMATION, i)]) == -1)
                     {
                         Owner_Say("Animation '" + llGetInventoryName(INVENTORY_ANIMATION, i) + "' found in inventory but not used in notecard!");
                         UNUSED_ANIMS += llGetInventoryName(INVENTORY_ANIMATION, i);
@@ -80,6 +90,7 @@ default
                 }
                 else
                 {
+                    Owner_Say("No unused anims were found!");
                     finish();
                 }
             }
@@ -97,6 +108,7 @@ default
                     {
                         if (llGetInventoryType(llList2String(anims, i)) != INVENTORY_ANIMATION)
                         {
+                            NOT_FOUND_COUNT += 1;
                             Owner_Say("Animation '" + llList2String(anims, i) + "' not found in inventory!");
                         }
                         ALL_USED_ANIMATIONS += llList2String(anims, i);
