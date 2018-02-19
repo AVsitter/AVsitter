@@ -67,7 +67,7 @@ default
             if (data == EOF)
             { 
                 if(!NOT_FOUND_COUNT){
-                    Owner_Say("All animations referenced in the notecard were accounted for.");   
+                    Owner_Say("All anims referenced in the notecard were accounted for.");   
                 }
                 else{
                     Owner_Say("Anims were used in the notecard but not found in inventory!");
@@ -75,21 +75,28 @@ default
                 integer i;
                 for (i = 0; i < llGetInventoryNumber(INVENTORY_ANIMATION); i++)
                 {
+                    integer index;
                     integer isVariableSpeed;
                     string anim_basename = llGetInventoryName(INVENTORY_ANIMATION, i);
-                    if(llListFindList(["+","-"], [llGetSubString(anim_basename,-1,-1)]) != -1)
+                    
+                    if(llListFindList(["+","-"], [llDeleteSubString(anim_basename,0,-2)]) != -1)
                     {
-                        isVariableSpeed=TRUE;
-                        anim_basename = llGetSubString(anim_basename,0,-2);
+                        index = llListFindList(ALL_USED_ANIMS, [llDeleteSubString(anim_basename,-1,-1)]);
+                        // only consider anims as variable-speed if their base name was used in a variable-speed submenu:
+                        if(index!=-1 && llList2Integer(VARIABLE_SPEED_ANIMS,index) == TRUE)
+                        {
+                            anim_basename = llDeleteSubString(anim_basename,-1,-1);
+                            isVariableSpeed=TRUE;
+                        }
                     }
                     
-                    integer index = llListFindList(ALL_USED_ANIMS, [anim_basename]);
+                    index = llListFindList(ALL_USED_ANIMS, [anim_basename]);
                     
                     if(index != -1 && isVariableSpeed == TRUE && llList2Integer(VARIABLE_SPEED_ANIMS,index) == FALSE){                   
                         Owner_Say("Variable-Speed Animation '" + llGetInventoryName(INVENTORY_ANIMATION, i) + "' found in inventory but the associated submenu(s) are not set as Variable-Speed submenu(s)!");
                         UNUSED_ANIMS += llGetInventoryName(INVENTORY_ANIMATION, i);
                     }
-                    else if (index == -1 && llListFindList(["AVhipfix"], [llGetInventoryName(INVENTORY_ANIMATION, i)]) == -1)
+                    else if (index == -1 && llGetInventoryName(INVENTORY_ANIMATION, i) != "AVhipfix")
                     {
                         Owner_Say("Animation '" + llGetInventoryName(INVENTORY_ANIMATION, i) + "' found in inventory but not used in notecard!");
                         UNUSED_ANIMS += llGetInventoryName(INVENTORY_ANIMATION, i);
@@ -142,7 +149,7 @@ default
                             VARIABLE_SPEED_ANIMS += IS_VARIABLE_SPEED_SUBMENU;
                         }
                         else if(IS_VARIABLE_SPEED_SUBMENU == TRUE){
-                        	// prevent variable-Speed anims from being incorrectly tagged as surplus in cases where: they are included in multiple submenus/sitters and where only in some places the submenus aren't set as Variable-Speed submenus.
+                            // prevent variable-Speed anims from being incorrectly tagged as surplus in cases where: they are included in multiple submenus/sitters and where only in some places the submenus aren't set as Variable-Speed submenus.
                             // ensure it stays TRUE if ANY of the submenus that the anim is used in are set as Variable-Speed submenus. 
                             VARIABLE_SPEED_ANIMS=llListReplaceList(VARIABLE_SPEED_ANIMS,[TRUE],index,index);
                         }                     
