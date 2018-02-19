@@ -92,11 +92,7 @@ default
                     
                     index = llListFindList(ALL_USED_ANIMS, [anim_basename]);
                     
-                    if(index != -1 && isVariableSpeed == TRUE && llList2Integer(VARIABLE_SPEED_ANIMS,index) == FALSE){                   
-                        Owner_Say("Variable-Speed Animation '" + llGetInventoryName(INVENTORY_ANIMATION, i) + "' found in inventory but the associated submenu(s) are not set as Variable-Speed submenu(s)!");
-                        UNUSED_ANIMS += llGetInventoryName(INVENTORY_ANIMATION, i);
-                    }
-                    else if (index == -1 && llGetInventoryName(INVENTORY_ANIMATION, i) != "AVhipfix")
+                    if (index == -1 && llGetInventoryName(INVENTORY_ANIMATION, i) != "AVhipfix")
                     {
                         Owner_Say("Animation '" + llGetInventoryName(INVENTORY_ANIMATION, i) + "' found in inventory but not used in notecard!");
                         UNUSED_ANIMS += llGetInventoryName(INVENTORY_ANIMATION, i);
