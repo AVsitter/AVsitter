@@ -32,6 +32,7 @@ key notecard_query;
 list MENU_LIST;
 list DATA_LIST;
 integer MTYPE;
+integer LMSOURCE = 0; //lmsource self = 0, lmsource linkset = 1
 integer notecard_line;
 integer current_menu = -1;
 integer menu_page;
@@ -555,7 +556,7 @@ default
 
     link_message(integer sender, integer num, string msg, key id)
     {
-        if (sender == llGetLinkNumber())
+        if (sender == llGetLinkNumber() || LMSOURCE == 1)
         {
             if (num == 90005) // send menu to id
             {
@@ -626,6 +627,10 @@ default
                 else if (command == "MTYPE")
                 {
                     MTYPE = (integer)part0;
+                }
+                else if (command == "LMSOURCE")
+                {
+                    LMSOURCE = (integer)part0;
                 }
                 notecard_query = llGetNotecardLine(notecard_name, ++notecard_line);
             }
