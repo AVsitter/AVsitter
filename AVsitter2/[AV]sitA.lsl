@@ -67,7 +67,7 @@ key notecard_key;
 key notecard_query;
 integer reading_notecard_section;
 integer notecard_lines;
-string reused_key;
+key reused_key;
 integer reused_variable;
 integer my_sittarget;
 integer original_my_sittarget;
@@ -177,8 +177,7 @@ wipe_sit_targets()
     integer i;
     for (; i <= llGetNumberOfPrims(); i++)
     {
-        string desc = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
-        if (desc != "-1" && llGetSubString(desc, -3, -1) != "#-1")
+        if ((string)llGetLinkPrimitiveParams(i, [PRIM_DESC]) != "-1")
         {
             llLinkSitTarget(i, ZERO_VECTOR, ZERO_ROTATION);
         }
@@ -316,8 +315,7 @@ set_sittarget()
     {
         target = 0;
     }
-    reused_key = (string)llGetLinkPrimitiveParams(target, [PRIM_DESC]);
-    if (reused_key != "-1" && llGetSubString(reused_key, -3, -1) != "#-1")
+    if ((string)llGetLinkPrimitiveParams(target, [PRIM_DESC]) != "-1")
     {
         llLinkSitTarget(target, target_pos - <0.,0.,0.4> + llRot2Up(target_rot) * 0.05, target_rot);
     }
@@ -479,8 +477,7 @@ default
             // wipe_sit_targets() inlined here:
             for (i = 0; i <= llGetNumberOfPrims(); i++)
             {
-                reused_key = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
-                if (reused_key != "-1" && llGetSubString(reused_key, -3, -1) != "#-1")
+                if ((string)llGetLinkPrimitiveParams(i, [PRIM_DESC]) != "-1")
                 {
                     llLinkSitTarget(i, ZERO_VECTOR, ZERO_ROTATION);
                 }
@@ -684,12 +681,12 @@ default
             if (one == SCRIPT_CHANNEL || two == SCRIPT_CHANNEL)
             {
                 end_sitter();
-                reused_key = llList2String(SITTERS, one);
+                reused_key = llList2Key(SITTERS, one);
                 if (one == SCRIPT_CHANNEL)
                 {
-                    reused_key = llList2String(SITTERS, two);
+                    reused_key = llList2Key(SITTERS, two);
                 }
-                if ((key)reused_key) // OSS::if (osIsUUID(reused_key) && reused_key != NULL_KEY)
+                if (reused_key) // OSS::if (osIsUUID(reused_key) && reused_key != NULL_KEY)
                 {
                     SWAPPED = TRUE;
                     llRequestPermissions(reused_key, PERMISSION_TRIGGER_ANIMATION);
@@ -1049,8 +1046,7 @@ default
                     // wipe_sit_targets() inlined here:
                     for (i = 0; i <= llGetNumberOfPrims(); i++)
                     {
-                        reused_key = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
-                        if (reused_key != "-1" && llGetSubString(reused_key, -3, -1) != "#-1")
+                        if ((string)llGetLinkPrimitiveParams(i, [PRIM_DESC]) != "-1")
                         {
                             llLinkSitTarget(i, ZERO_VECTOR, ZERO_ROTATION);
                         }
