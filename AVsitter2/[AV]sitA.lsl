@@ -177,7 +177,8 @@ wipe_sit_targets()
     integer i;
     for (; i <= llGetNumberOfPrims(); i++)
     {
-        if ((string)llGetLinkPrimitiveParams(i, [PRIM_DESC]) != "-1")
+        string DESC = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
+        if (DESC != "-1" && "#-1" != llGetSubString(DESC, -3, -1))
         {
             llLinkSitTarget(i, ZERO_VECTOR, ZERO_ROTATION);
         }
@@ -220,11 +221,11 @@ sittargets()
         for (i = 1; i <= prims; i++) // FIXME: will this work for single prim in OpenSim?
         {
             integer next = llListFindList(SITTERS_SITTARGETS, [1000]);
-            string desc = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
-            desc = llGetSubString(desc, llSubStringIndex(desc, "#") + 1, 99999);
-            if (desc != "-1")
+            string DESC = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
+            DESC = llGetSubString(DESC, llSubStringIndex(DESC, "#") + 1, 99999);
+            if (DESC != "-1")
             {
-                list data = llParseStringKeepNulls(desc, ["-"], []);
+                list data = llParseStringKeepNulls(DESC, ["-"], []);
                 if (llGetListLength(data) == 2 && IsInteger(llList2String(data, 0)) && IsInteger(llList2String(data, 1)))
                 {
                     if (llList2Integer(data, 0) == SET)
@@ -315,7 +316,8 @@ set_sittarget()
     {
         target = 0;
     }
-    if ((string)llGetLinkPrimitiveParams(target, [PRIM_DESC]) != "-1")
+    string DESC = (string)llGetLinkPrimitiveParams(target, [PRIM_DESC]);
+    if (DESC != "-1" && "#-1" != llGetSubString(DESC, -3, -1))
     {
         llLinkSitTarget(target, target_pos - <0.,0.,0.4> + llRot2Up(target_rot) * 0.05, target_rot);
     }
@@ -477,7 +479,8 @@ default
             // wipe_sit_targets() inlined here:
             for (i = 0; i <= llGetNumberOfPrims(); i++)
             {
-                if ((string)llGetLinkPrimitiveParams(i, [PRIM_DESC]) != "-1")
+                string DESC = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
+                if (DESC != "-1" && "#-1" != llGetSubString(DESC, -3, -1))
                 {
                     llLinkSitTarget(i, ZERO_VECTOR, ZERO_ROTATION);
                 }
@@ -1046,7 +1049,8 @@ default
                     // wipe_sit_targets() inlined here:
                     for (i = 0; i <= llGetNumberOfPrims(); i++)
                     {
-                        if ((string)llGetLinkPrimitiveParams(i, [PRIM_DESC]) != "-1")
+                        string DESC = (string)llGetLinkPrimitiveParams(i, [PRIM_DESC]);
+                        if (DESC != "-1" && "#-1" != llGetSubString(DESC, -3, -1))
                         {
                             llLinkSitTarget(i, ZERO_VECTOR, ZERO_ROTATION);
                         }
