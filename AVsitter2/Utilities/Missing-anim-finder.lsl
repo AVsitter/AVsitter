@@ -79,7 +79,7 @@ default
                     integer isVariableSpeed;
                     string anim_basename = llGetInventoryName(INVENTORY_ANIMATION, i);
                     
-                    if(llListFindList(["+","-"], [llDeleteSubString(anim_basename,0,-2)]) != -1)
+                    if(llListFindList(["+","-"], [llGetSubString(anim_basename, -1, -1)]) != -1)
                     {
                         index = llListFindList(ALL_USED_ANIMS, [llDeleteSubString(anim_basename,-1,-1)]);
                         // only consider anims as variable-speed if their base name was used in a variable-speed submenu:
