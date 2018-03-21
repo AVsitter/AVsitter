@@ -139,10 +139,12 @@ rez_prop(integer index)
         }
         integer perms = llGetInventoryPermMask(object, MASK_NEXT);
         string next = "  for NEXT owner";
-        if (WARN == 2)
+        if (WARN > 1)
         {
             next = "";
-            perms = llGetInventoryPermMask(object, MASK_OWNER);
+            perms = -1;
+            if (WARN == 2)
+                perms = llGetInventoryPermMask(object, MASK_OWNER);
         }
         if (type == 0 || type == 3)
         {
