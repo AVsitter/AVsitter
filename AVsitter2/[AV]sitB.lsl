@@ -265,10 +265,10 @@ default
             animation_menu(0);
             return;
         }
-        index = llListFindList(llList2List(MENU_LIST, current_menu, 99999), ["B:" + msg]);
-        if (index != -1) index += current_menu;
+        index = llListFindList(llList2List(MENU_LIST, current_menu + 1, 99999), ["B:" + msg]);
         if (index != -1)
         {
+            index += current_menu + 1;
             list button_data = llParseStringKeepNulls(llList2String(DATA_LIST, index), [SEP], []);
             if (llList2String(button_data, 1) != "")
             {
