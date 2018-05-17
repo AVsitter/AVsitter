@@ -49,14 +49,14 @@ OPTIMIZED=[AV]sitA.lslo\
  Plugins/AVprop/[AV]object.lslo\
  Plugins/AVsequence/[AV]sequence.lslo\
  Utilities/AVpos-generator.lslo\
- Utilities/AVpos-shifter.lslo\
  Utilities/Anim-perm-checker.lslo\
  Utilities/MLP-converter.lslo\
- Utilities/Missing-anim-finder.lslo\
- Utilities/Noob-detector.lslo
+ Utilities/Missing-anim-finder.lslo
 
 UNOPTIMIZED=Plugins/AVcontrol/LockGuard/[AV]LockGuard.lsl\
- Plugins/AVcontrol/LockGuard/[AV]LockGuard-object.lsl
+ Plugins/AVcontrol/LockGuard/[AV]LockGuard-object.lsl\
+ Utilities/AVpos-shifter.lsl\
+ Utilities/Noob-detector.lsl
 
 OPENSIM=[AV]sitA.oss\
  [AV]sitB.oss\
