@@ -19,6 +19,7 @@
 
 integer COMM_CHANNEL = -57841689;
 integer comm_handle;
+list A = [comm_handle]; //OSS::list A; // Force error if not compiled in Mono
 
 list findPrimsWithSubstring(string name)
 {

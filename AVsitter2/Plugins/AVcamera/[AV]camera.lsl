@@ -24,7 +24,7 @@ integer notecard_section;
 integer SCRIPT_CHANNEL;
 string myPose;
 key mySitter;
-list camera_triggers;
+list camera_triggers = [myPose]; //OSS::list camera_triggers; // Force error in LSO
 list camera_settings;
 integer lastByButton = -1;
 string lastPose;
@@ -109,6 +109,7 @@ default
 
     state_entry()
     {
+        camera_triggers = [];
         SCRIPT_CHANNEL = (integer)llGetSubString(llGetScriptName(), llSubStringIndex(llGetScriptName(), " "), 99999);
         notecard_key = llGetInventoryKey(notecard_name);
         if (llGetInventoryType(notecard_name) == INVENTORY_NOTECARD)

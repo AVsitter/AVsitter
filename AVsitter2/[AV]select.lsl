@@ -27,7 +27,7 @@ string adjust_script = "[AV]adjuster";
 string helper_object = "[AV]helper";
 string CUSTOM_TEXT;
 list SITTERS;
-list SYNCS;
+list SYNCS = [CUSTOM_TEXT]; //OSS::list SYNCS; // Force error in LSO
 integer menu_channel;
 integer menu_handle;
 integer menu_type;
@@ -97,6 +97,7 @@ default
         menu_handle = llListen(menu_channel, "", "", "");
         llListenControl(menu_handle, FALSE);
         integer i;
+        SYNCS = [];
         for (i = 0; i < get_number_of_scripts(); i++)
         {
             SITTERS += NULL_KEY;

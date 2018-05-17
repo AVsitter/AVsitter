@@ -16,10 +16,9 @@
 
 /*
  * Things not implemented:
- * ~ perms of the object
  * ~ creator of the object
- * ~ which platform/world (OpenSim/SL)
-*/
+ * ~ which platform/world (OpenSim/SL) and version
+ */
 
 integer sendToSupport=FALSE;
 integer sendItems = TRUE;

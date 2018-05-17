@@ -25,6 +25,7 @@ integer experience_denied_reason;
 key originalowner;
 key parentkey;
 key give_prop_warning_request;
+list A = [parentkey]; //OSS::list A; // Force error in LSO
 
 unsit_all()
 {
@@ -90,7 +91,9 @@ state prop
         }
 
         //LSL::
-        parentkey = llList2String(llGetObjectDetails(llGetKey(), [OBJECT_REZZER_KEY]), 0);
+        parentkey = llList2String(llGetObjectDetails(llGetKey(), [OBJECT_REZZER_KEY]) + A, 0);
+        A = [];
+
         if(llGetStartParameter() && !llList2Integer(llGetObjectDetails(parentkey, [OBJECT_ATTACHED_POINT]), 0))
         {
             llSetTimerEvent(10);

@@ -24,10 +24,10 @@ integer active_script_channel;
 integer menu_channel;
 integer menu_handle;
 list SIT_TYPES = ["ALL", "OWNER", "GROUP"];
-list MENU_TYPES = ["ALL", "OWNER", "GROUP"];
 integer SIT_INDEX;
 integer MENU_INDEX;
 string lastmenu;
+list MENU_TYPES = [lastmenu]; //OSS::list MENU_TYPES; // Force error in LSO
 
 integer pass_security(key id, string context)
 {
@@ -134,6 +134,7 @@ default
 {
     state_entry()
     {
+        MENU_TYPES = SIT_TYPES;
         llMessageLinked(LINK_SET, 90202, (string)check_for_RLV(), "");
     }
 

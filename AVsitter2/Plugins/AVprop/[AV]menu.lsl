@@ -29,7 +29,7 @@ string last_menu_avatar;
 integer menu_channel;
 key notecard_key;
 key notecard_query;
-list MENU_LIST;
+list MENU_LIST = [custom_text]; //OSS::list MENU_LIST; // Force error in LSO
 list DATA_LIST;
 integer MTYPE;
 integer LMSOURCE = 0; //lmsource self = 0, lmsource linkset = 1
@@ -314,6 +314,7 @@ default
         {
             remove_script("Use only one copy of this script!");
         }
+        MENU_LIST = [];
         check_avsit();
         notecard_key = llGetInventoryKey(notecard_name);
         Out(0, "Loading...");

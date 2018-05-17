@@ -34,7 +34,7 @@ list prop_groups;
 list prop_points;
 list sequential_prop_groups;
 integer HAVENTNAGGED = TRUE;
-list SITTERS;
+list SITTERS = [key_request]; //OSS::list SITTERS; // Force error in LSO
 list SITTER_POSES;
 list ATTACH_POINTS =
     [ ATTACH_CHEST,             "chest"

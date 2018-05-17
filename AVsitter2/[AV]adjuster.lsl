@@ -44,7 +44,7 @@ integer adding_item_type;
 string last_text;
 integer menu_pages;
 integer number_per_page = 9;
-list chosen_animations;
+list chosen_animations = [last_text]; //OSS::list chosen_animations; // Force error in LSO
 string cache;
 string webkey;
 integer webcount;

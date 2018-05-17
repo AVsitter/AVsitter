@@ -30,6 +30,7 @@ vector default_size = <0.12,0.12,3.5>;
 key key_request;
 vector my_pos;
 rotation my_rot;
+list A = [CURRENT_AV]; // Force error in LSO //OSS::
 
 stop_all_anims()
 {
@@ -70,7 +71,8 @@ set_text()
 setup()
 {
     alpha = llList2Float(llGetPrimitiveParams([PRIM_COLOR, 0]), 1);
-    CURRENT_AV = "";
+    CURRENT_AV = llList2Key(A, 0); //OSS::CURRENT_AV = "";
+    A = []; //OSS::
     vector size = default_size;
     if (llGetCreator() != llGetInventoryCreator(llGetScriptName()))
     {
