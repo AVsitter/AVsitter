@@ -22,7 +22,7 @@ list DESIGNATIONS_NOW;
 key CONTROLLER = NULL_KEY;
 integer KEY_TAKEN;
 string CONTROLLER_NAME;
-list SITTERS_MENUKEYS;
+list SITTERS_MENUKEYS = [CONTROLLER_NAME]; //OSS::list SITTERS_MENUKEYS; // Force error in LSO
 list SITTERS_SHORTNAMES;
 integer menu_channel;
 integer menu_handle;

@@ -17,7 +17,7 @@
 string notecard_basename = "AVpos";
 integer variable1;
 key notecard_query;
-list ALL_USED_ANIMS;
+list ALL_USED_ANIMS = [notecard_query]; //OSS::list ALL_USED_ANIMS; // Force error in LSO
 list UNUSED_ANIMS;
 integer NOT_FOUND_COUNT;
 integer IS_VARIABLE_SPEED_SUBMENU;
@@ -43,6 +43,7 @@ default
 {
     state_entry()
     {
+        ALL_USED_ANIMS = [];
         if (llGetInventoryType(notecard_basename) == INVENTORY_NOTECARD)
         {
             Owner_Say(" ");
@@ -65,9 +66,9 @@ default
         if (query_id == notecard_query)
         {
             if (data == EOF)
-            { 
+            {
                 if(!NOT_FOUND_COUNT){
-                    Owner_Say("All anims referenced in the notecard were accounted for.");   
+                    Owner_Say("All anims referenced in the notecard were accounted for.");
                 }
                 else{
                     Owner_Say("Anims were used in the notecard but not found in inventory!");
@@ -78,7 +79,7 @@ default
                     integer index;
                     integer isVariableSpeed;
                     string anim_basename = llGetInventoryName(INVENTORY_ANIMATION, i);
-                    
+
                     if(llListFindList(["+","-"], [llGetSubString(anim_basename, -1, -1)]) != -1)
                     {
                         index = llListFindList(ALL_USED_ANIMS, [llDeleteSubString(anim_basename,-1,-1)]);
@@ -89,9 +90,9 @@ default
                             isVariableSpeed=TRUE;
                         }
                     }
-                    
+
                     index = llListFindList(ALL_USED_ANIMS, [anim_basename]);
-                    
+
                     if (index == -1 && llGetInventoryName(INVENTORY_ANIMATION, i) != "AVhipfix")
                     {
                         Owner_Say("Animation '" + llGetInventoryName(INVENTORY_ANIMATION, i) + "' found in inventory but not used in notecard!");
@@ -138,7 +139,7 @@ default
                                 Owner_Say("Variable-Speed Animation '" + llList2String(anims, i) + "-' not found in inventory!");
                             }
                         }
-                        
+
                         integer index = llListFindList(ALL_USED_ANIMS,[llList2String(anims, i)]);
                         if(index == -1){ //only add to the list if the anim has not appeared before
                             ALL_USED_ANIMS += llList2String(anims, i);
@@ -146,9 +147,9 @@ default
                         }
                         else if(IS_VARIABLE_SPEED_SUBMENU == TRUE){
                             // prevent variable-Speed anims from being incorrectly tagged as surplus in cases where: they are included in multiple submenus/sitters and where only in some places the submenus aren't set as Variable-Speed submenus.
-                            // ensure it stays TRUE if ANY of the submenus that the anim is used in are set as Variable-Speed submenus. 
+                            // ensure it stays TRUE if ANY of the submenus that the anim is used in are set as Variable-Speed submenus.
                             VARIABLE_SPEED_ANIMS=llListReplaceList(VARIABLE_SPEED_ANIMS,[TRUE],index,index);
-                        }                     
+                        }
                     }
                 }
                 else if (command == "MENU" || command == "SITTER")

@@ -49,7 +49,7 @@ integer SEARCHhandle;
 integer CHECKhandle;
 integer ASKROLEhandle;
 list DETECTED_AVATAR_SHORTNAMES;
-list DETECTED_AVATAR_KEYS;
+list DETECTED_AVATAR_KEYS = [WAITPOSE]; //OSS::list DETECTED_AVATAR_KEYS; // Force error in LSO
 integer awaiting_results;
 string baseCaptureRestrictions = "@unsit=n";
 string baseReleaseRestrictions = "@unsit=force";

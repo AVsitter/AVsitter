@@ -16,6 +16,8 @@
 
 string script_basename = "[AV]sitA";
 string menu_script = "[AV]menu";
+key A;
+list B = [A]; //OSS::list B; // Force error in LSO
 
 default
 {
@@ -23,7 +25,8 @@ default
     {
         if (llGetInventoryType(script_basename) != INVENTORY_SCRIPT && llGetInventoryType(menu_script) != INVENTORY_SCRIPT)
         {
-            llMessageLinked(LINK_ALL_OTHERS, 90005, "", llDetectedKey(0));
+            llMessageLinked(LINK_ALL_OTHERS, 90005, llList2String(B, 0), llDetectedKey(0));
+            B = [];
         }
     }
 }

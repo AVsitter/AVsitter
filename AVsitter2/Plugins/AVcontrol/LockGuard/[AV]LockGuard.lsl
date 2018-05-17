@@ -77,7 +77,7 @@ integer COMM_CHANNEL = -57841689;
 integer comm_handle;
 key avatar;
 list links;
-list ring_prims;
+list ring_prims = [avatar]; //OSS::list ring_prims; // Force error if not compiled in Mono
 integer all_poses = -2; // cache the position of the "*" if it exists, for performance
 
 goChain(list new_links)

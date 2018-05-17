@@ -33,7 +33,7 @@ string ADJUST_MENU;
 string SITTER_INFO;
 list MENU_LIST;
 list DATA_LIST;
-list POS_ROT_LIST;
+list POS_ROT_LIST = [CUSTOM_TEXT]; //OSS::list POS_ROT_LIST; // Force error in LSO
 integer helper_mode;
 integer has_RLV;
 integer ANIM_INDEX;

@@ -27,7 +27,7 @@ list XCITE_TILT;
 integer TIMER_DEFAULT = 30;
 string CURRENT_POSE;
 list TIMERS;
-list SITTERS;
+list SITTERS = [CURRENT_POSE]; //OSS::list SITTERS; // Force error if not compiled in Mono
 integer DEBUG;
 
 Out(integer level, string out)

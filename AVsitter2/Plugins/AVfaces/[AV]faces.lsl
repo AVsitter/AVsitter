@@ -57,7 +57,7 @@ list anim_animsequences;
 list running_uuid;
 list running_sequence_indexes;
 list running_pointers;
-list SITTERS;
+list SITTERS = [key_request]; //OSS::list SITTERS; // Force error in LSO
 list SITTER_POSES;
 
 integer get_number_of_scripts()

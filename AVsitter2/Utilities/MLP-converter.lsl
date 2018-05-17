@@ -17,9 +17,9 @@
 string product = "AVsitter2 MLP converter";
 string version = "2.2";
 string notecard_basename = "AVpos";
-list NOTECARDS;
-list PROPS_NOTECARDS;
 string notecard_name;
+list NOTECARDS = [notecard_name]; //OSS::list NOTECARDS; // Force error in LSO
+list PROPS_NOTECARDS;
 key notecard_query;
 integer notecard_line;
 integer notecard_pointer;
@@ -98,6 +98,7 @@ default
     {
         Out(0, "Reading MLP notecards...");
         Readout_Say(" ");
+        NOTECARDS = [];
         get_notecards();
         if (llGetListLength(NOTECARDS) > 0)
         {
