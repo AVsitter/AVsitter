@@ -541,7 +541,7 @@ default
         integer index = llListFindList(ADJUST_MENU, [msg]);
         if (index != -1)
         {
-            if (id != MY_SITTER)
+            if (id != MY_SITTER && !(AMENU & 4))
             {
                 id = (string)id + "|" + (string)MY_SITTER;
             }
@@ -1149,7 +1149,7 @@ default
                     llSetText("", <1,1,1>, 1);
                     llMessageLinked(LINK_SET, 90150, "", ""); // 90150=ask other AVsitA scripts to place their sittargets again
                 }
-                llMessageLinked(LINK_THIS, 90302, (string)SCRIPT_CHANNEL, llDumpList2String([llGetListLength(SITTERS), llDumpList2String(SITTER_INFO, SEP), SET, MTYPE, ETYPE, SWAP, FIRST_POSENAME, BRAND, CUSTOM_TEXT, llDumpList2String(ADJUST_MENU, SEP), SELECT, AMENU, OLD_HELPER_METHOD, RLVDesignations, onSit], "|")); // 90302=send notecard settings to AVsitB
+                llMessageLinked(LINK_THIS, 90302, (string)SCRIPT_CHANNEL, llDumpList2String([llGetListLength(SITTERS), llDumpList2String(SITTER_INFO, SEP), SET, MTYPE, ETYPE, SWAP, FIRST_POSENAME, BRAND, CUSTOM_TEXT, llDumpList2String(ADJUST_MENU, SEP), SELECT, AMENU & 3, OLD_HELPER_METHOD, RLVDesignations, onSit], "|")); // 90302=send notecard settings to AVsitB
                 reused_variable = (llGetFreeMemory() - 5000) / 100;
                 return;
             }

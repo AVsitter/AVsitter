@@ -278,6 +278,10 @@ default
             if (llGetListLength(button_data) > 2)
             {
                 id = llList2String(button_data, 2);
+                if (id == "<C>")
+                    id = CONTROLLER;
+                if (id == "<S>")
+                    id = MY_SITTER;
             }
             else if (CONTROLLER != MY_SITTER)
             {
