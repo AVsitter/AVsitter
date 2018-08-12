@@ -114,7 +114,8 @@ controller_menu(key id)
 dialog(string text, list menu_items, key id)
 {
     llListenRemove(menu_handle);
-    menu_handle = llListen(menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1, "", id, ""); // 7FFFFF80 = max float < 2^31
+    menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1;
+    menu_handle = llListen(menu_channel, "", id, ""); // 7FFFFF80 = max float < 2^31
     llDialog(id, product + " " + version + "\n\n" + text + "\n", order_buttons(menu_items), menu_channel);
     llSetTimerEvent(120);
 }
