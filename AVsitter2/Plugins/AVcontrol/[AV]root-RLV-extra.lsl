@@ -174,8 +174,8 @@ state running
             product = llList2String(data, 2);
             llListenRemove(menu_handle);
             llListenRemove(GETSTATUShandle);
-            menu_handle = llListen(menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1, "", CONTROLLER, ""); // 7FFFFF80 = max float < 2^31
-            GETSTATUShandle = llListen(RELAY_GETSTATUS_CHANNEL = (integer)llFrand(999999936), "", "", ""); // 999999936 = max float < 1e9
+            menu_handle = llListen((menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1), "", CONTROLLER, ""); // 7FFFFF80 = max float < 2^31
+            GETSTATUShandle = llListen((RELAY_GETSTATUS_CHANNEL = (integer)llFrand(999999936)), "", "", ""); // 999999936 = max float < 1e9
             if (num == 90208)
             {
                 main_menu();
