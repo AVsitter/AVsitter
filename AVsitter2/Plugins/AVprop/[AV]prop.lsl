@@ -125,18 +125,6 @@ rez_prop(integer index)
     {
         vector pos = llList2Vector(prop_positions, index) * llGetRot() + llGetPos();
         rotation rot = llEuler2Rot(llList2Vector(prop_rotations, index) * DEG_TO_RAD) * llGetRot();
-        integer pt = get_point(llList2String(prop_points, index));
-        string point = (string)pt;
-        if (llStringLength(point) == 1)
-        {
-            point = "0" + point;
-        }
-        string prop_id = (string)index;
-        if (llStringLength(prop_id) == 1)
-        {
-            prop_id = "0" + prop_id;
-        }
-        integer int = (integer)((string)comm_channel + prop_id + point + (string)type);
         if (llGetInventoryType(object) != INVENTORY_OBJECT)
         {
             llSay(0, "Could not find prop '" + object + "'.");
@@ -155,7 +143,7 @@ rez_prop(integer index)
         {
             if (!(perms & PERM_COPY))
             {
-                llSay(0, "Can't rez '" + object + "'. Props and their content must be COPY-OK" + next);
+                llSay(0, "Can't rez '" + object + ("'. P"+("rops and their content must be COPY-"+("OK" + next))));
                 return;
             }
         }
@@ -163,11 +151,25 @@ rez_prop(integer index)
         {
             if ((!(perms & PERM_COPY)) || (!(perms & PERM_TRANSFER)))
             {
-                llSay(0, "Can't rez '" + object + "'. Attachment props and their content must be COPY-TRANSFER" + next);
+                llSay(0, "Can't rez '" + object + ("'. Attachment p"+("rops and their content must be COPY-"+("TRANSFER" + next))));
                 return;
             }
         }
-        llRezAtRoot(object, pos, ZERO_VECTOR, rot, int);
+        // Param must be:
+        //   - Negative
+        //   - 4 digits comm_channel
+        //   - 2 digits prop_id (index)
+        //   - 2 digits attachment point
+        //   - 1 digit prop_type
+        // HACK: reuse 'perms' rather than calling the function in the
+        // expression, to reduce stack usage
+        perms = get_point(llList2String(prop_points, index));
+        llRezAtRoot(object, pos, ZERO_VECTOR, rot,
+            comm_channel * 100000 // negative, so we subtract everything else instead of adding
+            -  (index * 1000
+                + perms * 10
+                + type)
+        );
     }
 }
 
