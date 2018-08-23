@@ -750,7 +750,6 @@ default
         }
         if (id == MY_SITTER)
         {
-            data = llParseStringKeepNulls(msg, ["|"], data);
             if (num == 90001) // 90001=start an overlay animation
             {
                 llStartAnimation(msg);
@@ -761,6 +760,7 @@ default
                 llStopAnimation(msg);
                 return;
             }
+            data = llParseStringKeepNulls(msg, ["|"], data);
             if (num == 90101) // 90101=menu option chosen
             {
                 CONTROLLER = llList2Key(data, 2);
