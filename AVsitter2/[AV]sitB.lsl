@@ -50,7 +50,7 @@ string RLVDesignations;
 string onSit;
 integer speed_index;
 integer verbose = 0;
-string SEP = "�"; // OSS::string SEP = "\u007F";
+string SEP = "�"; // OSS::string SEP = "\x7F";
 
 Out(integer level, string out)
 {

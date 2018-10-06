@@ -42,7 +42,7 @@ integer listen_handle;
 integer number_per_page = 9;
 integer menu_pages;
 string last_text;
-string SEP = "�"; // OSS::string SEP = "\u007F";
+string SEP = "�"; // OSS::string SEP = "\x7F";
 
 integer pass_security(key id)
 {
