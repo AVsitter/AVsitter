@@ -48,7 +48,7 @@ list chosen_animations;
 string cache;
 string webkey;
 integer webcount;
-string SEP = "�"; // OSS::string SEP = "\u007F";
+string SEP = "�"; // OSS::string SEP = "\x7F";
 
 string FormatFloat(float f, integer num_decimals)
 {
