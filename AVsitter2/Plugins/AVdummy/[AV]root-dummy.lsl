@@ -113,7 +113,7 @@ default {
                 sendDirect(id, "DISCOVERY_PONG|" + llGetObjectName() + "|" + gAnimsHash);
             } else if (llList2String(msg_parsed, 0) == "CONNECT") {
                 pruneDeadDummies();
-                if (llGetListLength(gPensingSitters) > MAX_PENDING) {
+                if (llGetListLength(gPendingDummies) > MAX_PENDING) {
                     sendDirect(id, "CONNECT_RESP|no_seats");
                     return;
                 }

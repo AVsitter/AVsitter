@@ -53,9 +53,9 @@ string truncateDialogButton(string text) {
 integer mayControlMenu(key id) {
     if (id == llGetOwner())
         return TRUE;
-    if (gFurnitureKey != NULL_KEY && SITTERS_MAY_CONTROL)
+    if (gTargetFurniture != NULL_KEY && SITTERS_MAY_CONTROL)
         // TODO: get SITTERS from anim broadcast and use that?
-        return llList2Key(llGetObjectDetails(id, [OBJECT_ROOT]), 0) == gFurnitureKey;
+        return llList2Key(llGetObjectDetails(id, [OBJECT_ROOT]), 0) == gTargetFurniture;
     return FALSE;
 }
 
@@ -258,7 +258,7 @@ default {
                 }
             } else if (gConnState == CONN_STATE_CONNECTED) {
                 if (mayControlMenu(id))
-                    sendCmd("SHOW_MENU|" + id);
+                    sendCmd("SHOW_MENU|" + (string)id);
             }
         }
     }

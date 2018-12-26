@@ -914,7 +914,7 @@ default
         if (num == 90400) // 90400=non-avatar wants to sit
         {
             // TODO: Can't currently support non-avatar sitters in this configuration
-            if (SET == -1 && llGetListLength(SITTERS) > 1)
+            if (!(SET == -1 && llGetListLength(SITTERS) > 1))
                 return;
             handle_sit_attempt(id, one);
             return;
