@@ -192,6 +192,21 @@ Used by oldschool HELPER 1 method - ask to animate.
 ### 90076
 Used by oldschool HELPER 1 method - stop animate.
 
+### 90080
+[AV]sitA started playing an animation
+
+    llMessageLinked(LINK_THIS,90070,<ANIMATION_NAME>,<AVATAR_UUID>);
+
+### 90081
+[AV]sitA stopped playing an animation
+
+    llMessageLinked(LINK_THIS,90070,<ANIMATION_NAME>,<AVATAR_UUID>);
+
+### 90085
+[AV]sitA moved an avatar around, rotation and position relative to the root's global position and rotation
+
+    llMessageLinked(LINK_THIS,90070,<POSITION,ROTATION>,<AVATAR_UUID>);
+
 ### 90100
 Menu choice from [AV]sitA. Also sent by [AV]sitB for [RLV] button and by [AV]root-RLV-extra for [BACK]
 
@@ -277,6 +292,21 @@ More [AV]sitA, [AV]adjuster updates to [AV]sitB.
 
 ### 90302
 [AV]sitA sends initial notecard settings data to [AV]sitB.
+
+### 90400
+Plugin tells [AV]sitA a non-avatar wants to "sit". Should be treated as if a new avatar was detected in the changed() event.
+
+    llMessageLinked(LINK_SET,90400,"",<OBJECT_UUID>);
+
+### 90401
+Plugin tells [AV]sitA a non-avatar disconnected. Should be treated as if an avatar stood up.
+
+    llMessageLinked(LINK_SET,90401,"",<OBJECT_UUID>);
+
+### 90402
+Plugin tells [AV]sitA to release all non-avatar sitters.
+
+    llMessageLinked(LINK_SET,90402,"","");
 
 ### 90500
 [AV]prop reports on prop events (ATTACHED,DETACHED,REZ,DEREZ).

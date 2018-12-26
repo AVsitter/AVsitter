@@ -353,6 +353,8 @@ default
 
     changed(integer change)
     {
+        // FIXME: broken if last sitter is animesh :/
+        /*
         if (change & CHANGED_LINK)
         {
             if (llGetAgentSize(llGetLinkKey(llGetNumberOfPrims())) == ZERO_VECTOR)
@@ -373,6 +375,7 @@ default
                 }
             }
         }
+        */
     }
 
     link_message(integer sender, integer num, string msg, key id)
