@@ -195,17 +195,17 @@ Used by oldschool HELPER 1 method - stop animate.
 ### 90080
 [AV]sitA started playing an animation
 
-    llMessageLinked(LINK_THIS,90070,<ANIMATION_NAME>,<AVATAR_UUID>);
+    llMessageLinked(LINK_SET,90080,<ANIMATION_NAME>,<AVATAR_UUID>);
 
 ### 90081
 [AV]sitA stopped playing an animation
 
-    llMessageLinked(LINK_THIS,90070,<ANIMATION_NAME>,<AVATAR_UUID>);
+    llMessageLinked(LINK_SET,90081,<ANIMATION_NAME>,<AVATAR_UUID>);
 
 ### 90085
 [AV]sitA moved an avatar around, rotation and position relative to the root's global position and rotation
 
-    llMessageLinked(LINK_THIS,90070,<POSITION,ROTATION>,<AVATAR_UUID>);
+    llMessageLinked(LINK_SET,90085,<POSITION,ROTATION>,<AVATAR_UUID>);
 
 ### 90100
 Menu choice from [AV]sitA. Also sent by [AV]sitB for [RLV] button and by [AV]root-RLV-extra for [BACK]
