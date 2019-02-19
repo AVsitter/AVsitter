@@ -273,24 +273,33 @@ remove_sitter_props_by_pose_group(string msg)
 
 remove_props_by_group(integer gp)
 {
-    list text;
+    string text = "";
     string group = llList2String(sequential_prop_groups, gp);
     integer i;
     for (; i < llGetListLength(prop_groups); i++)
     {
         if (llList2String(prop_groups, i) == group)
         {
-            text += [i];
+            text += "|" + (string)i;
         }
     }
-    string command = "REM_INDEX";
-    if (llGetInventoryType(main_script) != INVENTORY_SCRIPT)
+    if (text != "REM_INDEX")
     {
-        command = "REM_WORLD";
-    }
-    if (text != [])
-    {
-        send_command(llDumpList2String([command] + text, "|"));
+        if (llGetInventoryType(main_script) == INVENTORY_SCRIPT)
+        {
+            // This is [AV]sitA/B, send the command to all sitters
+            send_command("REM_INDEX" + text);
+        }
+        else
+        {
+            // Presumed to be launched from [AV]menu; avoid removing attachments from others
+            send_command("REM_WORLD" + text); // this removes inworld props only
+            if (llList2Key(SITTERS, 0)) // OSS::if (osIsUUID(llList2Key(SITTERS, 0)) && llList2Key(SITTERS, 0) != NULL_KEY)
+            {
+                // send command privately to current sitter
+                llRegionSayTo((string)SITTERS, comm_channel, "REM_INDEX" + text);
+            }
+        }
     }
 }
 
