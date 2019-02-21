@@ -283,7 +283,7 @@ remove_props_by_group(integer gp)
             text += "|" + (string)i;
         }
     }
-    if (text != "REM_INDEX")
+    if (text != "")
     {
         if (llGetInventoryType(main_script) == INVENTORY_SCRIPT)
         {
