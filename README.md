@@ -36,7 +36,7 @@ For increased script memory, scripts can be run through [LSL-PyOptimizer online]
 
 ## Trademarks and branding
 
-If you distrubute the scripts in this repository or a derivation, you may only use our brand as permitted. See our [Trademark Guidelines](/TRADEMARK.mediawiki) for permitted use of the AVsitter&trade; brand. We also suggest [http://fossmarks.org](http://fossmarks.org) for a practical guide to understanding trademarks in the context of Free and Open Source Software.
+If you distribute the scripts in this repository or a derivation, you may only use our brand as permitted. See our [Trademark Guidelines](/TRADEMARK.mediawiki) for permitted use of the AVsitter&trade; brand. We also suggest [http://fossmarks.org](http://fossmarks.org) for a practical guide to understanding trademarks in the context of Free and Open Source Software.
 
 ---
 
