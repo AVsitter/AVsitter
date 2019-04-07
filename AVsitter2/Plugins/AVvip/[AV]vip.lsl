@@ -76,13 +76,11 @@ state running
             
             if(id == llGetOwner() || (~idx)) 
             {
-                llMessageLinked(LINK_SET, 90005, "Sex", id);
-                llOwnerSay("DEBUG: Access granted to " + llKey2Name(id) + ".");
+                llMessageLinked(LINK_SET, 90005, "VIP", id);
             }
             else 
             {
                 llMessageLinked(LINK_SET, 90004, "", id);
-                llOwnerSay("DEBUG: Access denied to " + llKey2Name(id) + ".");
                 llRegionSayTo(id, 0, "Access denied.");
             }
         }
