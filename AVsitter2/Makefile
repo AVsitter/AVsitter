@@ -34,7 +34,7 @@ OSZIP=AVsitter2-oss.zip
 OPTIMIZED=[AV]sitA.lslo\
  [AV]sitB.lslo\
  [AV]adjuster.lslo\
- [AV]helper.lslo\
+ [AV]helperscript.lslo\
  [AV]root-security.lslo\
  [AV]root.lslo\
  [AV]select.lslo\
@@ -61,7 +61,7 @@ UNOPTIMIZED=Plugins/AVcontrol/LockGuard/[AV]LockGuard.lsl\
 OPENSIM=[AV]sitA.oss\
  [AV]sitB.oss\
  [AV]adjuster.oss\
- [AV]helper.oss\
+ [AV]helperscript.oss\
  [AV]root.oss\
  [AV]root-security.oss\
  [AV]select.oss\
