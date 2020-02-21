@@ -356,7 +356,7 @@ toggle_helper_mode()
             {
                 offset = ZERO_VECTOR;
             }
-            llRezObject(helper_name, llGetPos() + offset * llGetRot(), ZERO_VECTOR, llEuler2Rot(llList2Vector(ROT_LIST, i) * DEG_TO_RAD) * llGetRot(), param);
+            llRezAtRoot(helper_name, llGetPos() + offset * llGetRot(), ZERO_VECTOR, llEuler2Rot(llList2Vector(ROT_LIST, i) * DEG_TO_RAD) * llGetRot(), param);
         }
     }
     else
