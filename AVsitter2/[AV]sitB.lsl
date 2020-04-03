@@ -442,6 +442,7 @@ default
                 if (num == 90004)
                 {
                     current_menu = -1;
+                    menu_page = 0;
                 }
                 else if (index != -1)
                 {
