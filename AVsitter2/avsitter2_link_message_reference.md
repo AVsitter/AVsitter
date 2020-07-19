@@ -283,6 +283,21 @@ More [AV]sitA, [AV]adjuster updates to [AV]sitB.
 ### 90302
 [AV]sitA sends initial notecard settings data to [AV]sitB.
 
+### 90401
+[AV]favs command to add pose to favourites
+
+    llMessageLinked(LINK_THIS,90401,<POSE_NAME>,<AVATAR_UUID>);
+
+### 90402
+[AV]favs command to remove pose from favourites
+
+    llMessageLinked(LINK_THIS,90402,<POSE_NAME>,<AVATAR_UUID>);
+
+### 90403
+[AV]favs command to show favourites list
+
+    llMessageLinked(LINK_THIS,90403,"",<AVATAR_UUID>);
+
 ### 90500
 [AV]prop reports on prop events (ATTACHED,DETACHED,REZ,DEREZ).
 

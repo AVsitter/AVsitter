@@ -47,6 +47,7 @@ OPTIMIZED=[AV]sitA.lslo\
  Plugins/AVcontrol/[AV]root-RLV.lslo\
  Plugins/AVcontrol/[AV]root-control.lslo\
  Plugins/AVfaces/[AV]faces.lslo\
+ Plugins/AVfavs/[AV]favs.lslo\
  Plugins/AVprop/[AV]menu.lslo\
  Plugins/AVprop/[AV]prop.lslo\
  Plugins/AVprop/[AV]object.lslo\
