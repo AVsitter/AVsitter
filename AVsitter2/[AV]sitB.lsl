@@ -381,12 +381,15 @@ default
         integer two = (integer)((string)id);
         integer index;
         list data;
-        if (num == 90000 || num == 90010 || num == 90003)
+        if (num == 90000 || num == 90010 || num == 90003 || num == 90008)
         {
             index = llListFindList(MENU_LIST, [msg]);
             if (index == -1)
             {
                 index = llListFindList(MENU_LIST, ["P:" + msg]);
+                // If it's a POSE entry, don't treat it specially
+                if (~index && num == 90008)
+                    num = 90000;
             }
             if (id) // OSS::if (osIsUUID(id) && id != NULL_KEY)
             {
@@ -397,7 +400,7 @@ default
                 // assumed numeric - replace it with a "*" so we can test for it
                 id = "*";
             }
-            if ((id == "" || id == MY_SITTER || (id == "*" && two == SCRIPT_CHANNEL)) && (index != -1 || msg == ""))
+            if ((id == "" || id == MY_SITTER || (id == "*" && two == SCRIPT_CHANNEL) || num == 90008) && (index != -1 || msg == ""))
             {
                 ANIM_INDEX = index;
                 integer broadcast = TRUE;
