@@ -32,7 +32,7 @@ Stop an additional animation ([AV]adjuster, [AV]faces).
 Same as 90000 but ignored by [AV]sequence script to prevent from stopping sequences when [AV]sequence itself plays poses.
 
 ### 90004
-Same as 90005 but returns to top level of the menu (used by [AV]root-RLV when press [MENU]).
+Same as 90005 but returns to top level of the menu (used by [AV]root-RLV when pressing [MENU]).
 
 ### 90005
 Give the menu. Optionally set controller avatar and/or submenu.
@@ -54,6 +54,9 @@ Register touch or sit to [AV]root-security script from [AV]sitA after permission
 [AV]root-security passes touch to [AV]root-control.
 
     llMessageLinked(LINK_SET,90007,"",<CONTROLLER_UUID>);
+
+### 90008
+Same as 90000 but if the pose is a SYNC pose, it's played by all sitters that have it, regardless of target (i.e. works pretty much like choosing the pose in the menu)
 
 ### 90009
 Bring up [AV]select menu, sent by [AV]sitB.
