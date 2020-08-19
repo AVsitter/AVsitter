@@ -721,6 +721,11 @@ default
             llPassTouches(has_security);
             return;
         }
+        if (num == 2000)
+        {
+            //AV-Sitter menu requested externally, send the user the menu
+            llMessageLinked(LINK_THIS, 90005, "", id); // 90005=send menu to user
+        }
         if (num == 90203) // 90203=texture script present in root (unused)
         {
             has_texture = TRUE;
