@@ -17,13 +17,12 @@
 // Sitter UUIDs list, 1 entry per sitter. To save memory, UUIDs are stored as strings.
 list Sitters;
 
-// Poses being played per sitter, with the first character being the is_sync flag ("0" or "1")
+// Poses being played per sitter.
 list Poses;
 
 // List made of sublists
 // Each sublist starts with the string "UUID+sitter#" and ends with the string "|".
-// The data is between these markers, as a strided list of stride 2:
-// pose_name, is_sync, pose_name, is_sync, ...
+// The data is between these markers, as a list of pose names.
 list Favs;
 
 // Dialog channel
@@ -34,20 +33,18 @@ integer HDialog;
 integer Page;
 // Sublist of the data for the current user
 list List;
-// This helps saving data memory
-list Bool = [0, 1];
 
 list dlg()
 {
     list btns;
-    if (llGetListLength(List) > 2*11)
+    if (llGetListLength(List) > 11)
     {
-        btns = llList2ListStrided(List, Page*2, (Page + 8)*2, 2)
+        btns = llList2List(List, Page, Page + 8)
             + "[BACK]" + "[<<]" + "[>>]";
     }
     else
     {
-        btns = llList2ListStrided(List, 0, -1, 2) + "[BACK]";
+        btns = List + "[BACK]";
     }
     return llList2List(btns, -3, -1) + llList2List(btns, -6, -4)
         + llList2List(btns, -9, -7) + llList2List(btns, -12, -10);
@@ -99,14 +96,11 @@ default
             return;
         }
 
-        list LAux;
         if (n == 90045) // Pose playing
         {
             // Remember the pose that is playing for each sitter
             n = (integer)s;
-            LAux = llParseStringKeepNulls(s, (list)"|", []);
-            // Add the is_sync flag as a prefix
-            s = (string)(!!llList2Integer(LAux, 6)) + llList2String(LAux, 1);
+            s = llList2String(llParseStringKeepNulls(s, (list)"|", []), 1);
             Poses = llListReplaceList(Poses, (list)s, n, n);
             return;
         }
@@ -120,17 +114,11 @@ default
                 return;
             }
             n = llListFindList(Sitters, (list)((string)k));
-            // LAux will be [0] if pose is not a sync, and [1] if it is
-            LAux = llList2List(Bool, 0, 0);
             if (n != -1)
             {
                 s = llList2String(Poses, n);
                 if (s == "")
                     return; // something went wrong, we don't have info about the current pose
-                if (llSubStringIndex(s, "0"))
-                    LAux = llList2List(Bool, 1, 1);
-                // Remove the SYNC flag from the name
-                s = llDeleteSubString(s, 0, 0);
                 // n is still the sitter.
                 // Find the sublist corresponding to the current avi/sitter.
                 l = llListFindList(Favs, (list)((string)k+(string)n));
@@ -160,8 +148,8 @@ default
                     llRegionSayTo(k, 0, "This pose is " + "already" + " in the favs for this seat");
                     return;
                 }
-                // Replace the "|" with the pose + the is_sync flag + "|"
-                Favs = llListReplaceList(Favs, (list)s + LAux + "|", l, l);
+                // Replace the "|" with the pose + "|"
+                Favs = llListReplaceList(Favs, (list)s + "|", l, l);
                 llRegionSayTo(k, 0, s + " added to favs");
             }
             return;
@@ -193,8 +181,7 @@ default
                     llRegionSayTo(k, 0, "This pose is " + "not" + " in the favs for this seat");
                     return;
                 }
-                // Remove one strided element
-                Favs = llDeleteSubList(Favs, l, l + 1);
+                Favs = llDeleteSubList(Favs, l, l);
                 llRegionSayTo(k, 0, s + " removed from favs");
                 // If the favs list for this avatar/sitter combo becomes empty, remove the markers too
                 if (llStringLength(llList2String(Favs, l - 1)) > 36 && llList2String(Favs, l) == "|")
@@ -260,12 +247,9 @@ default
             if (Page >= llGetListLength(Favs))
                 Page = 0;
         }
-        if ((i = llListFindList(List, (list)s)) != -1)
+        if (-1 != llListFindList(List, (list)s))
         {
-            n = k;
-            if (llList2Integer(List, i + 1)) // is it a sync?
-                n = ""; // if so, send to everyone instead of only to this avatar
-            llMessageLinked(LINK_THIS, 90000, s, n);
+            llMessageLinked(LINK_THIS, 90008, s, k);
         }
         llDialog(k, "Your favs for this seat:", dlg(), CDialog);
     }
