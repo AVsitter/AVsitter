@@ -29,7 +29,7 @@ OSZIP=AVsitter2-oss.zip
 
 
 # Version being compiled (LSL string)
-VERSION="2.2"
+VERSION="2.2p04"
 
 
 # Note some of these scripts don't strictly need to be optimized for memory.

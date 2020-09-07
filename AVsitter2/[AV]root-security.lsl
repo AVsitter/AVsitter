@@ -15,7 +15,7 @@
  */
 
 string product = "AVsitter™ Security";
-string #version = "2.2";
+string #version = "2.2p04";
 string script_basename = "[AV]sitA";
 string menucontrol_script = "[AV]root-control";
 string RLV_script = "[AV]root-RLV";
