@@ -37,6 +37,8 @@ Same as 90005 but returns to top level of the menu (used by [AV]root-RLV when pr
 ### 90005
 Give the menu. Optionally set controller avatar and/or submenu.
 
+Note: [AV]menu only accepts the first form below; it does not accept TOMENU or CONTROLLER_UUID.
+
     llMessageLinked(LINK_SET,90005,"",<AVATAR_UUID>);
     llMessageLinked(LINK_SET,90005,<TOMENU>,[<CONTROLLER_UUID>|<AVATAR_UUID>]);
     
