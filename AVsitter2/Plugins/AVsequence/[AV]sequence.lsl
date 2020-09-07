@@ -331,7 +331,7 @@ state running
             {
                 SITTERS = llListReplaceList(SITTERS, [id], (integer)msg, (integer)msg);
             }
-            else if (num == 90000)
+            else if (num == 90000 || num == 90008)
             {
                 stop_sequence(TRUE);
                 integer index = llListFindList(SEQUENCE_DATA_NAMES, [msg]);
