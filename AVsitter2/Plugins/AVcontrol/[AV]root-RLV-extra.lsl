@@ -15,7 +15,7 @@
  */
 
 string product;
-string version = "2.2";
+string #version = "2.2p04";
 integer RELAY_CHANNEL = -1812221819;
 integer RELAY_GETSTATUS_CHANNEL;
 integer GETSTATUShandle;

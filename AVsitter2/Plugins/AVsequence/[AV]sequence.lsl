@@ -15,7 +15,7 @@
  */
 
 string product = "AVsitter™ sequence";
-string version = "2.2";
+string #version = "2.2p04";
 string main_script = "[AV]sitA";
 list SITTERS;
 integer DEBUG;

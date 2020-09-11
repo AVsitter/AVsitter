@@ -28,6 +28,9 @@ OSZIP=AVsitter2-oss.zip
 # End of configuration area
 
 
+# Version being compiled (LSL string)
+VERSION="2.2p04"
+
 
 # Note some of these scripts don't strictly need to be optimized for memory.
 
@@ -101,4 +104,10 @@ $(OSZIP): $(OPENSIM)
 %.oss: %.lsl
 	$(PYTHON) build-aux.py oss-process $< > $@
 
-.PHONY : all clean optimized opensim
+# Bash only, probably GNU make only
+setvars:
+	for name in $(addprefix ',$(addsuffix ',$(OPTIMIZED:.lslo=.lsl))) $(addprefix ',$(addsuffix ',$(UNOPTIMIZED))); do $(PYTHON) build-aux.py setvars "$$name" version='$(VERSION)' ; done
+
+release: setvars all
+
+.PHONY : all clean optimized opensim setvars release

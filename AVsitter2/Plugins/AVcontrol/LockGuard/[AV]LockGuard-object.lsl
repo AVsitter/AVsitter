@@ -16,7 +16,7 @@
 
 // Placed in prop objects, this script sends the uuid of any Lockguard rings to the script in furniture.
 // Ring prims in the prop should be named with "ring" in their prim name. e.g. "ring1", "ring2"
-
+// string #version = "2.2p04";
 integer COMM_CHANNEL = -57841689;
 integer comm_handle;
 list A = [comm_handle]; //OSS::list A; // Force error if not compiled in Mono
