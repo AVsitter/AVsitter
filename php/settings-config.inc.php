@@ -11,4 +11,9 @@ $email_from="you@yourhost.com"; // your server's sending email (for error report
 
 $allow_install = false; // enable to allow action=install (clear/format database)
 
-$check_ip = false; // enable to check the sim ip submitting the data is in the allowed range
+// Enable to check if the sim IP submitting the data is in the allowed range.
+// WARNING: After the migration of SL to cloud servers, ensure this setting
+//          is set to FALSE, otherwise validation will always fail even for
+//          good addresses. If other means of verification are provided, this
+//          script will be updated accordingly.
+$check_ip = false;
