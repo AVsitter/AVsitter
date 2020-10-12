@@ -258,11 +258,14 @@ default
         index = llListFindList(MENU_LIST, ["M:" + msg]);
         if (index != -1)
         {
-            llMessageLinked(LINK_SET, 90051, (string)channel + "|" + llGetSubString(msg, 0, -2) + "|" + (string)SET, MY_SITTER);
-            menu_page = 0;
-            last_menu = current_menu;
-            current_menu = index;
-            animation_menu(0);
+            if (llListFindList(MENU_LIST, ["T:" + msg]) != -1) // security check - TOMENU must exist
+            {
+                llMessageLinked(LINK_SET, 90051, (string)channel + "|" + llGetSubString(msg, 0, -2) + "|" + (string)SET, MY_SITTER);
+                menu_page = 0;
+                last_menu = current_menu;
+                current_menu = index;
+                animation_menu(0);
+            }
             return;
         }
         index = llListFindList(llList2List(MENU_LIST, current_menu + 1, 99999), ["B:" + msg]);
