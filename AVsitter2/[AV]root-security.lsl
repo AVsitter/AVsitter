@@ -14,7 +14,8 @@
  * instructions can be found at http://avsitter.github.io
  */
 
-string product = "AVsitter™ Security 2.2";
+string product = "AVsitter™ Security";
+string #version = "2.2p04";
 string script_basename = "[AV]sitA";
 string menucontrol_script = "[AV]root-control";
 string RLV_script = "[AV]root-RLV";
@@ -60,7 +61,7 @@ check_sitters()
         if (pass_security(av, "SIT") == FALSE)
         {
             llUnSit(av);
-            llDialog(av, product + "\n\nSorry, Sit access is set to: " + llList2String(SIT_TYPES, SIT_INDEX), ["OK"], -164289491);
+            llDialog(av, product + " " + version + "\n\nSorry, Sit access is set to: " + llList2String(SIT_TYPES, SIT_INDEX), ["OK"], -164289491);
         }
         i--;
     }
@@ -98,7 +99,7 @@ register_touch(key id, integer animation_menu_function, integer active_prim, int
     }
     else if (giveFailedMessage)
     {
-        llDialog(id, product + "\n\nSorry, Menu access is set to: " + llList2String(MENU_TYPES, MENU_INDEX), ["OK"], -164289491);
+        llDialog(id, product + " " + version + "\n\nSorry, Menu access is set to: " + llList2String(MENU_TYPES, MENU_INDEX), ["OK"], -164289491);
     }
 }
 
@@ -117,7 +118,7 @@ dialog(string text, list menu_items)
 {
     llListenRemove(menu_handle);
     menu_handle = llListen((menu_channel = ((integer)llFrand(0x7FFFFF80) + 1) * -1), "", llGetOwner(), ""); // 7FFFFF80 = max float < 2^31
-    llDialog(llGetOwner(), product + "\n\n" + text, order_buttons(menu_items), menu_channel);
+    llDialog(llGetOwner(), product + " " + version + "\n\n" + text, order_buttons(menu_items), menu_channel);
     llSetTimerEvent(600);
 }
 

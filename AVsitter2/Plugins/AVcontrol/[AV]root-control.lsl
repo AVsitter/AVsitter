@@ -15,7 +15,7 @@
  */
 
 string product = "AVsitter™ Menu Control";
-string version = "2.2";
+string #version = "2.2p04";
 string security_script = "[AV]root-security";
 string RLV_script = "[AV]root-RLV";
 list DESIGNATIONS_NOW;

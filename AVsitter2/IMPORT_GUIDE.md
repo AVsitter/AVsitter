@@ -6,7 +6,7 @@ If you would prefer a packaged version of the latest release, and to receive pac
 
 ## Importing the AVsitter2 scripts into Second Life / OpenSim
 
-Quick summary: Download the scripts from the [releases page](https://github.com/AVsitter/AVsitter/releases); name them in the viewer the same as in the zip file but without extension, saving all of them with Mono enabled; create an [AV]helper *object*,and put the [AV]helper *script* inside and take it; create an AVpos notecard, add something to it and save it.
+Quick summary: Download the scripts from the [releases page](https://github.com/AVsitter/AVsitter/releases); name them in the viewer the same as in the zip file but without extension, saving all of them with Mono enabled; create an [AV]helper *object*, put the [AV]helperscript *script* inside and take it; create an AVpos notecard, add something to it and save it.
 
 Step-by-step guide:
 
@@ -46,7 +46,7 @@ Step-by-step guide:
 7. Prepare an **[AV]helper** object.
 
     - In Second Life or OpenSim, rez a box and name it **[AV]helper**.
-    - Inside its contents, drop the **[AV]helper** script that, at this point, you must have created by following the above procedure.
+    - Inside its contents, drop the **[AV]helperscript** script that, at this point, you must have created by following the above procedure.
     - Take the **[AV]helper** object to your inventory.
 
 8. There's still one thing to do to have the distribution working:
@@ -56,4 +56,4 @@ Step-by-step guide:
     - *Save* it. This step is very important. Notecards that have never been saved after being created will cause problems.
     - Use that notecard as an empty notecard when following the user instructions below.
 
-After importing the AVsitter2 scripts into Second Life or OpenSim, you are ready to follow the [AVsitter2 User Instructions](https://avsitter.github.io/avsitter2_home). Where the instructions mention the **[AV]helper** object, it refers to the object we've just created with the script inside.
+After importing the AVsitter2 scripts into Second Life or OpenSim, you are ready to follow the [AVsitter2 User Instructions](https://avsitter.github.io/avsitter2_home). Where the instructions mention the **[AV]helper** object, it refers to the object we've just created with the **[AV]helperscript** script inside.

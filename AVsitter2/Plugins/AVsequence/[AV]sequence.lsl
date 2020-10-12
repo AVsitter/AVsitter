@@ -15,7 +15,7 @@
  */
 
 string product = "AVsitter™ sequence";
-string version = "2.2";
+string #version = "2.2p04";
 string main_script = "[AV]sitA";
 list SITTERS;
 integer DEBUG;
@@ -331,7 +331,7 @@ state running
             {
                 SITTERS = llListReplaceList(SITTERS, [id], (integer)msg, (integer)msg);
             }
-            else if (num == 90000)
+            else if (num == 90000 || num == 90008)
             {
                 stop_sequence(TRUE);
                 integer index = llListFindList(SEQUENCE_DATA_NAMES, [msg]);

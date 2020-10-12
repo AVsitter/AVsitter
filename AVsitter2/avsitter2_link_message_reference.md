@@ -32,10 +32,12 @@ Stop an additional animation ([AV]adjuster, [AV]faces).
 Same as 90000 but ignored by [AV]sequence script to prevent from stopping sequences when [AV]sequence itself plays poses.
 
 ### 90004
-Same as 90005 but returns to top level of the menu (used by [AV]root-RLV when press [MENU]).
+Same as 90005 but returns to top level of the menu (used by [AV]root-RLV when pressing [MENU]).
 
 ### 90005
 Give the menu. Optionally set controller avatar and/or submenu.
+
+Note: [AV]menu only accepts the first form below; it does not accept TOMENU or CONTROLLER_UUID.
 
     llMessageLinked(LINK_SET,90005,"",<AVATAR_UUID>);
     llMessageLinked(LINK_SET,90005,<TOMENU>,[<CONTROLLER_UUID>|<AVATAR_UUID>]);
@@ -54,6 +56,9 @@ Register touch or sit to [AV]root-security script from [AV]sitA after permission
 [AV]root-security passes touch to [AV]root-control.
 
     llMessageLinked(LINK_SET,90007,"",<CONTROLLER_UUID>);
+
+### 90008
+Same as 90000 but if the pose is a SYNC pose, it's played by all sitters that have it, regardless of target (i.e. works pretty much like choosing the pose in the menu)
 
 ### 90009
 Bring up [AV]select menu, sent by [AV]sitB.
@@ -278,6 +283,21 @@ More [AV]sitA, [AV]adjuster updates to [AV]sitB.
 ### 90302
 [AV]sitA sends initial notecard settings data to [AV]sitB.
 
+### 90401
+[AV]favs command to add pose to favourites
+
+    llMessageLinked(LINK_THIS,90401,<POSE_NAME>,<AVATAR_UUID>);
+
+### 90402
+[AV]favs command to remove pose from favourites
+
+    llMessageLinked(LINK_THIS,90402,<POSE_NAME>,<AVATAR_UUID>);
+
+### 90403
+[AV]favs command to show favourites list
+
+    llMessageLinked(LINK_THIS,90403,"",<AVATAR_UUID>);
+
 ### 90410
 Control [AV]vip with BUTTON or link message.
 
@@ -299,6 +319,3 @@ Control [AV]vip with BUTTON or link message.
             }
         }
     }
-
-
-

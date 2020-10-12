@@ -15,7 +15,7 @@
  */
 
 string product = "AVsitter™";
-string version = "2.2";
+string #version = "2.2p04";
 string notecard_name = "AVpos";
 string main_script = "[AV]sitA";
 string memoryscript = "[AV]sitB";
@@ -750,15 +750,14 @@ default
         }
         if (id == MY_SITTER)
         {
-            if (num == 90001) // 90001=start an overlay animation
+            if ((num == 90001 || num == 90002) // 90001=start an overlay animation
+                                               // 90002=stop an overlay animation
+                && (PERMISSION_TRIGGER_ANIMATION & llGetPermissions()) != 0)
             {
-                llStartAnimation(msg);
-                return;
-            }
-            if (num == 90002) // 90002=stop an overlay animation
-            {
-                llStopAnimation(msg);
-                return;
+                if (num == 90001)
+                    llStartAnimation(msg);
+                else
+                    llStopAnimation(msg);
             }
             data = llParseStringKeepNulls(msg, ["|"], data);
             if (num == 90101) // 90101=menu option chosen

@@ -28,13 +28,16 @@ OSZIP=AVsitter2-oss.zip
 # End of configuration area
 
 
+# Version being compiled (LSL string)
+VERSION="2.2p04"
+
 
 # Note some of these scripts don't strictly need to be optimized for memory.
 
 OPTIMIZED=[AV]sitA.lslo\
  [AV]sitB.lslo\
  [AV]adjuster.lslo\
- [AV]helper.lslo\
+ [AV]helperscript.lslo\
  [AV]root-security.lslo\
  [AV]root.lslo\
  [AV]select.lslo\
@@ -44,6 +47,7 @@ OPTIMIZED=[AV]sitA.lslo\
  Plugins/AVcontrol/[AV]root-RLV.lslo\
  Plugins/AVcontrol/[AV]root-control.lslo\
  Plugins/AVfaces/[AV]faces.lslo\
+ Plugins/AVfavs/[AV]favs.lslo\
  Plugins/AVprop/[AV]menu.lslo\
  Plugins/AVprop/[AV]prop.lslo\
  Plugins/AVprop/[AV]object.lslo\
@@ -62,7 +66,7 @@ UNOPTIMIZED=Plugins/AVcontrol/LockGuard/[AV]LockGuard.lsl\
 OPENSIM=[AV]sitA.oss\
  [AV]sitB.oss\
  [AV]adjuster.oss\
- [AV]helper.oss\
+ [AV]helperscript.oss\
  [AV]root.oss\
  [AV]root-security.oss\
  [AV]select.oss\
@@ -102,4 +106,10 @@ $(OSZIP): $(OPENSIM)
 %.oss: %.lsl
 	$(PYTHON) build-aux.py oss-process $< > $@
 
-.PHONY : all clean optimized opensim
+# Bash only, probably GNU make only
+setvars:
+	for name in $(addprefix ',$(addsuffix ',$(OPTIMIZED:.lslo=.lsl))) $(addprefix ',$(addsuffix ',$(UNOPTIMIZED))); do $(PYTHON) build-aux.py setvars "$$name" version='$(VERSION)' ; done
+
+release: setvars all
+
+.PHONY : all clean optimized opensim setvars release

@@ -1,5 +1,5 @@
 /*
- * [AV]helper - Setup aid, to move poses by moving an object
+ * [AV]helperscript - Setup aid, to move poses by moving an object
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,7 +16,7 @@
 
 string registration_product = "AVsitter2";
 string product = "AVhelper";
-string version = "2.2";
+string #version = "2.2p04";
 integer OLD_HELPER_METHOD;
 list colors = [<1,0.5,1>, <0.5,0.5,1>, <1,0.5,0.5>, <0.5,1,0.5>, <1,1,0.5>, <0.5,1,1>];
 integer helper_index;

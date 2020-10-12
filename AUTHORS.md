@@ -6,3 +6,4 @@ Code Violet <`codeviolet@users.noreply.github.com`> is the initial author who co
 - Scottie Muircastle <`Oddunity@users.noreply.github.com`>
 - Auryn Beorn <`AurynBeorn@users.noreply.github.com`>
 - mifi3000 <`mifi3000@users.noreply.github.com`>
+- Kyrah Abattoir <`kyrahabattoir@users.noreply.github.com`>

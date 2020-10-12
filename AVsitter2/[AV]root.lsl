@@ -13,7 +13,7 @@
  * receive automatic updates and other benefits! All details and user
  * instructions can be found at http://avsitter.github.io
  */
-
+//string #version = "2.2p04";
 string script_basename = "[AV]sitA";
 string menu_script = "[AV]menu";
 key A;

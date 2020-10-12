@@ -17,7 +17,7 @@
 integer OLD_HELPER_METHOD;
 key key_request;
 string url = "https://avsitter.com/settings.php"; // the settings dump service remains up for AVsitter customers. settings clear periodically.
-string version = "2.2";
+string #version = "2.2p04";
 string helper_name = "[AV]helper";
 string prop_script = "[AV]prop";
 string expression_script = "[AV]faces";
@@ -356,7 +356,7 @@ toggle_helper_mode()
             {
                 offset = ZERO_VECTOR;
             }
-            llRezObject(helper_name, llGetPos() + offset * llGetRot(), ZERO_VECTOR, llEuler2Rot(llList2Vector(ROT_LIST, i) * DEG_TO_RAD) * llGetRot(), param);
+            llRezAtRoot(helper_name, llGetPos() + offset * llGetRot(), ZERO_VECTOR, llEuler2Rot(llList2Vector(ROT_LIST, i) * DEG_TO_RAD) * llGetRot(), param);
         }
     }
     else
