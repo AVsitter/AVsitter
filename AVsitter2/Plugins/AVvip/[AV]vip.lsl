@@ -15,15 +15,15 @@
    AVpos Notes:
    ------------
 
-   BUTTON VIP*|90210
-   This displays the custom button ‘VIP’, using channel 90210 for communications, 
-   do not change this number. You can change the button label ‘VIP’ to something 
+   BUTTON Hidden*|90410
+   This displays the custom button ‘Hidden*’, using channel 90410 for communications, 
+   do not change this number. You can change the button label ‘Hidden’ to something 
    else, but do not remove the * asterisk behind the name. Remember, do not use 
    'TOMENU' option for this restricted menu as it would override.
 
-   MENU VIP
+   MENU Hidden
    This is where you put your access restricted entries but remember to change 
-   ‘VIP’ to the same label as used for the button. 
+   ‘Hidden’ to the same label as used for the button. 
 */
 
 string version = "v0.1.1";
@@ -75,7 +75,7 @@ state running
             
             if(id == llGetOwner() || (~idx)) 
             {
-                llMessageLinked(LINK_SET, 90005, "VIP", id);
+                llMessageLinked(LINK_SET, 90005, msg, id);
             }
             else 
             {
