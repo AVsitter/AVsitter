@@ -69,7 +69,7 @@ state running
 {
     link_message(integer sender, integer num, string msg, key id)
     {
-        if(num == 90210)
+        if(num == 90410)
         {
             integer idx = llListFindList(aWhiteList,[llKey2Name(id)]);
             
@@ -79,7 +79,7 @@ state running
             }
             else 
             {
-                llMessageLinked(LINK_SET, 90004, "", id);
+                llMessageLinked(LINK_SET, 90005, "", id);
                 llRegionSayTo(id, 0, "Access denied.");
             }
         }
