@@ -1,4 +1,4 @@
-/* [AV]vip (c) 2019 Chotaire Seelowe (Cannibals)
+/* [AV]vip (c) 2019-2020 Chotaire Seelowe (Cannibals)
    https://git.chotaire.net/cannibals/avsitter-vip
   
    This Source Code Form is subject to the terms of the Mozilla Public
@@ -26,7 +26,7 @@
    ‘Hidden’ to the same label as used for the button. 
 */
 
-string version = "v0.1.1";
+string version = "v0.1.2";
 list aWhiteList = [];
 integer aLine;
 key aQuery;
