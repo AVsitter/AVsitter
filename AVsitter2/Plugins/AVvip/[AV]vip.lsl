@@ -42,7 +42,7 @@ default
             aQuery = llGetNotecardLine("access", 0);
     }
 
-     dataserver(key QID, string data)
+    dataserver(key QID, string data)
     {
         if(aQuery == QID)
         {
@@ -56,10 +56,10 @@ default
             {
                 llWhisper(0, "[AV]vip - Loaded VIPs with elevated access.");
                 if (ready == 1) 
-                    {
+                {
                     llWhisper(0, "[AV]vip - Version " + version + " ready.");
                     state running;
-                    }
+                }
             }
         }
     }
