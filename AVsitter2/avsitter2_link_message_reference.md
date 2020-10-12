@@ -278,6 +278,9 @@ More [AV]sitA, [AV]adjuster updates to [AV]sitB.
 ### 90302
 [AV]sitA sends initial notecard settings data to [AV]sitB.
 
+### 90410
+Control [AV]vip with BUTTON or link message.
+
 ### 90500
 [AV]prop reports on prop events (ATTACHED,DETACHED,REZ,DEREZ).
 
