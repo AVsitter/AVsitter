@@ -574,8 +574,19 @@ default
             {
                 if (index != -1)
                 {
-                    POS_ROT_LIST = llListReplaceList(POS_ROT_LIST, [(vector)llList2String(data, 1), (vector)llList2String(data, 2)], index * 2, index * 2 + 1);
-                    if (llGetListLength(data) != 3)
+                    one = llGetListLength(data);
+                    data = [(vector)llList2String(data, 1), (vector)llList2String(data, 2)];
+
+                    // LSL::
+                    // Reuse the preexisting vectors when possible, to save memory
+                    if ((two = llListFindList(POS_ROT_LIST, llList2List(data, 0, 0))) != -1)
+                        data = llList2List(POS_ROT_LIST, two, two) + llList2List(data, 1, 1);
+                    if ((two = llListFindList(POS_ROT_LIST, llList2List(data, 1, 1))) != -1)
+                        data = llList2List(data, 0, 0) + llList2List(POS_ROT_LIST, two, two);
+                    // ::LSL
+
+                    POS_ROT_LIST = llListReplaceList(POS_ROT_LIST, data, index * 2, index * 2 + 1);
+                    if (one != 3)
                     {
                         send_anim_info(FALSE);
                     }
