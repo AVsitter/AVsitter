@@ -10,7 +10,7 @@ To create a release version like the ones available for download, you need to ha
 - **Python 2.7**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install python`; if it isn't available in yours, try this link: <https://www.python.org/downloads/>. **Important:** Python 3.x won't work; only Python 2.x will. Usually Python 2 and Python 3 can be installed side-by-side.
 - **make**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install make`; if it isn't available in yours, try this link: <https://www.gnu.org/software/make/#download>
 - **GNU cpp**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install cpp`. If it isn't available in yours, or you have trouble installing it, you can instead use **mcpp**, which is much more lightweight and is included in most distributions. It is also available at this link: <http://mcpp.sourceforge.net/download.html>.
-- [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on "Clone or Download" in the top right of the linked page.
+- [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on the `Code` button near the top right of the linked page.
 
 ### For Mac OS/X
 
@@ -18,7 +18,7 @@ To create a release version like the ones available for download, you need to ha
 - **Python 2.7** (comes preinstalled) **Important:** Python 3.x won't work; only Python 2.x will.
 - **make** - It comes as part of **Xcode** which you can get for free from the App Store.
 - [**mcpp**](http://mcpp.sourceforge.net/download.html). There's a DMG for download.
-- [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on "Clone or Download" in the top right of the linked page.
+- [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on the `Code` button near the top right of the linked page.
 
 ### For Windows
 
@@ -26,7 +26,7 @@ To create a release version like the ones available for download, you need to ha
 - [**Python 2.7**](https://www.python.org/downloads/) **Important:** Python 3.x won't work; only Python 2.x will.
 - [**make**](http://gnuwin32.sourceforge.net/packages/make.htm#download)
 - [**mcpp**](http://mcpp.sourceforge.net/download.html)
-- [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on "Clone or Download" in the top right of the linked page.
+- [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on the `Code` button near the top right of the linked page.
 
 ## Creating the release
 
