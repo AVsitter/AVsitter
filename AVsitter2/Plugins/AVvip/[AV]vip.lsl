@@ -21,9 +21,11 @@
    else, but do not remove the * asterisk behind the name. Remember, do not use 
    'TOMENU' option for this restricted menu as it would override.
 
-   MENU Hidden
-   This is where you put your access restricted entries but remember to change 
-   ‘Hidden’ to the same label as used for the button. 
+   MENU Restricted
+   This is where you put your access restricted entries. You can keep the name
+   'Restricted' (it will not be visible to the user) or change it to something else
+   as long as it is NOT the same label as BUTTON. If both BUTTON and MENU have
+   the same label, this script will not work.
 */
 
 string version = "v0.1.2";
