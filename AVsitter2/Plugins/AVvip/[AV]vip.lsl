@@ -75,7 +75,8 @@ state running
             
             if(id == llGetOwner() || (~idx)) 
             {
-                llMessageLinked(LINK_SET, 90005, msg, id);
+                // You may change 'Restricted' but the name won't be visible anyway:
+                llMessageLinked(LINK_SET, 90005, "Restricted", id);
             }
             else 
             {
