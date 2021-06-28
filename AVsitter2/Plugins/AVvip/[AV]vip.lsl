@@ -28,7 +28,7 @@
    the same label, this script will not work.
 */
 
-string version = "v0.1.2";
+string version = "v0.1.3";
 list aWhiteList = [];
 integer aLine;
 key aQuery;
