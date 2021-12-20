@@ -7,26 +7,28 @@ To create a release version like the ones available for download, you need to ha
 ### For Linux
 
 - **zip**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install zip`; if it isn't available in yours, try this link: <http://www.info-zip.org/Zip.html#Downloads>
-- **Python 2.7**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install python`; if it isn't available in yours, try this link: <https://www.python.org/downloads/>. **Important:** Python 3.x won't work; only Python 2.x will. Usually Python 2 and Python 3 can be installed side-by-side.
-- **make**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install make`; if it isn't available in yours, try this link: <https://www.gnu.org/software/make/#download>
-- **GNU cpp**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install cpp`. If it isn't available in yours, or you have trouble installing it, you can instead use **mcpp**, which is much more lightweight and is included in most distributions. It is also available at this link: <http://mcpp.sourceforge.net/download.html>.
+- **Python**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install python`; if it isn't available in yours, try this link: <https://www.python.org/downloads/>.
+- **make**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install make`; if it isn't available in yours, try this link: <https://www.gnu.org/software/make/#download>.
+- **GNU cpp**. It comes in most distributions, e.g. for Debian or Ubuntu use `sudo apt-get install cpp`. If it isn't available in yours, or you have trouble installing it, you can instead use **mcpp**, which is much more lightweight and is included in most distributions. It is also available at this link: <http://mcpp.sourceforge.net/download.html>. **gcpp** comes preconfigured by default in Makefile. For **mcpp**, you need to set `PREPROC_KIND=mcpp` and `PREPROC_PATH=mcpp` in the Makefile.
 - [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on the `Code` button near the top right of the linked page.
 
 ### For Mac OS/X
 
 - **zip** (comes preinstalled)
-- **Python 2.7** (comes preinstalled) **Important:** Python 3.x won't work; only Python 2.x will.
-- **make** - It comes as part of **Xcode** which you can get for free from the App Store.
-- [**mcpp**](http://mcpp.sourceforge.net/download.html). There's a DMG for download.
+- **Python** (comes preinstalled)
+- **make** - It comes as part of the command line develompent tools (Xcode) which you can install for free. Open a terminal and type `make`; if you don't have it installed, it will prompt you to install it. Xcode can also be installed manually from <https://developer.apple.com/>.
+- **cpp** - Should come as part of the command line development tools where **make** is.
 - [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on the `Code` button near the top right of the linked page.
 
-### For Windows
+### For Windows (x86)
 
 - [**zip**](http://www.info-zip.org/Zip.html#Downloads)
-- [**Python 2.7**](https://www.python.org/downloads/) **Important:** Python 3.x won't work; only Python 2.x will.
+- [**Python**](https://www.python.org/downloads/)
 - [**make**](http://gnuwin32.sourceforge.net/packages/make.htm#download)
-- [**mcpp**](http://mcpp.sourceforge.net/download.html)
+- [**mcpp**](http://mcpp.sourceforge.net/download.html). `Makefile` comes preconfigured for **gcpp**, therefore you need to edit it by setting `PREPROC_KIND=mcpp` and `PREPROC_PATH=\full\path\to\mcpp`.
 - [**LSL-PyOptimizer**](https://github.com/Sei-Lisa/LSL-PyOptimizer). Currently the latest master branch is used to create the releases, which you can download by clicking on the `Code` button near the top right of the linked page.
+
+For processors other than x86, you need to find the above utilities for your processor.
 
 ## Creating the release
 

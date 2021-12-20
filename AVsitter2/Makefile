@@ -2,18 +2,18 @@
 
 # Full path to Python. For Windows this is typically
 # C:\Python27\python.exe; if it is in your path you don't need to change it.
-PYTHON=python
+PYTHON=python3
 
 # Full path to main.py in the optimizer. Depends on where it was unpacked.
 OPTIMIZER=/l/pyoptimizer/main.py
 
-# Which preprocessor to use. Use 'gcpp' for GNU cpp (typical on Linux);
+# Which preprocessor to use. Use 'gcpp' for GNU cpp (typical on Linux/OSX);
 # use 'mcpp' for mcpp.
-PREPROC_KIND=mcpp
+PREPROC_KIND=gcpp
 
 # Full path to the preprocessor. Depends on where you have downloaded it.
-# If the preprocessor is mcpp and it is in your path, you can leave it as is.
-PREPROC_PATH=mcpp
+# If the preprocessor is GNU cpp and it is in your path, leave it as cpp.
+PREPROC_PATH=cpp
 
 # Full path to the zip program (zip.exe for Windows). Depends on where you
 # have downloaded it. If it is in your path you don't need to change it.
