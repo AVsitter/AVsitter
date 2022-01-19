@@ -120,7 +120,7 @@ integer prim_is_mod()
     return 0;
 }
 
-menu_check(string name, key id)
+menu_check(string name, key id, string msg, integer menu_function)
 {
     if (pass_security(id) == TRUE)
     {
@@ -128,9 +128,18 @@ menu_check(string name, key id)
         {
             last_menu_unixtime = llGetUnixTime();
             last_menu_avatar = name;
-            menu_page = 0;
-            current_menu = -1;
-            prop_menu(FALSE, id);
+            integer index = llListFindList(MENU_LIST, ["M:" + msg + "*"]);
+            if (menu_function == 90004 || (name != last_menu_avatar && index == -1))
+            {
+            	menu_page = 0;
+                current_menu = -1;
+            }
+            else if (index != -1)
+            {
+                menu_page = 0;
+                current_menu = index;
+            }         
+            avmenu(FALSE, id);
         }
         else
         {
@@ -229,7 +238,7 @@ remove_script(string reason)
     llRemoveInventory(llGetScriptName());
 }
 
-integer prop_menu(integer return_pages, key av)
+integer avmenu(integer return_pages, key av)
 {
     choosing = FALSE;
     choice = "";
@@ -421,18 +430,18 @@ default
                     menu_page--;
                     if (menu_page < 0)
                     {
-                        menu_page = prop_menu(TRUE, NULL_KEY);
+                        menu_page = avmenu(TRUE, NULL_KEY);
                     }
                 }
                 else
                 {
                     menu_page++;
-                    if (menu_page > prop_menu(TRUE, NULL_KEY))
+                    if (menu_page > avmenu(TRUE, NULL_KEY))
                     {
                         menu_page = 0;
                     }
                 }
-                prop_menu(FALSE, id);
+                avmenu(FALSE, id);
             }
             return;
         }
@@ -532,14 +541,14 @@ default
             {
             }
         }
-        prop_menu(FALSE, id);
+        avmenu(FALSE, id);
     }
 
     touch_start(integer touched)
     {
         if (MTYPE < 3)
         {
-            menu_check(llDetectedName(0), llDetectedKey(0));
+            menu_check(llDetectedName(0), llDetectedKey(0), "", 90004);
         }
     }
 
@@ -559,9 +568,9 @@ default
     {
         if (sender == llGetLinkNumber() || LMSOURCE == 1)
         {
-            if (num == 90005) // send menu to id
+            if (num == 90004 || num == 90005) // send menu to id
             {
-                menu_check(llKey2Name(id), id);
+                menu_check(llKey2Name(id), id, msg, num);
             }
             else if (num == 90022) // send dump to [AV]adjuster
             {
