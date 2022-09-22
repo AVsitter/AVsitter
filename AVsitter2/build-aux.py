@@ -101,7 +101,6 @@ def setvars(filename, *settings):
             return 1
         values[match.group(1)] = match.group(2)
 
-    #sys.stderr.write(filename + '\n')
     if filename is not None:
         f = open(filename, "r")
     else:
@@ -167,7 +166,8 @@ def main(argc, argv):
         return rm(argv[2:])
 
     if cmd == 'setvars':
-        return setvars(argv[2], *argv[3:])
+        filename = None if argv[2] == '-' else argv[2]
+        return setvars(filename, *argv[3:])
 
     if cmd == 'oss-process':
         if argc > 3:

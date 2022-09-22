@@ -426,12 +426,11 @@ sit_using_prim_params()
     if (HASKEYFRAME && !llGetStatus(STATUS_PHYSICS))
     {
         llSetKeyframedMotion([], [KFM_COMMAND, KFM_CMD_PAUSE]);
-        llSleep(0.15);
     }
     llSetLinkPrimitiveParamsFast(sitter_prim, [PRIM_ROT_LOCAL, llEuler2Rot((CURRENT_ROTATION + <0,0,0.002>) * DEG_TO_RAD) * localrot, PRIM_POS_LOCAL, CURRENT_POSITION * localrot + localpos]);
     if (HASKEYFRAME && !llGetStatus(STATUS_PHYSICS))
     {
-        llSleep(0.15);
+        llSleep(0.2);
         llSetKeyframedMotion([], [KFM_COMMAND, KFM_CMD_PLAY]);
     }
 }
