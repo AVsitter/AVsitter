@@ -16,17 +16,26 @@
  * Based on AVsitter2 MLP converter
  *
  */
- /**
-     @author: Zai Dium
-     @name: PMAC-Converter
-    @localfile: ?defaultpath\AVSitter\Utilities\?@name.lsl
+  /**
+    @author: Zai Dium
+    @name: PMAC-Converter
+    @localfile: ?defaultpath\AVsitter\AVsitter2\Utilities\?@name.lsl
+
+    Put this script in PMAC object
+    It will delete it self after finish
+    Copy results from chat into AVpos in the object
+    Remove anything started ~~~
+    Remove any old script related to PMAC
+    Remove .menuxxxx notecards
+    Copy AVsitter scripts into it
+    Enjoy
  */
 
 string product = "AVsitter2 PMAC converter";
 string version = "1.0";
 string notecard_basename = "AVpos";
 string notecard_name;
-list notecards = []; //OSS::list notecards; // Force error in LSO
+list notecards = [];
 key notecard_query;
 integer notecard_line;
 integer notecard_pointer;
@@ -60,6 +69,11 @@ string FormatFloat(float f, integer num_decimals)
         ret = llGetSubString(ret, 0, -2);
     }
     return ret;
+}
+
+string FormatVector(vector v)
+{
+    return "<" + FormatFloat(v.x, 2) + "," + FormatFloat(v.y, 2) + "," + FormatFloat(v.z, 2) + ">";
 }
 
 finish()
@@ -167,13 +181,25 @@ default
             Readout_Say(" ");
             Readout_Say("SWAP 2");
             string name;
+            Readout_Say("SITTER 0");
             integer i = 0;
             while (i < llGetListLength(notecards))
             {
                 name = llList2String(notecards, i);
-                 Readout_Say("TOMENU "+ llGetSubString(name, llSubStringIndex(name, " ") + 1, 9999));
+                Readout_Say("TOMENU "+ llGetSubString(name, llSubStringIndex(name, " ") + 1, 9999));
                 i++;
             }
+
+            Readout_Say("");
+            Readout_Say("SITTER 1");
+            i = 0;
+            while (i < llGetListLength(notecards))
+            {
+                name = llList2String(notecards, i);
+                Readout_Say("TOMENU "+ llGetSubString(name, llSubStringIndex(name, " ") + 1, 9999));
+                i++;
+            }
+
             notecard_query = llGetNotecardLine(notecard_name, notecard_line);
         }
         else
@@ -226,7 +252,7 @@ default
 
                         aniList1 += cmd + " " +llList2String(parts, 0)+"|"+llList2String(parts, 2);
                         rot = llList2Rot(parts, 4);
-                        posList1 += "{"+llList2String(parts, 0)+"}"+llList2String(parts, 3)+""+(string)(llRot2Euler(rot)*RAD_TO_DEG);
+                        posList1 += "{"+llList2String(parts, 0)+"}"+llList2String(parts, 3)+""+FormatVector(llRot2Euler(rot)*RAD_TO_DEG);
 
                         if (llGetListLength(parts) > 5)
                         {
@@ -238,7 +264,7 @@ default
 
                             aniList2 += cmd + " " + llList2String(parts, 0)+"|"+llList2String(parts, 5);
                             rot = llList2Rot(parts, 7);
-                            posList2 += "{"+llList2String(parts, 0)+"}"+llList2String(parts, 6)+""+(string)(llRot2Euler(rot)*RAD_TO_DEG);
+                            posList2 += "{"+llList2String(parts, 0)+"}"+llList2String(parts, 6)+""+FormatVector(llRot2Euler(rot)*RAD_TO_DEG);
                         }
                     }
                 }
