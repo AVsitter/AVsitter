@@ -59,6 +59,7 @@ OPTIMIZED=[AV]sitA.lslo\
 
 UNOPTIMIZED=Plugins/AVcontrol/LockGuard/[AV]LockGuard.lsl\
  Plugins/AVcontrol/LockGuard/[AV]LockGuard-object.lsl\
+ Plugins/AVvip/[AV]vip.lsl\
  Utilities/AVpos-shifter.lsl\
  Utilities/Noob-detector.lsl
 

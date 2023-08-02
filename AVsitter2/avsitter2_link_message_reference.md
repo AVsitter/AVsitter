@@ -298,6 +298,9 @@ More [AV]sitA, [AV]adjuster updates to [AV]sitB.
 
     llMessageLinked(LINK_THIS,90403,"",<AVATAR_UUID>);
 
+### 90410
+Control [AV]vip with BUTTON or link message.
+
 ### 90500
 [AV]prop reports on prop events (ATTACHED,DETACHED,REZ,DEREZ).
 
@@ -316,6 +319,3 @@ More [AV]sitA, [AV]adjuster updates to [AV]sitB.
             }
         }
     }
-
-
-
