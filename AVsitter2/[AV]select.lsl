@@ -124,7 +124,14 @@ default
             }
             else if (button_index != -1)
             {
-                llMessageLinked(LINK_SET, 90030, (string)av_index, (string)button_index);
+                if (av_index != button_index)
+                {
+                    llMessageLinked(LINK_SET, 90030, (string)av_index, (string)button_index);
+                }
+                else
+                {
+                    llMessageLinked(LINK_SET, 90005, "", id);
+                }
             }
         }
     }
