@@ -15,7 +15,7 @@
  */
 
 string product = "AVsitter™ RLV";
-string #version = "2.2p04";
+string #version = "2.2p05";
 integer ignorenextswap;
 string notecard_name = "AVpos";
 string unDressScript = "[AV]root-RLV-extra";
@@ -77,6 +77,7 @@ integer menuPage;
 integer subControl;
 string ping;
 integer captureOnAsk = TRUE;
+integer doNotSayReleaseMessage = FALSE;
 integer verbose = 0;
 
 Out(integer level, string out)
@@ -323,7 +324,10 @@ release(key SLAVE, integer allowUnsit)
     if (index != -1)
     {
         CAPTIVES = llDeleteSubList(CAPTIVES, index - 1, index);
-        llSay(0, llKey2Name(SLAVE) + " was released.");
+        if (!doNotSayReleaseMessage)
+        {
+            llSay(0, llKey2Name(SLAVE) + " was released.");
+        }
         relay(SLAVE, baseReleaseRestrictions);
         relay(SLAVE, "!release");
         if (allowUnsit && llSubStringIndex(baseReleaseRestrictions, "@unsit=force") != -1)
@@ -590,14 +594,17 @@ back(key id)
     }
 }
 
-integer isSub(key id)
+integer isSub(key id, integer doDialog)
 {
     integer index = llListFindList(DESIGNATIONS_NOW, [id]);
     if (index != -1)
     {
         if (llList2String(SITTER_DESIGNATIONS_MASTER, index) == "S")
         {
-            info_dialog(id, Submissive_name_plural + " can't access this");
+            if (doDialog)
+            {
+                info_dialog(id, Submissive_name_plural + " can't access this");
+            }
             return TRUE;
         }
     }
@@ -817,18 +824,40 @@ state running
             }
             llMessageLinked(LINK_THIS, 90007, "", id);
         }
+        else if (num == 90015)
+        {
+            if (id)
+            {
+                if (isSub(id, FALSE))
+                    return;
+                if (!controllerHasKeys | id == CONTROLLER)
+                {
+                    doNotSayReleaseMessage = one;
+                    stop();
+                }
+            }
+            else
+            {
+                if (!controllerHasKeys)
+                {
+                    doNotSayReleaseMessage = one;
+                    stop();
+                }
+            }
+            doNotSayReleaseMessage = FALSE;
+        }
         else if (num == 90100)
         {
             list data = llParseString2List(msg, ["|"], []);
             if (llList2String(data, 1) == "[STOP]")
             {
-                if (isSub(id))
+                if (isSub(id, TRUE))
                     return;
                 stop();
             }
             else if (llList2String(data, 1) == "Control...")
             {
-                if (isSub(id))
+                if (isSub(id, TRUE))
                     return;
                 if (controllerHasKeys && id != CONTROLLER)
                 {

@@ -81,6 +81,11 @@ Same as 90000 but ignores ETYPE.
 
     llMessageLinked(LINK_SET,90014,llDumpList2String([CONTROLLER_UUID,llDumpList2String(CAPTIVES,",")],"|"),"");    
 
+### 90015
+Tells [AV]root-RLV to trigger a [STOP]. If the captive's keys are currently held, this requires the controlling avatar's UUID, which can be obtained via message [90014](#90014). If that UUID is `NULL_KEY`, the [STOP] will only trigger if the keys are NOT held. Optionally, the "\<captive name\> was released" message can be suppressed by passing `"1"` as `RELEASE_MSG_FLAG`. When passing `""` it will be shown normally.
+
+    llMessageLinked(LINK_SET,90015,<RELEASE_MSG_FLAG>,<CONTROLLER_UUID>);
+
 ### 90020
 Tells a script to [DUMP] settings.
 
